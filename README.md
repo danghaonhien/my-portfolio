@@ -1,6 +1,6 @@
 # Portfolio Website
 
-A modern, responsive portfolio website for designers and developers, inspired by the design from [whyramachandran.design](https://whyramachandran.design/).
+My Product Design Portfolio
 
 ## Features
 
