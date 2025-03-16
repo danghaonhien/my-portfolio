@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Designer & Developer</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="cursor"></div>
+    
+    <!-- Header Section -->
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="#home">totodesign</a>
+            </div>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#work">Work</a>
+                <a href="#contact">Contact</a>
+                <a href="files/resume.pdf" class="resume-btn" download>Resume <i class="fas fa-download"></i></a>
+            </div>
+            <div class="theme-toggle">
+                <button id="theme-toggle-btn" title="Toggle Dark/Light Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <!-- Hero Section -->
+         <div class="coordinated-hero animate-fade-in">
+            <div> <p>10.8231° N, 106.6297° E</p></div>
+            <div> <p>37.7749° N, 122.4194° W</p></div>
+           
+    
+        </div>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1 class="animate-text">Designer & Architect</h1>
+                <p class="animate-text-delay">
+                    <span class="typing-animation" data-text="currently busy vibe coding..."></span>
+                </p>
+                <div class="hero-cta animate-text-delay">
+                    <a href="#work" class="btn primary-btn">View My Work</a>
+                    <a href="#contact" class="btn secondary-btn">Get In Touch</a>
+                </div>
+            </div>
+            <div class="hero-image animate-fade-in">
+          
+                <div class="hero-image-inner">
+                    <img src="images/about/profile.jpg" alt="Profile Image">
+                </div>
+                <div class="tooltip">Hey, I'm Toto!</div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="section-header">
+                <h2>About Me</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Hey, I'm Nhien Dang, or call me Toto, a product designer with 5 years of experience—and a former architect who realized designing buildings takes way too long, so I switched to designing digital products instead. Turns out, crafting intuitive user experiences is just as satisfying as designing spaces—plus, no permits required!</p>
+                    <!-- <p>My approach combines aesthetic sensibility with technical expertise to deliver solutions that are not only visually appealing but also functionally robust.</p> -->
+                    <div class="skills">
+                        <div class="skill-tag" style="background-color: rgb(240, 248, 255); font-weight: bold;">UI/UX Design</div>
+                        <div class="skill-tag" style="background-color: rgb(230, 230, 250); font-weight: normal;">Interaction Design</div>
+                        <div class="skill-tag" style="background-color: rgb(240, 248, 255); font-weight: bold;">Design Thinking</div>
+                        <div class="skill-tag" style="background-color: rgb(255, 228, 225); font-weight: norma;">Design System</div>
+                        <div class="skill-tag" style="background-color: rgb(250, 250, 210); font-weight: bold;">Prototyping</div>
+                        <div class="skill-tag" style="background-color: rgb(226, 250, 140); font-weight: normal;">Visual Design</div>
+                        <div class="skill-tag" style="background-color: rgb(211, 255, 206); font-weight: bold;">HTML/CSS/JavaScript</div>
+                        <div class="skill-tag" style="background-color: rgb(255, 235, 205); font-weight: normal;">React.js</div>
+                        <div class="skill-tag" style="background-color: rgb(255, 182, 193); font-weight: bold;">Node.js</div>
+                        <div class="skill-tag" style="background-color: rgb(173, 216, 230); font-weight: normal;">Vibe Coding</div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Work Section -->
+        <section id="work" class="work">
+            <div class="section-header">
+                <h2>Selected Work</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="projects">
+                <!-- Featured Project (Full Width) -->
+                <div class="project-card featured">
+                    <div class="project-image">
+                        <img src="./images/Sprinklr/moneyshot.webp" alt="Featured Project">
+                        <div class="reading-time">8 min read</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Sprinklr Community</h3>
+                        <p>Building the most loved Community.</p>
+                        <div class="project-tags">
+                            <span>Sprinklr</span>
+                            <span>Figma</span>
+                            <span>Generative AI</span>
+                            <span>Professional Experience</span>
+                        </div>
+                        <a href="./case-studies/sprinklr/index.html" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Two Column Projects -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="./images/SprinklrAI/SprinklrAI_Cover.png" alt="Project 2">
+                        <div class="reading-time">5 min read</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Sprinklr AI</h3>
+                        <p>An e-commerce website with a focus on user experience and conversion optimization.</p>
+                        <div class="project-tags">
+                            <span>Web Design</span>
+                            <span>E-commerce</span>
+                        </div>
+                        <a href="#" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="./images/endue/background.png" alt="Project 3">
+                        <div class="reading-time">6 min read</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Endue Software</h3>
+                        <p>A dashboard interface for a SaaS platform that simplifies complex data visualization.</p>
+                        <div class="project-tags">
+                            <span>Dashboard Design</span>
+                            <span>Data Visualization</span>
+                        </div>
+                        <a href="#" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Secondary Featured Project (Full Width but less prominent) -->
+                <div class="project-card secondary-featured">
+                    <div class="project-image">
+                        <img src="images/Codi/casestudy/cover.png" alt="Secondary Featured Project">
+                        <div class="reading-time">10 min read</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>My-Codi</h3>
+                        <p>A mobile application redesign that improved user engagement by 45% and streamlined the user journey.</p>
+                        <div class="project-tags">
+                            <span>Coaching Device</span>
+                            <span>UX Research</span>
+                            <span>UI Design</span>
+                        </div>
+                        <a href="#" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hidden Projects (5-8) -->
+            <div class="hidden-projects">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="images/momento/cover2.png" alt="Project 5">
+                        <div class="reading-time">8 min read</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Momento</h3>
+                        <p>A brand identity system for a sustainable fashion startup, including logo, color palette, and guidelines.</p>
+                        <div class="project-tags">
+                            <span>Mobile App</span>
+                            <span>UX Research</span>
+                            <span>UI Design</span>
+                        </div>
+                        <a href="#" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="images/Trasheroes/cover2.png" alt="Project 6">
+                        <div class="reading-time">9 min read</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Trasheroes</h3>
+                        <p>An interactive data visualization tool that helps users understand complex financial information.</p>
+                        <div class="project-tags">
+                            <span>Mobile App</span>
+                            <span>Data Visualization</span>
+                            <span>Interactive Design</span>
+                        </div>
+                        <a href="#" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="images/pawfectpaw/cover2.png" alt="Project 7">
+                        <div class="reading-time">7 min read</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>PerfectPaw</h3>
+                        <p>A responsive website for a luxury hotel chain with an emphasis on immersive photography and smooth interactions.</p>
+                        <div class="project-tags">
+                            <span>Billboard</span>
+                            <span>Branding</span>
+                            <span>Pet Lover</span>  
+                        </div>
+                        <a href="#" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="images/uniteddumplings/mockup3.png" alt="Project 8">
+                        <div class="reading-time">5 min read</div>
+                    </div>
+                    <div class="project-info">
+                        <h3>United Dumplings</h3>
+                        <p>An educational app that makes learning programming concepts fun and accessible for beginners.</p>
+                        <div class="project-tags">
+                            <span>Branding</span>
+                            <span>UI/UX Design</span>
+                            <span>Food Lover</span>
+                        </div>
+                        <a href="#" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Show More Button -->
+            <div class="show-more-container">
+                <button id="show-more-btn" class="btn secondary-btn">
+                    <span class="show-text">Show More</span>
+                    <span class="hide-text">Show Less</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="section-header">
+                <h2>Get In Touch</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="contact-content">
+                <div class="contact-text">
+                    <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:totoddesign@gmail.com">totoddesign@gmail.com</a>
+                        </div>
+                        <!-- <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+1234567890">+1 (234) 567-890</a>
+                        </div> -->
+                    </div>
+                    <!-- <div class="social-links">
+                        <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-dribbble"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                    </div> -->
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn primary-btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Portfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button id="scroll-to-top" title="Scroll to Top" aria-label="Scroll to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const heroImage = document.querySelector('.hero-image');
+            const tooltip = heroImage.querySelector('.tooltip');
+
+            heroImage.addEventListener('mousemove', function(e) {
+                const x = e.clientX;
+                const y = e.clientY;
+                tooltip.style.left = `${x}px`;
+                tooltip.style.top = `${y}px`;
+                tooltip.style.transform = 'translate(0, -50%)';
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,33 @@
+.wrapper2{
+  background-image: url(../../images/Sprinklr/background.png);
+  /* background-color: black; */
+  /* height:100%; */
+ max-width:100%;
+ background-size: cover;
+   z-index: -1;
+   margin-left: auto;
+   margin-right: auto;
+   color:#1D2939;
+   text-align: center;
+  }
+  
+  
+@media screen and (max-width: 75em) {
+    .wrapper2 {
+      max-width: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+   
+    }
+
+  }
+
+  @media screen and (max-width: 600px){
+    .container {
+      width: 95%!important;
+      margin: 0 auto;
+  }
+  }
+
+  
