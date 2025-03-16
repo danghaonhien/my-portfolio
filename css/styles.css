@@ -1131,13 +1131,13 @@ footer {
 
 
 .dark-theme .project-card,
-.dark-theme .gallery-item {
+ {
     background-color: var(--light-bg-color);
     box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3), -4px -4px 12px rgba(255, 255, 255, 0.1);
 }
 
 .dark-theme .project-card::before,
-.dark-theme .gallery-item::before {
+{
     background: linear-gradient(45deg, #00f5a0, #00d9f5, #a100f2, #f20089, #00f5a0);
 }
 
@@ -1397,7 +1397,7 @@ footer {
     background-image: url('../images/Sprinklr/moneyshot2.png'); /* Path to your background image */
     background-size: cover; /* Cover the entire section */
     background-position: center; /* Center the image */
-    height: 400px; /* Set a height for the hero section */
+    height: 600px; /* Set a height for the hero section */
     display: flex; /* Use flexbox for centering text */
     flex-direction: column; /* Stack text vertically */
     justify-content: center; /* Center text vertically */
@@ -1417,7 +1417,7 @@ footer {
     font-size: 48px;
     font-weight: 700;
     margin-bottom: 20px;
-    color: #e9ecef;
+    color: #ffffff;
 }
 
 .case-study-subtitle {
@@ -1441,7 +1441,7 @@ footer {
 
 .meta-item .label {
     font-size: 14px;
-    color: #e9ecef;
+    color: #ffffff;
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -1450,10 +1450,239 @@ footer {
 .meta-item .value {
     font-size: 18px;
     font-weight: 500;
-    color: #ced4da;
+    color: #e9ecef;
 }
 
 /* Section Styles */
+.case-study-section {
+    padding: 80px 0;
+    /* border-bottom: 1px solid var(--border-color); */
+}
+
+.section-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: var(--text-color);
+}
+
+.section-text {
+    font-size: 18px;
+    line-height: 1.8;
+    color: var(--text-color);
+    margin-bottom: 30px;
+}
+
+/* Process Steps */
+.process-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.process-step {
+    padding: 30px;
+    background-color: var(--light-bg-color);
+    border-radius: var(--border-radius);
+    transition: transform 0.3s ease;
+}
+
+.process-step:hover {
+    transform: translateY(-5px);
+}
+
+.process-step h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+
+}
+
+.process-step p {
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+/* Solution List */
+.solution-list {
+    list-style: none;
+    margin-top: 20px;
+}
+
+.solution-list li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: var(--text-color);
+}
+
+.solution-list li::before {
+    content: "•";
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+    font-size: 24px;
+}
+
+/* Results Grid */
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.result-item {
+    text-align: center;
+    padding: 30px;
+    background-color: var(--light-bg-color);
+    border-radius: var(--border-radius);
+}
+
+.result-number {
+    display: block;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.result-label {
+    font-size: 16px;
+    color: var(--text-color);
+}
+/* Challenge Grid */
+.challenge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.challenge-item {
+    text-align: left;
+    padding: 30px;
+    background-color: var(--light-bg-color);
+    border-radius: var(--border-radius);
+}
+
+.challenge-number {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.challenge-label {
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+/* Gallery Grid */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.gallery-item {
+    position: relative;
+    /* border-radius: var(--border-radius); */
+    overflow: hidden;
+    /* box-shadow: var(--box-shadow); */
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* .gallery-item:hover img {
+    transform: scale(1.05);
+} */
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .case-study-header h1 {
+        font-size: 36px;
+    }
+
+    .case-study-subtitle {
+        font-size: 20px;
+    }
+
+    .case-study-meta {
+        gap: 20px;
+    }
+
+    .section-title {
+        font-size: 28px;
+    }
+
+    .section-text {
+        font-size: 16px;
+    }
+
+    .process-steps {
+        grid-template-columns: 1fr;
+    }
+
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+    .challenge-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+} 
+/* Grid Layout Styles */
+.grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Responsive grid */
+    gap: 15px; /* Space between grid items */
+    margin: 20px 0; /* Margin around the grid */
+}
+
+.grid-item {
+    background-color: var(--bg-color); /* Light background for items */
+    border-radius: 8px; /* Rounded corners */
+    padding: 16px; /* Padding inside items */
+    box-shadow: var(--box-shadow); /* Subtle shadow */
+    text-align: left; /* Center text */
+}
+
+.grid-item img {
+    max-width: 100%; /* Responsive images */
+    height: 240px; /* Maintain aspect ratio */
+}
+/* Add other styles from your previous CSS files here */
+
+/* Example of additional styles */
+.titletext {
+    margin: 20px 0;
+}
+
+.onecolumnphoto {
+    margin: 10px 0;
+}
+
+/* Add any other styles you need */
+
+/* Research Section */
 .case-study-section {
     padding: 80px 0;
     /* border-bottom: 1px solid var(--border-color); */
@@ -1557,6 +1786,33 @@ footer {
     font-size: 16px;
     color: var(--text-color);
 }
+/* Challenge Grid */
+.challenge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.challenge-item {
+    text-align: left;
+    padding: 30px;
+    background-color: var(--light-bg-color);
+    border-radius: var(--border-radius);
+}
+
+.challenge-number {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.challenge-label {
+    font-size: 16px;
+    color: var(--text-color);
+}
 
 /* Gallery Grid */
 .gallery-grid {
@@ -1568,7 +1824,7 @@ footer {
 
 .gallery-item {
     position: relative;
-    border-radius: var(--border-radius);
+    /* border-radius: var(--border-radius); */
     overflow: hidden;
     /* box-shadow: var(--box-shadow); */
 }
@@ -1612,6 +1868,10 @@ footer {
     .results-grid {
         grid-template-columns: 1fr;
     }
+    .challenge-grid {
+        grid-template-columns: 1fr;
+    }
+
 
     .gallery-grid {
         grid-template-columns: 1fr;
@@ -1626,16 +1886,16 @@ footer {
 }
 
 .grid-item {
-    background-color: #f8f9fa; /* Light background for items */
+    background-color: var(--bg-color); /* Light background for items */
     border-radius: 8px; /* Rounded corners */
     padding: 16px; /* Padding inside items */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    box-shadow: var(--box-shadow); /* Subtle shadow */
     text-align: left; /* Center text */
 }
 
 .grid-item img {
     max-width: 100%; /* Responsive images */
-    height: auto; /* Maintain aspect ratio */
+    height: 240px; /* Maintain aspect ratio */
 }
 /* Add other styles from your previous CSS files here */
 
@@ -1649,4 +1909,56 @@ footer {
 }
 
 /* Add any other styles you need */
+
+/* Slider Styles */
+.slider {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 800px; /* Adjust as needed */
+    margin: 0 auto;
+}
+
+.slider-track {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.slide {
+    min-width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.slide img {
+    width: 100%;
+    height: 640px;
+    border-radius: 8px; /* Optional: for rounded corners */
+}
+
+.slider-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    width: 40px; /* Set width */
+    height: 40px; /* Set height to the same value as width */
+    border-radius: 50%; /* Ensure it is round */
+    cursor: pointer;
+    padding: 0; /* Remove padding to maintain round shape */
+    z-index: 10;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+
+.slider-button:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
 

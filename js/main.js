@@ -45,6 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize typing animation
     initTypingAnimation();
+
+    console.log(body.classList);
 });
 
 // Theme Toggle Functionality
@@ -434,3 +436,23 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style); 
+
+
+// Slider
+let currentSlide = 0;
+
+function moveSlide(direction) {
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    currentSlide += direction;
+
+    if (currentSlide < 0) {
+        currentSlide = totalSlides - 1; // Loop to last slide
+    } else if (currentSlide >= totalSlides) {
+        currentSlide = 0; // Loop to first slide
+    }
+
+    const sliderTrack = document.querySelector('.slider-track');
+    sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+}
