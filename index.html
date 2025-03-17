@@ -37,7 +37,7 @@
         </nav>
     </header>
     
-    <div class="container">
+    <main class="container">
         <!-- Hero Section -->
          <div class="coordinated-hero animate-fade-in">
             <div> <p>10.8231° N, 106.6297° E</p></div>
@@ -125,8 +125,8 @@
                         <div class="reading-time">5 min read</div>
                     </div>
                     <div class="project-info">
-                        <h3>Sprinklr AI</h3>
-                        <p>An e-commerce website with a focus on user experience and conversion optimization.</p>
+                        <h3>Sprinklr AI+</h3>
+                        <p>Sprinklr's AI+ Design System.</p>
                         <div class="project-tags">
                             <span>Web Design</span>
                             <span>E-commerce</span>
@@ -141,12 +141,12 @@
                     </div>
                     <div class="project-info">
                         <h3>Endue Software</h3>
-                        <p>A dashboard interface for a SaaS platform that simplifies complex data visualization.</p>
+                        <p>Healthcare deserves a better UX.</p>
                         <div class="project-tags">
                             <span>Dashboard Design</span>
                             <span>Data Visualization</span>
                         </div>
-                        <a href="#" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                        <a href="./case-studies/endue/index.html" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
                 
@@ -158,7 +158,7 @@
                     </div>
                     <div class="project-info">
                         <h3>My-Codi</h3>
-                        <p>A mobile application redesign that improved user engagement by 45% and streamlined the user journey.</p>
+                        <p>A sports coaching device that helps athletes improve their performance.</p>
                         <div class="project-tags">
                             <span>Coaching Device</span>
                             <span>UX Research</span>
@@ -178,7 +178,7 @@
                     </div>
                     <div class="project-info">
                         <h3>Momento</h3>
-                        <p>A brand identity system for a sustainable fashion startup, including logo, color palette, and guidelines.</p>
+                        <p>Gifting as a service that helps people create memories.</p>
                         <div class="project-tags">
                             <span>Mobile App</span>
                             <span>UX Research</span>
@@ -194,7 +194,7 @@
                     </div>
                     <div class="project-info">
                         <h3>Trasheroes</h3>
-                        <p>An interactive data visualization tool that helps users understand complex financial information.</p>
+                        <p>We need heroes to make the world a better and cleaner place.</p>
                         <div class="project-tags">
                             <span>Mobile App</span>
                             <span>Data Visualization</span>
@@ -210,7 +210,7 @@
                     </div>
                     <div class="project-info">
                         <h3>PerfectPaw</h3>
-                        <p>A responsive website for a luxury hotel chain with an emphasis on immersive photography and smooth interactions.</p>
+                        <p>Learn first, Adopt later!</p>
                         <div class="project-tags">
                             <span>Billboard</span>
                             <span>Branding</span>
@@ -226,7 +226,7 @@
                     </div>
                     <div class="project-info">
                         <h3>United Dumplings</h3>
-                        <p>An educational app that makes learning programming concepts fun and accessible for beginners.</p>
+                        <p>It's dumpling time!</p>
                         <div class="project-tags">
                             <span>Branding</span>
                             <span>UI/UX Design</span>
@@ -291,12 +291,12 @@
                 </div>
             </div>
         </section>
-    </div>
+    </main>
 
     <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <p>&copy; 2025 Portfolio. All rights reserved.</p>
+            <p>&copy; 2025 Nhien Dang. All rights reserved.</p>
         </div>
     </footer>
 
@@ -305,19 +305,17 @@
     </button>
 
     <script src="js/main.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const heroImage = document.querySelector('.hero-image');
-            const tooltip = heroImage.querySelector('.tooltip');
+<script>document.addEventListener('DOMContentLoaded', function() {
+    const heroImage = document.querySelector('.hero-image');
+    const tooltip = heroImage.querySelector('.tooltip');
 
-            heroImage.addEventListener('mousemove', function(e) {
-                const x = e.clientX;
-                const y = e.clientY;
-                tooltip.style.left = `${x}px`;
-                tooltip.style.top = `${y}px`;
-                tooltip.style.transform = 'translate(0, -50%)';
-            });
-        });
-    </script>
+    heroImage.addEventListener('mousemove', function(e) {
+        const x = e.clientX;
+        const y = e.clientY;
+        tooltip.style.left = `${x}px`;
+        tooltip.style.top = `${y}px`;
+        tooltip.style.transform = 'translate(0, -50%)';
+    });
+});</script>
 </body>
 </html> 

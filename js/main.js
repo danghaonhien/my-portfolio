@@ -456,3 +456,27 @@ function moveSlide(direction) {
     const sliderTrack = document.querySelector('.slider-track');
     sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
 }
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const elements = document.querySelectorAll('.animate-fade-in');
+
+    const observerOptions = {
+        root: null, // Use the viewport as the root
+        rootMargin: '0px',
+        threshold: 0.1 // Trigger when 10% of the element is visible
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active'); // Add active class
+                observer.unobserve(entry.target); // Stop observing once animated
+            }
+        });
+    }, observerOptions);
+
+    elements.forEach(element => {
+        observer.observe(element); // Start observing each element
+    });
+});
