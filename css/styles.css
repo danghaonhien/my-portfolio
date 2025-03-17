@@ -46,7 +46,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 22px;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 a {
@@ -1290,18 +1290,23 @@ footer {
 /* Tooltip Styles */
 .hero-image {
     position: relative;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    overflow: visible;
+    z-index: 1;
     cursor: pointer; /* Ensure cursor is visible for interaction */
 }
 
 .hero-image .tooltip {
-    position: fixed; /* Change to fixed to move with cursor */
-    top: 0;
-    left: 0;
+    position: absolute; /* Change to absolute to move with the hero image */
+    top: 0; /* Initial position */
+    left: 50%; /* Center horizontally */
     transform: translate(-50%, -100%); /* Adjust position to follow cursor */
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    color:#ffffff;
+    color: #ffffff;
     padding: 8px 12px;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
@@ -2018,12 +2023,20 @@ footer {
 }
 
 .project-item {
-    padding: 20px;
+
+    /* padding: 20px; */
     background-color: var(--light-bg-color);
-    border-radius: var(--border-radius);
+    border-radius: 8px;
     box-shadow: var(--box-shadow);
     transition: transform 0.3s ease;
 }
+.project-item-info {
+   
+    padding: 0px 20px 20px 20px;
+ 
+}
+
+
 
 .project-item:hover {
     transform: translateY(-5px);

@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
 </head>
 <body>
     <div class="cursor"></div>
@@ -303,19 +304,30 @@
     <button id="scroll-to-top" title="Scroll to Top" aria-label="Scroll to Top">
         <i class="fas fa-arrow-up"></i>
     </button>
-
     <script src="js/main.js"></script>
 <script>document.addEventListener('DOMContentLoaded', function() {
     const heroImage = document.querySelector('.hero-image');
     const tooltip = heroImage.querySelector('.tooltip');
 
+    // Show tooltip on mouse enter
+    heroImage.addEventListener('mouseenter', function() {
+        tooltip.style.display = 'block'; // Show tooltip
+    });
+
+    // Hide tooltip on mouse leave
+    heroImage.addEventListener('mouseleave', function() {
+        tooltip.style.display = 'none'; // Hide tooltip
+    });
+
+    // Move tooltip with mouse
     heroImage.addEventListener('mousemove', function(e) {
-        const x = e.clientX;
-        const y = e.clientY;
-        tooltip.style.left = `${x}px`;
+        const x = e.clientX - heroImage.getBoundingClientRect().left; // Get mouse position relative to hero image
+        const y = e.clientY - heroImage.getBoundingClientRect().top; // Get mouse position relative to hero image
+        tooltip.style.left = `${x}px`; // Set tooltip position
         tooltip.style.top = `${y}px`;
-        tooltip.style.transform = 'translate(0, -50%)';
+        tooltip.style.transform = 'translate(-90%, -100%)'; // Adjust for tooltip height
     });
 });</script>
+
 </body>
 </html> 
