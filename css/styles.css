@@ -1406,6 +1406,19 @@ footer {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Optional: add text shadow for better readability */
     padding: 20px; /* Optional: padding for spacing */
 }
+.case-study-ai-hero {
+    background-image: url('../images/SprinklrAI/Cover.png'); /* Path to your background image */
+    background-size: cover; /* Cover the entire section */
+    background-position: center; /* Center the image */
+    height: 600px; /* Set a height for the hero section */
+    display: flex; /* Use flexbox for centering text */
+    flex-direction: column; /* Stack text vertically */
+    justify-content: center; /* Center text vertically */
+    align-items: center; /* Center text horizontally */
+    color: white; /* Text color for contrast */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Optional: add text shadow for better readability */
+    padding: 20px; /* Optional: padding for spacing */
+}
 
 .case-study-header {
     max-width: 800px;
@@ -1599,6 +1612,7 @@ footer {
     /* border-radius: var(--border-radius); */
     overflow: hidden;
     /* box-shadow: var(--box-shadow); */
+
 }
 
 .gallery-item img {
@@ -1961,4 +1975,37 @@ footer {
 .slider-button:hover {
     background-color: rgba(255, 255, 255, 1);
 }
+.recommended-projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
 
+.project-item {
+    padding: 20px;
+    background-color: var(--light-bg-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s ease;
+}
+
+.project-item:hover {
+    transform: translateY(-5px);
+}
+
+.project-item a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.project-item h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.project-item p {
+    font-size: 16px;
+    color: var(--text-color);
+}
