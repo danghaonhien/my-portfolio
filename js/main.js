@@ -495,6 +495,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const dots = document.querySelectorAll('.dot');
     const body = document.body;
     
+    // Check if user has seen intro and when
+    const lastIntroTime = localStorage.getItem('lastIntroTime');
+    const currentTime = Date.now();
+    const fiveMinutes = 5 * 60 * 1000; // 5 minutes in milliseconds
+    
     // Initial setup
     let currentSlide = 0;
     let isScrolling = false;
@@ -502,18 +507,23 @@ document.addEventListener('DOMContentLoaded', function() {
     let touchEndY = 0;
     let introComplete = false;
 
-    // Add active class to first slide and add no-scroll to body
-    slides[0].classList.add('active');
-    body.classList.add('no-scroll', 'slides-active');
+    // Skip intro if user has seen it within the last 5 minutes
+    if (lastIntroTime && (currentTime - parseInt(lastIntroTime)) < fiveMinutes) {
+        skipIntro();
+    } else {
+        // Show intro and add active class to first slide
+        slides[0].classList.add('active');
+        body.classList.add('no-scroll', 'slides-active');
 
-    // Set up wheel event for desktop
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    
-    // Set up touch events for mobile
-    document.addEventListener('touchstart', handleTouchStart, { passive: false });
-    document.addEventListener('touchmove', handleTouchMove, { passive: false });
-    document.addEventListener('touchend', handleTouchEnd, { passive: false });
-    
+        // Set up wheel event for desktop
+        window.addEventListener('wheel', handleWheel, { passive: false });
+        
+        // Set up touch events for mobile
+        document.addEventListener('touchstart', handleTouchStart, { passive: false });
+        document.addEventListener('touchmove', handleTouchMove, { passive: false });
+        document.addEventListener('touchend', handleTouchEnd, { passive: false });
+    }
+
     // Handle clicking on dots
     dots.forEach(dot => {
         dot.addEventListener('click', () => {
@@ -620,6 +630,9 @@ document.addEventListener('DOMContentLoaded', function() {
         introComplete = true;
         isScrolling = true;
         
+        // Save the current timestamp
+        localStorage.setItem('lastIntroTime', Date.now().toString());
+        
         // Prep the main content before showing it
         document.querySelector('.container').style.opacity = '0';
         document.querySelector('header').style.opacity = '0';
@@ -662,6 +675,33 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);
             
         }, 1000);
+    }
+
+    // New function to skip intro
+    function skipIntro() {
+        introComplete = true;
+        
+        // Hide intro slides immediately
+        introSlides.classList.add('intro-completed');
+        body.classList.remove('no-scroll', 'slides-active');
+        body.classList.add('slides-complete');
+        
+        // Show main content
+        document.querySelector('.container').style.opacity = '1';
+        document.querySelector('header').style.opacity = '1';
+        
+        // Ensure header is positioned correctly
+        document.querySelector('header').style.position = 'fixed';
+        document.querySelector('header').style.top = '0';
+        document.querySelector('header').style.left = '0';
+        document.querySelector('header').style.width = '100%';
+        document.querySelector('header').style.zIndex = '1000';
+        
+        // Remove event listeners
+        window.removeEventListener('wheel', handleWheel);
+        document.removeEventListener('touchstart', handleTouchStart);
+        document.removeEventListener('touchmove', handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);
     }
 });
 
