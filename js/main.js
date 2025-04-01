@@ -7,6 +7,46 @@ document.addEventListener('DOMContentLoaded', function() {
     const totalHeroSlides = heroSlides.length;
     const heroSliderContainer = document.querySelector('.hero-slider');
     
+    // Magnetic text effect
+    function initMagneticEffect() {
+        heroSlides.forEach(slide => {
+            const textOverlay = slide.querySelector('.hero-text-overlay');
+            
+            if (!textOverlay) return;
+            
+            slide.addEventListener('mousemove', (e) => {
+                if (!slide.classList.contains('magnetic-active')) {
+                    slide.classList.add('magnetic-active');
+                }
+                
+                // Get the dimensions of the slide
+                const rect = slide.getBoundingClientRect();
+                
+                // Calculate the center of the slide
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                // Calculate the distance from the cursor to the center
+                const mouseX = e.clientX - centerX;
+                const mouseY = e.clientY - centerY;
+                
+                // Calculate movement intensity (further from center = more movement)
+                // Divide by a larger number to reduce sensitivity
+                const moveX = mouseX / 15;
+                const moveY = mouseY / 15;
+                
+                // Move the text overlay in the direction of the cursor
+                textOverlay.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+            
+            // Reset position when mouse leaves
+            slide.addEventListener('mouseleave', () => {
+                textOverlay.style.transform = 'translate(0, 0)';
+                slide.classList.remove('magnetic-active');
+            });
+        });
+    }
+    
     // Define these functions at the parent scope so they can be accessed by the navigation buttons
     function handleInteraction(slide) {
         const text = slide.querySelector('.hero-text-overlay');
@@ -72,6 +112,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function initHeroSlider() {
         // Show the first slide
         updateHeroSlider();
+
+        // Initialize the magnetic effect
+        initMagneticEffect();
 
         // Add event listeners to navigation buttons
         if (heroPrevBtn) {
