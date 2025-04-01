@@ -294,11 +294,18 @@ function initHeaderShadow() {
 
 // Scroll to Top Button
 function initScrollToTop() {
+    // Fix position issues with scroll-to-top button
+    if (scrollToTopBtn) {
+        scrollToTopBtn.style.position = 'fixed';
+        scrollToTopBtn.style.bottom = '30px';
+        scrollToTopBtn.style.right = '30px';
+        scrollToTopBtn.style.zIndex = '1000';
+    }
+
     // Show/hide button based on scroll position
     window.addEventListener('scroll', () => {
-        const halfPageHeight = document.documentElement.scrollHeight / 2;
-        
-        if (window.scrollY > halfPageHeight) {
+        // Show when scrolled down 300px from the top
+        if (window.scrollY > 300) {
             scrollToTopBtn.classList.add('visible');
         } else {
             scrollToTopBtn.classList.remove('visible');
@@ -480,3 +487,183 @@ document.addEventListener("DOMContentLoaded", function () {
         observer.observe(element); // Start observing each element
     });
 });
+
+// Intro Slides Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const introSlides = document.querySelector('.intro-slides');
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    const body = document.body;
+    
+    // Initial setup
+    let currentSlide = 0;
+    let isScrolling = false;
+    let touchStartY = 0;
+    let touchEndY = 0;
+    let introComplete = false;
+
+    // Add active class to first slide and add no-scroll to body
+    slides[0].classList.add('active');
+    body.classList.add('no-scroll', 'slides-active');
+
+    // Set up wheel event for desktop
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    
+    // Set up touch events for mobile
+    document.addEventListener('touchstart', handleTouchStart, { passive: false });
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd, { passive: false });
+    
+    // Handle clicking on dots
+    dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+            if (isScrolling) return;
+            const targetIndex = parseInt(dot.getAttribute('data-index'));
+            goToSlide(targetIndex);
+        });
+    });
+
+    function handleWheel(e) {
+        if (introComplete) return;
+        
+        e.preventDefault();
+        
+        if (isScrolling) return;
+        
+        // Determine scroll direction
+        if (e.deltaY > 0) {
+            // Scrolling down
+            nextSlide();
+        } else if (e.deltaY < 0 && currentSlide > 0) {
+            // Scrolling up (only if not on first slide)
+            prevSlide();
+        }
+    }
+    
+    function handleTouchStart(e) {
+        if (introComplete) return;
+        touchStartY = e.touches[0].clientY;
+    }
+    
+    function handleTouchMove(e) {
+        if (introComplete) return;
+        e.preventDefault(); // Prevent page scroll while in intro
+    }
+    
+    function handleTouchEnd(e) {
+        if (introComplete || isScrolling) return;
+        
+        touchEndY = e.changedTouches[0].clientY;
+        
+        // Calculate swipe direction
+        const direction = touchStartY - touchEndY;
+        
+        if (direction > 50) {
+            // Swipe up (move down)
+            nextSlide();
+        } else if (direction < -50 && currentSlide > 0) {
+            // Swipe down (move up)
+            prevSlide();
+        }
+    }
+    
+    function nextSlide() {
+        if (currentSlide < slides.length - 1) {
+            goToSlide(currentSlide + 1);
+        } else if (currentSlide === slides.length - 1) {
+            completeIntro();
+        }
+    }
+    
+    function prevSlide() {
+        if (currentSlide > 0) {
+            goToSlide(currentSlide - 1);
+        }
+    }
+    
+    function goToSlide(index) {
+        if (isScrolling || index === currentSlide) return;
+        
+        isScrolling = true;
+        
+        // Remove active class from current slide and add to target slide
+        slides[currentSlide].classList.remove('active');
+        slides[index].classList.add('active');
+        
+        // Update dots
+        dots[currentSlide].classList.remove('active');
+        dots[index].classList.add('active');
+        
+        // Move slides
+        for (let i = 0; i < slides.length; i++) {
+            if (i < index) {
+                slides[i].style.transform = 'translateY(-100vh)';
+            } else if (i > index) {
+                slides[i].style.transform = 'translateY(0)';
+            } else {
+                slides[i].style.transform = 'translateY(0)';
+            }
+        }
+        
+        // Update current slide
+        currentSlide = index;
+        
+        // Reset isScrolling after transition
+        setTimeout(() => {
+            isScrolling = false;
+        }, 1000);
+    }
+    
+    function completeIntro() {
+        if (introComplete) return;
+        
+        introComplete = true;
+        isScrolling = true;
+        
+        // Prep the main content before showing it
+        document.querySelector('.container').style.opacity = '0';
+        document.querySelector('header').style.opacity = '0';
+        
+        // Add transition classes
+        body.classList.remove('slides-active');
+        body.classList.add('slides-complete');
+        
+        // Animate last slide off-screen
+        slides[currentSlide].style.transform = 'translateY(-100vh)';
+        
+        // After transition completes
+        setTimeout(() => {
+            // Add intro-completed class to hide slides
+            introSlides.classList.add('intro-completed');
+            
+            // Remove wheel event handler
+            window.removeEventListener('wheel', handleWheel);
+            document.removeEventListener('touchstart', handleTouchStart);
+            document.removeEventListener('touchmove', handleTouchMove);
+            document.removeEventListener('touchend', handleTouchEnd);
+            
+            // Ensure main content is ready and scroll to top
+            document.querySelector('.container').style.opacity = '1';
+            document.querySelector('header').style.opacity = '1';
+            
+            // Ensure header is positioned correctly
+            document.querySelector('header').style.position = 'fixed';
+            document.querySelector('header').style.top = '0';
+            document.querySelector('header').style.left = '0';
+            document.querySelector('header').style.width = '100%';
+            document.querySelector('header').style.zIndex = '1000';
+            
+            window.scrollTo(0, 0);
+            
+            // Small delay before removing no-scroll to ensure everything is in place
+            setTimeout(() => {
+                body.classList.remove('no-scroll');
+                isScrolling = false;
+            }, 100);
+            
+        }, 1000);
+    }
+});
+
+
+

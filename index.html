@@ -12,6 +12,38 @@
     
 </head>
 <body>
+    
+    <!-- Intro Slides -->
+    <div class="intro-slides">
+        <div class="slide" data-index="0">
+            <h1>Hello</h1>
+            <div class="scroll-indicator">
+                <span>Scroll Down</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+        <div class="slide" data-index="1">
+            <h1>I am Toto</h1>
+            <div class="scroll-indicator">
+                <span>Keep going</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+        <div class="slide" data-index="2">
+            <h1>Welcome to my portfolio</h1>
+            <div class="scroll-indicator">
+                <span>Almost there</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+        
+        <div class="progress-dots">
+            <div class="dot active" data-index="0"></div>
+            <div class="dot" data-index="1"></div>
+            <div class="dot" data-index="2"></div>
+        </div>
+    </div>
+    
     <div class="cursor"></div>
     
     <!-- Header Section -->
@@ -67,12 +99,12 @@
         </section>
 
         <!-- About Section -->
-        <section id="about" class="about">
-            <div class="section-header">
+        <section id="about" class="about ">
+            <div class="section-header animate-fade-in">
                 <h2>About Me</h2>
                 <div class="section-line"></div>
             </div>
-            <div class="about-content">
+            <div class="about-content animate-fade-in">
                 <div class="about-text">
                     <p>Hey, I'm Nhien Dang, or call me Toto, a product designer with 5 years of experience—and a former architect who realized designing buildings takes way too long, so I switched to designing digital products instead. Turns out, crafting intuitive user experiences is just as satisfying as designing spaces—plus, no permits required!</p>
                     <!-- <p>My approach combines aesthetic sensibility with technical expertise to deliver solutions that are not only visually appealing but also functionally robust.</p> -->
@@ -94,7 +126,7 @@
         </section>
 
         <!-- Work Section -->
-        <section id="work" class="work">
+        <section id="work" class="work animate-fade-in">
             <div class="section-header">
                 <h2>Selected Work</h2>
                 <div class="section-line"></div>
@@ -301,7 +333,7 @@
         </div>
     </footer>
 
-    <button id="scroll-to-top" title="Scroll to Top" aria-label="Scroll to Top">
+    <button id="scroll-to-top" title="Scroll to Top" aria-label="Scroll to Top" class="animate-fade-in">
         <i class="fas fa-arrow-up"></i>
     </button>
     <script src="js/main.js"></script>
