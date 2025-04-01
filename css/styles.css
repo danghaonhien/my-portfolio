@@ -245,19 +245,19 @@ nav {
 .hero-slider-wrapper {
     width: 100vw;
     margin-left: calc(-50vw + 50%);
-   
-    /* position: relative; */
-    /* overflow: hidden; */
     background-color: #121212;
+    position: relative;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    will-change: transform, opacity;
+    z-index: 10;
 }
-
 
 .hero-slider {
     position: relative;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    margin-bottom: 4rem;
+    /* margin-bottom: 4rem; */
     padding-top: 0; /* Reset padding as we have body padding */
 }
 

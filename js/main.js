@@ -132,38 +132,50 @@ document.addEventListener('DOMContentLoaded', function() {
             if (currentSlide) {
                 resetInteraction(currentSlide);
             }
+            
+            // Reset all slides on mobile to ensure clean state
+            if (window.innerWidth <= 768) {
+                heroSlides.forEach(slide => {
+                    resetInteraction(slide);
+                });
+            }
         });
 
         // Add hover effects to slides for better text visibility
         heroSlides.forEach(slide => {
-            // Mouse events for desktop
-            slide.addEventListener('mouseenter', function(e) {
-                // Only trigger hover effect if not hovering over navigation
-                if (!e.target.closest('.hero-slider-navigation')) {
-                    handleInteraction(this);
-                }
-            });
+            // Mouse events for desktop only
+            if (window.innerWidth > 768) {
+                slide.addEventListener('mouseenter', function(e) {
+                    // Only trigger hover effect if not hovering over navigation
+                    if (!e.target.closest('.hero-slider-navigation')) {
+                        handleInteraction(this);
+                    }
+                });
+                
+                slide.addEventListener('mouseleave', function(e) {
+                    // Only reset if not entering navigation elements
+                    if (!e.relatedTarget || !e.relatedTarget.closest('.hero-slider-navigation')) {
+                        resetInteraction(this);
+                    }
+                });
+            }
             
-            slide.addEventListener('mouseleave', function(e) {
-                // Only reset if not entering navigation elements
-                if (!e.relatedTarget || !e.relatedTarget.closest('.hero-slider-navigation')) {
-                    resetInteraction(this);
-                }
-            });
-            
-            // Touch events for mobile
+            // Touch events for mobile - simplified to prevent scroll blocking
             slide.addEventListener('touchstart', function(e) {
-                // Prevent default only on the slide itself to allow navigation
+                // Prevent hover effects on mobile completely
+                if (window.innerWidth <= 768) {
+                    // Don't call preventDefault to allow scrolling
+                    return;
+                }
+                
+                // Only for larger screens, if needed
                 if (e.target.closest('.hero-slider-navigation') === null) {
                     e.preventDefault();
                     handleInteraction(this);
                     
-                    // Auto-reset after 3 seconds on mobile to prevent text staying large
-                    if (window.innerWidth <= 768) {
-                        setTimeout(() => {
-                            resetInteraction(this);
-                        }, 3000);
-                    }
+                    setTimeout(() => {
+                        resetInteraction(this);
+                    }, 3000);
                 }
             });
         });
@@ -281,6 +293,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize typing animation
     initTypingAnimation();
+    
+    // Initialize hero slider scroll effect
+    initHeroSliderScrollEffect();
 
     console.log(body.classList);
 });
@@ -680,6 +695,78 @@ style.textContent = `
 `;
 document.head.appendChild(style); 
 
+// Hero Slider Scroll Effect
+function initHeroSliderScrollEffect() {
+    const heroSliderWrapper = document.querySelector('.hero-slider-wrapper');
+    const heroSlider = document.querySelector('.hero-slider');
+    const aboutSection = document.querySelector('#about');
+    
+    if (!heroSliderWrapper || !heroSlider) return;
+    
+    // Set initial state
+    heroSliderWrapper.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+    
+    let lastScrollY = window.scrollY;
+    const heroHeight = heroSliderWrapper.offsetHeight;
+    
+    // Listen for scroll events
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        
+        // Calculate how much to move the slider (proportional to scroll)
+        // Use a different multiplier for mobile to ensure consistent behavior
+        const multiplier = window.innerWidth <= 768 ? 0.3 : 0.6;
+        const scrollProgress = Math.min(scrollY / (heroHeight * multiplier), 1);
+        
+        // Transform the hero slider wrapper
+        if (scrollY <= heroHeight) {
+            // Move up with a faster rate to reduce the gap
+            heroSliderWrapper.style.transform = `translateY(-${scrollProgress * 100}%)`;
+            
+            // If we're scrolling back to top, ensure the wrapper becomes visible again
+            if (scrollY < lastScrollY && scrollY < heroHeight) {
+                heroSliderWrapper.style.visibility = 'visible';
+                heroSliderWrapper.style.opacity = 1 - scrollProgress;
+            } else if (scrollY > lastScrollY) {
+                // Gradually reduce opacity as we scroll down (faster fade)
+                heroSliderWrapper.style.opacity = 1 - (scrollProgress * 1.5);
+            }
+            
+            // If About section exists, move it up to reduce the gap
+            if (aboutSection) {
+                // Move the about section up to meet the hero section
+                // Use a larger movement on mobile for a tighter experience
+                const upwardMovement = window.innerWidth <= 768 ? 120 : 80;
+                aboutSection.style.transform = `translateY(-${Math.min(upwardMovement, scrollProgress * upwardMovement)}px)`;
+            }
+        } else {
+            // Once scrolled past the hero height, hide it completely
+            heroSliderWrapper.style.transform = 'translateY(-100%)';
+            heroSliderWrapper.style.visibility = 'hidden';
+            heroSliderWrapper.style.opacity = '0';
+            
+            // Keep About section at its maximum translation
+            if (aboutSection) {
+                const upwardMovement = window.innerWidth <= 768 ? 120 : 80;
+                aboutSection.style.transform = `translateY(-${upwardMovement}px)`;
+            }
+        }
+        
+        // Store the last scroll position to determine direction
+        lastScrollY = scrollY;
+    });
+    
+    // Reset position when page is refreshed at the top
+    if (window.scrollY === 0) {
+        heroSliderWrapper.style.transform = 'translateY(0)';
+        heroSliderWrapper.style.visibility = 'visible';
+        heroSliderWrapper.style.opacity = '1';
+        
+        if (aboutSection) {
+            aboutSection.style.transform = 'translateY(0)';
+        }
+    }
+}
 
 // Slider
 let currentSlide = 0;
@@ -699,7 +786,6 @@ function moveSlide(direction) {
     const sliderTrack = document.querySelector('.slider-track');
     sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
 }
-
 
 document.addEventListener("DOMContentLoaded", function () {
     const elements = document.querySelectorAll('.animate-fade-in');
