@@ -72,29 +72,55 @@
     
     <main class="container">
         <!-- Hero Section -->
-         <div class="coordinated-hero animate-fade-in">
+        <div class="coordinated-hero animate-fade-in">
             <div> <p>10.8231° N, 106.6297° E</p></div>
             <div> <p>37.7749° N, 122.4194° W</p></div>
            
     
         </div>
-        <section id="home" class="hero">
-            <div class="hero-content">
-                <h1 class="animate-text">Designer & Architect</h1>
-                <p class="animate-text-delay">
-                    <span class="typing-animation" data-text="currently busy vibe coding..."></span>
-                </p>
-                <div class="hero-cta animate-text-delay">
-                    <a href="#work" class="btn primary-btn">View My Work</a>
-                    <a href="#contact" class="btn secondary-btn">Get In Touch</a>
+        <section id="home" class="hero-slider">
+            <div class="hero-slider-container">
+                <div class="hero-slide" data-index="0">
+                    <div class="hero-slide-image">
+                        <img src="images/homepage/ggb_masterpiece.jpg" alt="San Francisco">
+                    </div>
+                    <div class="hero-slide-text">
+                        <div class="hero-text-container">
+                            <span class="hero-text-caption">Location</span>
+                            <h1 class="hero-text-overlay">San Francisco</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-slide" data-index="1">
+                    <div class="hero-slide-image">
+                        <img src="images/homepage/SprinklrAI_Cover.png" alt="Product Designer">
+                    </div>
+                    <div class="hero-slide-text">
+                        <div class="hero-text-container">
+                            <span class="hero-text-caption">5 years</span>
+                            <h1 class="hero-text-overlay">Product Designer</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-slide" data-index="2">
+                    <div class="hero-slide-image">
+                        <img src="images/homepage/architect.jpg" alt="Former Architect">
+                    </div>
+                    <div class="hero-slide-text">
+                        <div class="hero-text-container">
+                            <span class="hero-text-caption">4 years</span>
+                            <h1 class="hero-text-overlay">Former Architect</h1>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="hero-image animate-fade-in">
-          
-                <div class="hero-image-inner">
-                    <img src="images/about/profile.jpg" alt="Profile Image">
-                </div>
-                <div class="tooltip">Hey, I'm Toto!</div>
+            <div class="hero-slider-navigation">
+                <button class="hero-prev-btn">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <button class="hero-next-btn">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
             </div>
         </section>
 
@@ -106,7 +132,16 @@
             </div>
             <div class="about-content animate-fade-in">
                 <div class="about-text">
+                    <section id="home" class="hero">
                     <p>Hey, I'm Nhien Dang, or call me Toto, a product designer with 5 years of experience—and a former architect who realized designing buildings takes way too long, so I switched to designing digital products instead. Turns out, crafting intuitive user experiences is just as satisfying as designing spaces—plus, no permits required!</p>
+                    <div class="hero-image animate-fade-in">
+          
+                        <div class="hero-image-inner">
+                            <img src="images/about/profile.jpg" alt="Profile Image">
+                        </div>
+                        <div class="tooltip">Hey, I'm Toto!</div>
+                    </div>
+                    </section>
                     <!-- <p>My approach combines aesthetic sensibility with technical expertise to deliver solutions that are not only visually appealing but also functionally robust.</p> -->
                     <div class="skills">
                         <div class="skill-tag" style="background-color: rgb(240, 248, 255); font-weight: bold;">UI/UX Design</div>

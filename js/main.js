@@ -1,3 +1,196 @@
+// Hero Slider Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const heroSlides = document.querySelectorAll('.hero-slide');
+    const heroPrevBtn = document.querySelector('.hero-prev-btn');
+    const heroNextBtn = document.querySelector('.hero-next-btn');
+    let currentHeroSlide = 0;
+    const totalHeroSlides = heroSlides.length;
+    const heroSliderContainer = document.querySelector('.hero-slider');
+    
+    // Define these functions at the parent scope so they can be accessed by the navigation buttons
+    function handleInteraction(slide) {
+        const text = slide.querySelector('.hero-text-overlay');
+        const caption = slide.querySelector('.hero-text-caption');
+        const img = slide.querySelector('.hero-slide-image img');
+        
+        if (text && img) {
+            // Responsive font size based on screen width
+            if (window.innerWidth <= 480) {
+                text.style.fontSize = '2.5rem';
+            } else if (window.innerWidth <= 768) {
+                text.style.fontSize = '3.5rem';
+            } else if (window.innerWidth <= 992) {
+                text.style.fontSize = '5rem';
+            } else {
+                text.style.fontSize = '7rem';
+            }
+            
+            text.style.webkitTextStroke = '0';
+            text.style.textShadow = '0 6px 12px rgba(0, 0, 0, 0.8)';
+            img.style.transform = 'scale(1)';
+            img.style.filter = 'blur(3px)';
+        }
+        
+        if (caption) {
+            caption.style.opacity = '1';
+            caption.style.transform = 'translateY(-5px)';
+            caption.style.textShadow = '0 2px 4px rgba(0, 0, 0, 0.8)';
+        }
+    }
+    
+    function resetInteraction(slide) {
+        const text = slide.querySelector('.hero-text-overlay');
+        const caption = slide.querySelector('.hero-text-caption');
+        const img = slide.querySelector('.hero-slide-image img');
+        
+        if (text && img) {
+            // Responsive font size based on screen width
+            if (window.innerWidth <= 480) {
+                text.style.fontSize = '2.2rem';
+            } else if (window.innerWidth <= 768) {
+                text.style.fontSize = '3rem';
+            } else if (window.innerWidth <= 992) {
+                text.style.fontSize = '4.5rem';
+            } else {
+                text.style.fontSize = '6rem';
+            }
+            
+            text.style.webkitTextStroke = '2px #fff';
+            text.style.textShadow = '0 4px 8px rgba(0, 0, 0, 0.7)';
+            img.style.transform = 'scale(1.05)';
+            img.style.filter = 'blur(0)';
+        }
+        
+        if (caption) {
+            caption.style.opacity = '0.9';
+            caption.style.transform = 'translateY(0)';
+            caption.style.textShadow = '0 2px 4px rgba(0, 0, 0, 0.7)';
+        }
+    }
+
+    // Initialize the hero slider
+    function initHeroSlider() {
+        // Show the first slide
+        updateHeroSlider();
+
+        // Add event listeners to navigation buttons
+        if (heroPrevBtn) {
+            heroPrevBtn.addEventListener('click', showPrevHeroSlide);
+        }
+        
+        if (heroNextBtn) {
+            heroNextBtn.addEventListener('click', showNextHeroSlide);
+        }
+
+        // Add resize event listener to adjust font sizes when screen size changes
+        window.addEventListener('resize', function() {
+            // Apply current interaction state based on current slide
+            const currentSlide = heroSlides[currentHeroSlide];
+            if (currentSlide) {
+                resetInteraction(currentSlide);
+            }
+        });
+
+        // Add hover effects to slides for better text visibility
+        heroSlides.forEach(slide => {
+            // Mouse events for desktop
+            slide.addEventListener('mouseenter', function(e) {
+                // Only trigger hover effect if not hovering over navigation
+                if (!e.target.closest('.hero-slider-navigation')) {
+                    handleInteraction(this);
+                }
+            });
+            
+            slide.addEventListener('mouseleave', function(e) {
+                // Only reset if not entering navigation elements
+                if (!e.relatedTarget || !e.relatedTarget.closest('.hero-slider-navigation')) {
+                    resetInteraction(this);
+                }
+            });
+            
+            // Touch events for mobile
+            slide.addEventListener('touchstart', function(e) {
+                // Prevent default only on the slide itself to allow navigation
+                if (e.target.closest('.hero-slider-navigation') === null) {
+                    e.preventDefault();
+                    handleInteraction(this);
+                    
+                    // Auto-reset after 3 seconds on mobile to prevent text staying large
+                    if (window.innerWidth <= 768) {
+                        setTimeout(() => {
+                            resetInteraction(this);
+                        }, 3000);
+                    }
+                }
+            });
+        });
+        
+        // Add mouseout event to parent container for touch devices
+        if (heroSliderContainer) {
+            heroSliderContainer.addEventListener('touchstart', function(e) {
+                // If touching outside the current slide, reset all slides
+                if (!e.target.closest('.hero-slide')) {
+                    heroSlides.forEach(s => {
+                        resetInteraction(s);
+                    });
+                }
+            });
+        }
+    }
+
+    // Update the slider to show the current slide
+    function updateHeroSlider() {
+        // Hide all slides
+        heroSlides.forEach(slide => {
+            slide.style.opacity = '0';
+            slide.style.zIndex = '1';
+        });
+
+        // Show current slide
+        heroSlides[currentHeroSlide].style.opacity = '1';
+        heroSlides[currentHeroSlide].style.zIndex = '2';
+    }
+
+    // Show the previous slide
+    function showPrevHeroSlide() {
+        // Reset current slide to default state
+        resetInteraction(heroSlides[currentHeroSlide]);
+        
+        // Update slide index
+        currentHeroSlide = (currentHeroSlide - 1 + totalHeroSlides) % totalHeroSlides;
+        updateHeroSlider();
+    }
+
+    // Show the next slide
+    function showNextHeroSlide() {
+        // Reset current slide to default state
+        resetInteraction(heroSlides[currentHeroSlide]);
+        
+        // Update slide index
+        currentHeroSlide = (currentHeroSlide + 1) % totalHeroSlides;
+        updateHeroSlider();
+    }
+
+    // Auto-rotate slides every 5 seconds
+    let heroSlideInterval = setInterval(showNextHeroSlide, 5000);
+
+    // Pause auto-rotation on hover
+    if (heroSliderContainer) {
+        heroSliderContainer.addEventListener('mouseenter', () => {
+            clearInterval(heroSlideInterval);
+        });
+
+        heroSliderContainer.addEventListener('mouseleave', () => {
+            heroSlideInterval = setInterval(showNextHeroSlide, 5000);
+        });
+    }
+
+    // Initialize the slider
+    if (heroSlides.length > 0) {
+        initHeroSlider();
+    }
+});
+
 // DOM Elements
 const themeToggleBtn = document.getElementById('theme-toggle-btn');
 const body = document.body;
