@@ -703,8 +703,9 @@ function initHeroSliderScrollEffect() {
     
     if (!heroSliderWrapper || !heroSlider) return;
     
-    // Set initial state
-    heroSliderWrapper.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+    // Set initial state with slower transitions for smoother fading
+    heroSliderWrapper.style.transition = 'opacity 1s cubic-bezier(0.4, 0, 0.2, 1)';
+    heroSliderWrapper.style.willChange = 'opacity';
     
     let lastScrollY = window.scrollY;
     const heroHeight = heroSliderWrapper.offsetHeight;
@@ -713,36 +714,26 @@ function initHeroSliderScrollEffect() {
     window.addEventListener('scroll', () => {
         const scrollY = window.scrollY;
         
-        // Calculate how much to move the slider (proportional to scroll)
-        // Use a different multiplier for mobile to ensure consistent behavior
-        const multiplier = window.innerWidth <= 768 ? 0.3 : 0.6;
-        const scrollProgress = Math.min(scrollY / (heroHeight * multiplier), 1);
+        // Calculate how much to fade (proportional to scroll)
+        const multiplier = window.innerWidth <= 768 ? 0.4 : 0.6;
+        const fadeProgress = Math.min(scrollY / (heroHeight * multiplier), 1);
         
-        // Transform the hero slider wrapper
         if (scrollY <= heroHeight) {
-            // Move up with a faster rate to reduce the gap
-            heroSliderWrapper.style.transform = `translateY(-${scrollProgress * 100}%)`;
+            // Remove any transform to prevent sliding - only use opacity
+            heroSliderWrapper.style.transform = 'none';
             
-            // If we're scrolling back to top, ensure the wrapper becomes visible again
-            if (scrollY < lastScrollY && scrollY < heroHeight) {
-                heroSliderWrapper.style.visibility = 'visible';
-                heroSliderWrapper.style.opacity = 1 - scrollProgress;
-            } else if (scrollY > lastScrollY) {
-                // Gradually reduce opacity as we scroll down (faster fade)
-                heroSliderWrapper.style.opacity = 1 - (scrollProgress * 1.5);
-            }
+            // Apply a smoother, slower fade out
+            const fadeValue = Math.max(0, 1 - fadeProgress * 0.85);
+            heroSliderWrapper.style.opacity = fadeValue;
             
-            // If About section exists, move it up to reduce the gap
+            // If About section exists, still move it up for a nice transition
             if (aboutSection) {
-                // Move the about section up to meet the hero section
-                // Use a larger movement on mobile for a tighter experience
+                // Keep the upward movement of about section for spacing
                 const upwardMovement = window.innerWidth <= 768 ? 120 : 80;
-                aboutSection.style.transform = `translateY(-${Math.min(upwardMovement, scrollProgress * upwardMovement)}px)`;
+                aboutSection.style.transform = `translateY(-${Math.min(upwardMovement, fadeProgress * upwardMovement)}px)`;
             }
         } else {
             // Once scrolled past the hero height, hide it completely
-            heroSliderWrapper.style.transform = 'translateY(-100%)';
-            heroSliderWrapper.style.visibility = 'hidden';
             heroSliderWrapper.style.opacity = '0';
             
             // Keep About section at its maximum translation
@@ -758,8 +749,7 @@ function initHeroSliderScrollEffect() {
     
     // Reset position when page is refreshed at the top
     if (window.scrollY === 0) {
-        heroSliderWrapper.style.transform = 'translateY(0)';
-        heroSliderWrapper.style.visibility = 'visible';
+        heroSliderWrapper.style.transform = 'none';
         heroSliderWrapper.style.opacity = '1';
         
         if (aboutSection) {
@@ -1026,6 +1016,3 @@ document.addEventListener('DOMContentLoaded', function() {
         document.removeEventListener('touchend', handleTouchEnd);
     }
 });
-
-
-

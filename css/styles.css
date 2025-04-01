@@ -257,7 +257,7 @@ nav {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    /* margin-bottom: 4rem; */
+    margin-bottom: 4rem;
     padding-top: 0; /* Reset padding as we have body padding */
 }
 
