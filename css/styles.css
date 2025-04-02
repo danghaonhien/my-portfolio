@@ -3464,11 +3464,21 @@ body.slides-complete header {
     background-color: var(--light-bg-color); /* Subtle hover effect */
 }
 
+/* Add hover effect specifically for the title */
+.accordion-header:hover .accordion-title {
+    /* Example: Slight shift to the right */
+    transform: translateX(3px);
+    /* Example: Subtle color change (uncomment if desired) */
+    /* color: var(--hover-color); */
+    transition: transform 0.3s ease, color 0.3s ease; /* Ensure transition */
+}
+
 .accordion-title {
     font-size: 1.4rem;
     font-weight: 600;
     margin-right: 10px;
     text-transform: uppercase; /* Match image */
+    transition: transform 0.3s ease, color 0.3s ease; /* Add base transition */
 }
 
 .accordion-details {

@@ -3,28 +3,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     accordionHeaders.forEach(header => {
         header.addEventListener('click', () => {
-            const accordionItem = header.parentElement;
-            const accordionContent = header.nextElementSibling;
-            const isExpanded = header.getAttribute('aria-expanded') === 'true';
+            const clickedItem = header.parentElement;
+            const wasExpanded = clickedItem.classList.contains('active'); // Check state *before* modifications
 
-            // Close other open accordion items (optional: for single-open accordion)
-            // accordionHeaders.forEach(otherHeader => {
-            //     if (otherHeader !== header && otherHeader.getAttribute('aria-expanded') === 'true') {
-            //         otherHeader.setAttribute('aria-expanded', 'false');
-            //         otherHeader.parentElement.classList.remove('active');
-            //         otherHeader.nextElementSibling.style.maxHeight = null; // Use style for direct manipulation
-            //     }
-            // });
+            // First, close all *other* items
+            accordionHeaders.forEach(otherHeader => {
+                const otherItem = otherHeader.parentElement;
+                if (otherItem !== clickedItem && otherItem.classList.contains('active')) {
+                    otherItem.classList.remove('active');
+                    otherHeader.setAttribute('aria-expanded', 'false');
+                }
+            });
 
-            // Toggle the clicked item
-            if (isExpanded) {
+            // Now toggle the clicked item based on its original state
+            if (wasExpanded) {
+                // It was open, so close it
+                clickedItem.classList.remove('active');
                 header.setAttribute('aria-expanded', 'false');
-                accordionItem.classList.remove('active');
-                // accordionContent.style.maxHeight = null; // Use style for direct manipulation
             } else {
+                // It was closed, so open it
+                clickedItem.classList.add('active');
                 header.setAttribute('aria-expanded', 'true');
-                accordionItem.classList.add('active');
-                // accordionContent.style.maxHeight = accordionContent.scrollHeight + "px"; // Use style for direct manipulation
             }
         });
     });
