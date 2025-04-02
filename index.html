@@ -177,7 +177,7 @@
                     <!-- Fun Fact Section -->
                     <section class="fun-fact-section">
                         <div class="fun-fact-header">
-                            <h3>Revealing Myself</h3>
+                            <h3>Why should you hire me?</h3>
                             <button class="fun-fact-toggle">
                                 <i class="fas fa-chevron-down"></i>
                             </button>
@@ -211,6 +211,72 @@
                                 </div>
                                 <!-- Add more cards as needed -->
                             </div>
+                        </div>
+                    </section>
+
+                    <!-- Offer Section -->
+                    <section class="offer-section fun-fact-section">
+                        <div class="fun-fact-header">
+                            <h3>What can I offer?</h3>
+                            <button class="fun-fact-toggle">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                        <div class="fun-fact-content">
+                            <!-- Accordion structure starts here -->
+                            <div class="accordion">
+                                <div class="accordion-item">
+                                    <button class="accordion-header" aria-expanded="false">
+                                        <span class="accordion-title">DISCOVERY</span>
+                                        <span class="accordion-details"></span> <!-- Placeholder for potential subtitle -->
+                                        <span class="accordion-number">01</span>
+                                    </button>
+                                    <div class="accordion-content" role="region">
+                                        <p>Detailed content about the Discovery phase goes here. This could include research, analysis, strategy definition, etc.</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header" aria-expanded="false">
+                                        <span class="accordion-title">DESIGN & PLAN</span>
+                                        <span class="accordion-details">(PRE-PRODUCTION)</span>
+                                        <span class="accordion-number">02</span>
+                                    </button>
+                                    <div class="accordion-content" role="region">
+                                        <p>Detailed content about the Design & Plan phase. This covers concept development, wireframing, prototyping, and planning the execution.</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header" aria-expanded="false">
+                                        <span class="accordion-title">CAPTURE</span>
+                                        <span class="accordion-details">(PRODUCTION)</span>
+                                        <span class="accordion-number">03</span>
+                                    </button>
+                                    <div class="accordion-content" role="region">
+                                        <p>Detailed content about the Capture phase. This involves the actual creation, development, coding, or recording process.</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header" aria-expanded="false">
+                                        <span class="accordion-title">CRAFT</span>
+                                        <span class="accordion-details">(POST-PRODUCTION)</span>
+                                        <span class="accordion-number">04</span>
+                                    </button>
+                                    <div class="accordion-content" role="region">
+                                        <p>Detailed content about the Craft phase. This includes editing, refining, testing, and polishing the final product.</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header" aria-expanded="false">
+                                        <span class="accordion-title">DISTRIBUTE</span>
+                                        <span class="accordion-details">(SHOWCASE)</span>
+                                        <span class="accordion-number">05</span>
+                                    </button>
+                                    <div class="accordion-content" role="region">
+                                        <p>Detailed content about the Distribute phase. This covers launch, deployment, marketing, and showcasing the work.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Accordion structure ends here -->
                         </div>
                     </section>
 
@@ -470,6 +536,7 @@
     <script src="js/hero-slider.js"></script>
     <script src="js/main.js"></script>
     <script src="js/fun-fact.js"></script>
+    <script src="js/accordion.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function () {
             const heroImage = document.querySelector('.hero-image');
             const tooltip = heroImage.querySelector('.tooltip');

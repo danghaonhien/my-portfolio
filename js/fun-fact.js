@@ -1,23 +1,34 @@
 // Fun Fact Toggle Functionality
 function initFunFactToggle() {
-    const funFactSection = document.querySelector('.fun-fact-section');
-    const funFactHeader = document.querySelector('.fun-fact-header');
-    const funFactContent = document.querySelector('.fun-fact-content');
+    // Select all sections that need the toggle functionality
+    const funFactSections = document.querySelectorAll('.fun-fact-section');
 
-    if (funFactHeader && funFactContent && funFactSection) {
-        funFactHeader.addEventListener('click', () => {
-            funFactSection.classList.toggle('expanded');
-            console.log('Fun Fact toggled (from fun-fact.js). Expanded:', funFactSection.classList.contains('expanded'));
-        });
-    } else {
-        console.error("Fun Fact elements not found for toggle functionality (from fun-fact.js).");
+    if (funFactSections.length === 0) {
+        console.error("No fun fact sections found for toggle functionality (from fun-fact.js).");
+        return; // Exit if no sections found
     }
+
+    funFactSections.forEach(section => {
+        // Find the header within the current section
+        const header = section.querySelector('.fun-fact-header');
+        // Find the content within the current section (though not strictly needed for toggle)
+        const content = section.querySelector('.fun-fact-content'); 
+
+        if (header && content) {
+            header.addEventListener('click', () => {
+                section.classList.toggle('expanded');
+                console.log('Section toggled. Expanded:', section.classList.contains('expanded'));
+            });
+        } else {
+            console.error("Header or content not found within a fun-fact-section (from fun-fact.js).");
+        }
+    });
 }
 
 // Magnetic effect for Fun Fact Cards (Skew + Translate + Hover Scale)
 function initCardMagneticEffect() {
     const cards = document.querySelectorAll('.fun-fact-card:not(.center-card)');
-    const baseTransform = 'skew(-10deg)'; // Base skew for all cards
+    const baseTransform = 'skew(-10deg)'; // Base skew for ALL cards
     const hoverScale = 0.98; // Make slightly smaller on hover
 
     cards.forEach(card => {

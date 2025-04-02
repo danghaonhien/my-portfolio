@@ -186,6 +186,34 @@ nav {
 .nav-links a {
     margin-left: 30px;
     font-weight: 500;
+    position: relative; /* Needed for pseudo-element positioning */
+    transition: color 0.3s ease; /* Only transition color */
+    padding-bottom: 5px; /* Add padding to make space for the underline */
+    overflow: hidden; /* Prevent pseudo-element overflow if needed */
+}
+
+/* Add the underline pseudo-element */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px; /* Thickness of the underline */
+    background-color: var(--primary-color);
+    transform: scaleX(0); /* Initially hidden */
+    transform-origin: center; /* Animate from the center */
+    transition: transform 0.3s ease; /* Animation timing */
+}
+
+/* Combined hover styles */
+.nav-links a:hover {
+    color: var(--primary-color); /* Keep existing color change */
+}
+
+/* Add the missing hover pseudo-element rule */
+.nav-links a:hover::after {
+    transform: scaleX(1); /* Animate underline on hover */
 }
 
 .theme-toggle {
@@ -3143,20 +3171,20 @@ body.slides-complete header {
     box-sizing: border-box; 
     z-index: 2; 
     font-size: 0.9rem;
-    /* Combine skew and initial slide-down position */
-    transform: skew(10deg) translateY(20px);
+    /* Initial slide-down position. Skew handled by separate rule */
+    transform: translateY(20px);
     /* Base transition handled above */
 }
 
 /* Update hover states to include slide transforms */
 .fun-fact-card:not(.center-card):hover .fact-number {
     opacity: 0;
-    transform: skew(10deg) translateY(20px); /* Slide down */
+    transform: translateY(20px); /* Slide down. Skew handled by separate rule */
 }
 
 .fun-fact-card:not(.center-card):hover .fact-info {
     opacity: 1;
-    transform: skew(10deg) translateY(0); /* Slide up to original position */
+    transform: translateY(0); /* Slide up. Skew handled by separate rule */
 }
 
 @media (max-width: 768px) {
@@ -3313,7 +3341,7 @@ body.slides-complete header {
 
      /* --- OTHER 480px STYLES (Keep these) --- */
     .hero-slider {
-        height: 70vh;
+        height: 90vh;
     }
     
     .hero-text-overlay {
@@ -3384,4 +3412,117 @@ body.slides-complete header {
 .dark-theme .fun-fact-card.center-card {
     background-color: var(--dark-primary-color); /* Or keep the same highlight */
     color: var(--dark-text-on-primary, #fff);
+}
+
+/* Add styles at the end of the file */
+
+/* Counter-skew text within fun-fact cards */
+.fun-fact-card .fact-number,
+.fun-fact-card .fact-info {
+    display: inline-block; /* Ensure transform applies correctly */
+    transform: skew(10deg); /* Counteract the default -10deg skew (applied to ALL cards now) */
+}
+
+/* Counter-skew text within offer cards */
+.fun-fact-card.offer-card .fact-number,
+.fun-fact-card.offer-card .fact-info {
+    transform: skew(-10deg); /* Counteract the offer card's +10deg skew */
+}
+
+/* Accordion Styles (for What can I offer section) */
+.accordion {
+    width: 100%;
+    max-width: 100%; /* Optional: constrain width */
+    padding: 0 20px;
+}
+
+.accordion-item {
+    border-bottom: 1px solid var(--border-color);
+    overflow: hidden; /* Prevents content overflow during transition */
+}
+
+.accordion-item:last-child {
+    border-bottom: none;
+}
+
+.accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 20px 10px; /* Adjust padding as needed */
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    color: var(--text-color);
+    transition: background-color 0.3s ease;
+}
+
+.accordion-header:hover {
+    background-color: var(--light-bg-color); /* Subtle hover effect */
+}
+
+.accordion-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-right: 10px;
+    text-transform: uppercase; /* Match image */
+}
+
+.accordion-details {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin-right: auto; /* Pushes number to the right */
+    padding-left: 5px;
+}
+
+.accordion-number {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+    background-color: var(--light-bg-color);
+    padding: 0 20px; /* Horizontal padding, vertical added on expand */
+}
+
+.accordion-content p {
+    margin: 0; /* Reset paragraph margins if needed */
+    padding: 20px 0; /* Vertical padding added when content is visible */
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+/* Styles for when the accordion item is active/expanded */
+.accordion-item.active .accordion-content {
+    max-height: 500px; /* Adjust if content can be very tall */
+    transition: max-height 0.5s ease-in, padding 0.5s ease-in;
+}
+
+.accordion-item.active .accordion-header {
+    /* Optional: Style for active header */
+    /* background-color: var(--light-bg-color); */
+}
+
+/* Remove conflicting styles from fun-fact cards if necessary */
+.offer-section .fun-fact-card {
+    display: none; /* Hide the old cards completely */
+}
+
+/* Ensure the content area expands correctly */
+.offer-section .fun-fact-content {
+    /* Reset padding if added by fun-fact.js */
+    padding: 0 !important; 
+}
+
+.offer-section.expanded .fun-fact-content {
+    /* Override max-height from fun-fact.js if needed, allow accordion to control height */
+    max-height: none !important; 
+    padding: 0 !important;
 }
