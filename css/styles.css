@@ -460,7 +460,7 @@ nav {
     overflow: visible;
     z-index: 1;
     cursor: pointer;
-    justify-self: end; /* Right align in grid */
+    justify-self: start; /* Right align in grid */
 }
 
 .hero-image::before {
@@ -939,7 +939,7 @@ section {
 .contact-item {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
+    margin-top: 30px;
 }
 
 .contact-item i {
@@ -1182,10 +1182,12 @@ footer {
     opacity: 0;
     max-height: 0;
     overflow: visible;
-    transition: opacity 0.5s ease, max-height 0.5s ease, visibility 0.5s ease;
+    transition: opacity 0.5s ease, max-height 0.5s ease, visibility 0.5s ease, transform 0.5s ease;
     visibility: hidden;
     padding: 2px;
     width: 100%; /* Ensure full width */
+    transform: translateY(50px); /* Start from below */
+    position: relative;
 }
 
 .hidden-projects.visible {
@@ -1194,6 +1196,7 @@ footer {
     visibility: visible;
     margin-bottom: 2px;
     overflow: visible;
+    transform: translateY(0); /* Move to normal position */
 }
 
 .hidden-projects .project-card {

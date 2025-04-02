@@ -630,16 +630,18 @@ function initShowMoreButton() {
             if (hiddenProjects.classList.contains('visible')) {
                 // Wait for the transition to complete
                 setTimeout(() => {
-                    const firstHiddenProject = hiddenProjects.querySelector('.project-card');
-                    if (firstHiddenProject) {
-                        const offsetTop = firstHiddenProject.getBoundingClientRect().top + window.pageYOffset - 120;
+                    // Scroll to the show more button instead of the first hidden project
+                    // This ensures users can see the projects emerge from the bottom
+                    const scrollTarget = showMoreBtn;
+                    if (scrollTarget) {
+                        const offsetTop = scrollTarget.getBoundingClientRect().top + window.pageYOffset - 120;
                         
                         window.scrollTo({
                             top: offsetTop,
                             behavior: 'smooth'
                         });
                     }
-                }, 300);
+                }, 50); // Reduced time to start scrolling sooner
             }
         });
     } else {
@@ -1057,7 +1059,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Onewheel Animation
+// Improved Onewheel Animation
 function initOnewheelAnimation() {
     const onewheelElements = document.querySelectorAll('.onewheel-svg');
     const onewheelContainer = document.querySelector('.onewheel-container');
@@ -1070,24 +1072,24 @@ function initOnewheelAnimation() {
     let lastCursorX = 0;
     let lastTouchX = 0;
     let isTouching = false;
+    let lastHitEdge = null; // 'left', 'right', or null
     
     // Set initial position (left side)
     onewheelElements.forEach(element => {
         element.classList.add('active');
         element.classList.remove('move-right', 'move-left');
+        element.style.transform = 'translateX(0) scaleX(1)'; 
+        lastHitEdge = null; 
     });
     
-    // Add magnetic effect on hover for desktop - restrict to horizontal movement only
+    // --- Desktop Mouse Events --- 
     aboutTextContent.addEventListener('mousemove', (e) => {
-        if (window.innerWidth <= 768) return; // Skip on mobile
+        if (window.innerWidth <= 768) return; 
         
         const containerRect = aboutTextContent.getBoundingClientRect();
-        
-        // Calculate horizontal position within the container (0 to 1)
-        const relativeX = (e.clientX - containerRect.left) / containerRect.width;
-        
-        // Determine direction based on cursor movement
-        const cursorDirection = e.clientX > lastCursorX ? 'right' : 'left';
+        const elementWidth = onewheelElements[0].offsetWidth; 
+        const containerWidth = containerRect.width;
+        const maxRightPosition = containerWidth - elementWidth;
         
         // Position the cursor indicator
         const x = e.clientX - containerRect.left;
@@ -1095,173 +1097,317 @@ function initOnewheelAnimation() {
         aboutTextContent.style.setProperty('--cursor-x', `${x}px`);
         aboutTextContent.style.setProperty('--cursor-y', `${y}px`);
         
-        // Apply the magnetic effect to both SVGs
         onewheelElements.forEach(element => {
-            // Remove any previous transform classes
-            element.classList.remove('active', 'move-right', 'move-left');
-            
-            // Calculate the horizontal position (prevent going outside container)
-            const posX = Math.max(0, Math.min(containerRect.width - element.offsetWidth, relativeX * containerRect.width));
-            
-            // Apply transformation based on direction
-            if (cursorDirection === 'right') {
-                // Moving right - normal orientation
-                element.style.transform = `translateX(${posX}px) scaleX(1)`;
+            const currentTransform = element.style.transform || '';
+            let currentX = 0;
+            let currentScaleX = 1;
+            const matchX = currentTransform.match(/translateX\(([^)]+)\)/);
+            const matchScale = currentTransform.match(/scaleX\(([^)]+)\)/);
+            if (matchX && matchX[1]) currentX = parseFloat(matchX[1]);
+            if (matchScale && matchScale[1]) currentScaleX = parseFloat(matchScale[1]);
+
+            let finalX;
+            let finalScaleX = currentScaleX; // Start assuming scale doesn't change
+
+            // --- Calculate Position --- 
+            if (e.clientX <= containerRect.left) {
+                finalX = 0;
+            } else if (e.clientX >= containerRect.right) {
+                finalX = maxRightPosition;
             } else {
-                // Moving left - mirror the SVG
-                element.style.transform = `translateX(${posX}px) scaleX(-1)`;
+                // Dampened movement inside
+                const relativeX = (e.clientX - containerRect.left) / containerWidth;
+                let targetX = relativeX * containerWidth;
+                targetX = Math.max(0, Math.min(maxRightPosition, targetX));
+                
+                const cursorSpeed = Math.abs(e.clientX - lastCursorX);
+                const isDragging = cursorSpeed > 1;
+                let damping = isDragging ? 0.15 : 0.07;
+                finalX = currentX + (targetX - currentX) * damping;
+                finalX = Math.max(0, Math.min(maxRightPosition, finalX));
             }
+
+            // --- Determine if Scale Should Toggle --- 
+            const isHittingLeft = finalX <= 0;
+            const isHittingRight = finalX >= maxRightPosition;
+            const isBeyondLeft = e.clientX <= containerRect.left;
+            const isBeyondRight = e.clientX >= containerRect.right;
+            
+            let newEdgeHit = null;
+            if (isBeyondLeft || isHittingLeft) newEdgeHit = 'left';
+            else if (isBeyondRight || isHittingRight) newEdgeHit = 'right';
+
+            // Toggle scale only if hitting a *different* edge than the last one recorded
+            if (newEdgeHit && newEdgeHit !== lastHitEdge) {
+                finalScaleX = currentScaleX * -1; // Toggle the scale
+                lastHitEdge = newEdgeHit;         // Record the new edge hit
+            } 
+            // If not hitting a new edge, finalScaleX remains currentScaleX (set at the start)
+            
+            // Apply the calculated transform
+            element.style.transform = `translateX(${finalX}px) scaleX(${finalScaleX})`;
         });
         
-        // Save last cursor position
         lastCursorX = e.clientX;
     });
-    
-    // Add touch events for mobile
+
+    aboutTextContent.addEventListener('mouseleave', (e) => {
+        if (window.innerWidth <= 768) return; // Skip on mobile
+
+        const containerRect = aboutTextContent.getBoundingClientRect();
+        const elementWidth = onewheelElements[0].offsetWidth;
+        const maxRightPosition = containerRect.width - elementWidth;
+        
+        const leavingToLeft = e.clientX <= containerRect.left;
+        const leavingToRight = e.clientX >= containerRect.right;
+
+        onewheelElements.forEach(element => {
+            const currentTransform = element.style.transform || '';
+            let currentX = 0;
+            let currentScaleX = 1;
+            const matchX = currentTransform.match(/translateX\(([^)]+)\)/);
+            const matchScale = currentTransform.match(/scaleX\(([^)]+)\)/);
+            if (matchX && matchX[1]) currentX = parseFloat(matchX[1]);
+            if (matchScale && matchScale[1]) currentScaleX = parseFloat(matchScale[1]); 
+
+            let targetX;
+            let targetScaleX;
+
+            if (leavingToLeft) {
+                targetX = 0;
+                // If last hit wasn't left, toggle. Otherwise keep current.
+                targetScaleX = (lastHitEdge !== 'left') ? currentScaleX * -1 : currentScaleX;
+                lastHitEdge = 'left'; // Ensure state is correct
+            } else if (leavingToRight) {
+                targetX = maxRightPosition;
+                 // If last hit wasn't right, toggle. Otherwise keep current.
+                targetScaleX = (lastHitEdge !== 'right') ? currentScaleX * -1 : currentScaleX;
+                lastHitEdge = 'right'; // Ensure state is correct
+            } else {
+                // Left inwards/top/bottom: Reset based on scroll, un-mirrored
+                targetX = lastDirection === 'down' ? maxRightPosition : 0;
+                targetScaleX = 1;
+                lastHitEdge = null; // Reset state
+            }
+
+            // Animate to the target state
+            let startTime = null;
+            const duration = 400;
+            function animateTransition(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+                const intermediateX = currentX + (targetX - currentX) * easeOutCubic(progress);
+                element.style.transform = `translateX(${intermediateX}px) scaleX(${targetScaleX})`;
+                if (progress < 1) {
+                    requestAnimationFrame(animateTransition);
+                } 
+            }
+            requestAnimationFrame(animateTransition);
+        });
+    });
+
+    // --- Mobile Touch Events --- 
     aboutTextContent.addEventListener('touchstart', (e) => {
+        if (window.innerWidth > 768) return;
         isTouching = true;
         lastTouchX = e.touches[0].clientX;
-        
-        // Set active state for touch visuals
         aboutTextContent.classList.add('touch-active');
+        // Don't reset lastHitEdge here, preserve state between touches if needed
     }, { passive: true });
     
     aboutTextContent.addEventListener('touchmove', (e) => {
-        if (!isTouching) return;
+        if (!isTouching || window.innerWidth > 768) return;
         
         const containerRect = aboutTextContent.getBoundingClientRect();
+        const elementWidth = onewheelElements[0].offsetWidth;
+        const containerWidth = containerRect.width;
+        const maxRightPosition = containerWidth - elementWidth;
         const currentTouchX = e.touches[0].clientX;
         
-        // Calculate touch position relative to container
-        const relativeX = (currentTouchX - containerRect.left) / containerRect.width;
-        
-        // Determine direction based on touch movement
-        const touchDirection = currentTouchX > lastTouchX ? 'right' : 'left';
-        
-        // Apply the magnetic effect to both SVGs
         onewheelElements.forEach(element => {
-            // Force display block to prevent flickering
-            element.style.display = 'block';
-            // Don't set opacity on mobile
-            
-            // Don't remove classes during touch movement - just override with inline styles
-            // This prevents flickering from class changes
-            
-            // Calculate the horizontal position (prevent going outside container)
-            const posX = Math.max(0, Math.min(containerRect.width - element.offsetWidth, relativeX * containerRect.width));
-            
-            // Apply transformation based on direction - use !important to override any class styles
-            if (touchDirection === 'right') {
-                // Moving right - normal orientation
-                element.style.transform = `translateX(${posX}px) scaleX(1)`;
+            const currentTransform = element.style.transform || '';
+            let currentX = 0;
+            let currentScaleX = 1;
+            const matchX = currentTransform.match(/translateX\(([^)]+)\)/);
+            const matchScale = currentTransform.match(/scaleX\(([^)]+)\)/);
+            if (matchX && matchX[1]) currentX = parseFloat(matchX[1]);
+            if (matchScale && matchScale[1]) currentScaleX = parseFloat(matchScale[1]);
+
+            let finalX;
+            let finalScaleX = currentScaleX;
+
+            // --- Calculate Position --- 
+            if (currentTouchX <= containerRect.left) {
+                finalX = 0;
+            } else if (currentTouchX >= containerRect.right) {
+                finalX = maxRightPosition;
             } else {
-                // Moving left - mirror the SVG
-                element.style.transform = `translateX(${posX}px) scaleX(-1)`;
+                 // Dampened movement inside
+                const relativeX = (currentTouchX - containerRect.left) / containerWidth;
+                let targetX = relativeX * containerWidth;
+                targetX = Math.max(0, Math.min(maxRightPosition, targetX));
+                
+                const touchSpeed = Math.abs(currentTouchX - lastTouchX);
+                const isDragging = touchSpeed > 1;
+                let damping = isDragging ? 0.2 : 0.1;
+                finalX = currentX + (targetX - currentX) * damping;
+                finalX = Math.max(0, Math.min(maxRightPosition, finalX));
             }
+
+            // --- Determine if Scale Should Toggle --- 
+            const isHittingLeft = finalX <= 0;
+            const isHittingRight = finalX >= maxRightPosition;
+            const isBeyondLeft = currentTouchX <= containerRect.left;
+            const isBeyondRight = currentTouchX >= containerRect.right;
+
+            let newEdgeHit = null;
+            if (isBeyondLeft || isHittingLeft) newEdgeHit = 'left';
+            else if (isBeyondRight || isHittingRight) newEdgeHit = 'right';
+
+            // Toggle scale only if hitting a *different* edge than the last one recorded
+            if (newEdgeHit && newEdgeHit !== lastHitEdge) {
+                finalScaleX = currentScaleX * -1; // Toggle the scale
+                lastHitEdge = newEdgeHit;         // Record the new edge hit
+            }
+            // If not hitting a new edge, finalScaleX remains currentScaleX
+            
+            element.style.transform = `translateX(${finalX}px) scaleX(${finalScaleX})`;
         });
         
-        // Save last touch position
         lastTouchX = currentTouchX;
     }, { passive: true });
     
     aboutTextContent.addEventListener('touchend', () => {
+        if (!isTouching || window.innerWidth > 768) return;
         isTouching = false;
-        
-        // Remove active state
         aboutTextContent.classList.remove('touch-active');
-        
-        // Delay class changes on touch end to prevent flickering
-        setTimeout(() => {
-            // Reset SVGs to position based on scroll direction
-            onewheelElements.forEach(element => {
-                // Always keep element visible
-                element.style.display = 'block';
-                // Don't set opacity on mobile
-                
-                if (lastDirection === 'down') {
-                    // Don't remove classes at once - add first, then remove
-                    element.classList.add('move-right');
-                    setTimeout(() => {
-                        element.classList.remove('active', 'move-left');
-                    }, 10);
-                } else {
-                    // Don't remove classes at once - add first, then remove
-                    element.classList.add('active');
-                    setTimeout(() => {
-                        element.classList.remove('move-right', 'move-left');
-                    }, 10);
-                }
-                
-                // Clear inline transform after classes are applied
-                setTimeout(() => {
-                    element.style.transform = '';
-                }, 50);
-            });
-        }, 50);
+
+        const containerRect = aboutTextContent.getBoundingClientRect();
+        const elementWidth = onewheelElements[0].offsetWidth;
+        const maxRightPosition = containerRect.width - elementWidth;
+
+        const endedBeyondLeft = lastTouchX <= containerRect.left;
+        const endedBeyondRight = lastTouchX >= containerRect.right;
+
+        onewheelElements.forEach(element => {
+            const currentTransform = element.style.transform || '';
+            let currentX = 0;
+            let currentScaleX = 1;
+            const matchX = currentTransform.match(/translateX\(([^)]+)\)/);
+            const matchScale = currentTransform.match(/scaleX\(([^)]+)\)/);
+            if (matchX && matchX[1]) currentX = parseFloat(matchX[1]);
+            if (matchScale && matchScale[1]) currentScaleX = parseFloat(matchScale[1]);
+
+            let targetX;
+            let targetScaleX;
+
+            if (endedBeyondLeft) {
+                targetX = 0;
+                // If last hit wasn't left, toggle. Otherwise keep current.
+                targetScaleX = (lastHitEdge !== 'left') ? currentScaleX * -1 : currentScaleX;
+                lastHitEdge = 'left';
+            } else if (endedBeyondRight) {
+                targetX = maxRightPosition;
+                // If last hit wasn't right, toggle. Otherwise keep current.
+                targetScaleX = (lastHitEdge !== 'right') ? currentScaleX * -1 : currentScaleX;
+                lastHitEdge = 'right';
+            } else {
+                // Reset based on scroll, un-mirrored, reset state
+                targetX = lastDirection === 'down' ? maxRightPosition : 0;
+                targetScaleX = 1;
+                lastHitEdge = null;
+            }
+
+            // Animate to the target state
+            let startTime = null;
+            const duration = 400;
+            function animateTouchEnd(timestamp) {
+                 if (!startTime) startTime = timestamp;
+                 const elapsed = timestamp - startTime;
+                 const progress = Math.min(elapsed / duration, 1);
+                 const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+                 const intermediateX = currentX + (targetX - currentX) * easeOutCubic(progress);
+                 element.style.transform = `translateX(${intermediateX}px) scaleX(${targetScaleX})`;
+                 if (progress < 1) {
+                     requestAnimationFrame(animateTouchEnd);
+                 }
+             }
+             requestAnimationFrame(animateTouchEnd);
+        });
     }, { passive: true });
     
-    // Support single tap to move SVG from side to side
+    // --- Scroll and Click Handlers (largely unchanged, ensure consistency) --- 
+
+    // Support single tap to move SVG from side to side (Mobile Only)
     aboutTextContent.addEventListener('click', (e) => {
-        // Only handle clicks on mobile
-        if (window.innerWidth > 768 || isTouching) return;
+        if (window.innerWidth > 768 || isTouching) return; // Only mobile, not during swipe
         
         const containerRect = aboutTextContent.getBoundingClientRect();
-        
-        // Determine if click is in left or right half of container
+        const elementWidth = onewheelElements[0].offsetWidth;
+        const maxRightPosition = containerRect.width - elementWidth;
         const relativeX = (e.clientX - containerRect.left) / containerRect.width;
         
         onewheelElements.forEach(element => {
-            // Always ensure visibility during transitions
-            element.style.display = 'block';
-            // Don't set opacity on mobile
+            const currentTransform = element.style.transform || '';
+            let currentX = 0;
+            const matchX = currentTransform.match(/translateX\(([^)]+)\)/);
+            if (matchX && matchX[1]) currentX = parseFloat(matchX[1]);
             
-            // Get current transform to determine if SVG is at left or right
-            const isAtRight = element.classList.contains('move-right');
+            // Determine if SVG is currently closer to left (0) or right (maxRightPosition)
+            const isCloserToLeft = Math.abs(currentX - 0) < Math.abs(currentX - maxRightPosition);
             
-            if (relativeX > 0.5 && !isAtRight) {
-                // Set inline transform first for immediate visual feedback
-                const posX = containerRect.width - element.offsetWidth;
-                element.style.transform = `translateX(${posX}px) scaleX(1)`;
-                
-                // Then apply classes with slight delay to prevent flickering
-                setTimeout(() => {
-                    element.classList.add('move-right');
-                    setTimeout(() => {
-                        element.classList.remove('active', 'move-left');
-                        element.style.transform = '';
-                    }, 50);
-                }, 10);
-                
-            } else if (relativeX <= 0.5 && isAtRight) {
-                // Set inline transform first for immediate visual feedback
-                element.style.transform = `translateX(0) scaleX(1)`;
-                
-                // Then apply classes with slight delay to prevent flickering
-                setTimeout(() => {
-                    element.classList.add('active');
-                    setTimeout(() => {
-                        element.classList.remove('move-right', 'move-left');
-                        element.style.transform = '';
-                    }, 50);
-                }, 10);
+            let targetX;
+            const targetScaleX = 1; // Click doesn't mirror, just moves
+
+            // If clicked on right half AND currently closer to left -> move right
+            if (relativeX > 0.5 && isCloserToLeft) {
+                targetX = maxRightPosition;
+            } 
+            // If clicked on left half AND currently closer to right -> move left
+            else if (relativeX <= 0.5 && !isCloserToLeft) {
+                targetX = 0;
+            } 
+            // Otherwise, stay put (clicked on same side it's already on)
+            else {
+                targetX = currentX;
             }
-        });
-    });
-    
-    // Reset position when mouse leaves
-    aboutTextContent.addEventListener('mouseleave', () => {
-        if (window.innerWidth <= 768) return; // Skip on mobile
-        
-        onewheelElements.forEach(element => {
-            // Reset to the position determined by scroll direction
-            if (lastDirection === 'down') {
-                element.style.transform = '';
-                element.classList.add('move-right');
-                element.classList.remove('active', 'move-left');
-            } else {
-                element.style.transform = '';
-                element.classList.add('active');
-                element.classList.remove('move-right', 'move-left');
+
+            // Animate the click movement
+            let startTime = null;
+            const duration = 300;
+
+            function animateClick(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeOutQuad = t => t * (2 - t);
+
+                const intermediateX = currentX + (targetX - currentX) * easeOutQuad(progress);
+                element.style.transform = `translateX(${intermediateX}px) scaleX(${targetScaleX})`;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateClick);
+                } else {
+                     // Optionally switch to classes
+                     /*
+                     setTimeout(() => {
+                         element.style.transform = ''; 
+                         if (targetX === 0) {
+                             element.classList.add('active'); 
+                             element.classList.remove('move-right', 'move-left');
+                         } else {
+                             element.classList.add('move-right');
+                             element.classList.remove('active', 'move-left');
+                         }
+                     }, 10);
+                     */
+                }
+            }
+            // Only animate if target is different from current
+            if (targetX !== currentX) {
+                requestAnimationFrame(animateClick);
             }
         });
     });
@@ -1274,95 +1420,85 @@ function initOnewheelAnimation() {
         if (!ticking) {
             window.requestAnimationFrame(() => {
                 const currentScrollY = window.scrollY;
-                const currentDirection = currentScrollY > lastScrollY ? 'down' : 'up';
+                const newDirection = currentScrollY > lastScrollY ? 'down' : 'up';
                 
                 // Clear any previous scroll timer
                 if (scrollTimer) {
                     clearTimeout(scrollTimer);
                 }
                 
-                // Only apply animation if direction changed or initial scroll
-                if (currentDirection !== lastDirection || lastDirection === null) {
-                    onewheelElements.forEach(element => {
-                        // For mobile devices, handle class changes carefully to prevent flickering
-                        if (window.innerWidth <= 768) {
-                            // Always ensure visibility
-                            element.style.display = 'block';
-                            // Don't set opacity on mobile
-                            
-                            // Apply direct inline transform first for immediate feedback
-                            if (currentDirection === 'down') {
-                                // Immediate visual feedback with inline styles
-                                const containerWidth = aboutTextContent.offsetWidth;
-                                element.style.transform = `translateX(${containerWidth - element.offsetWidth}px) scaleX(1)`;
-                                
-                                // Apply classes with delays to prevent flickering
-                                setTimeout(() => {
-                                    element.classList.add('move-right');
-                                    setTimeout(() => {
-                                        element.classList.remove('active', 'move-left');
-                                        // Remove inline transform after classes take effect
-                                        setTimeout(() => {
-                                            element.style.transform = '';
-                                        }, 30);
-                                    }, 20);
-                                }, 10);
-                            } else {
-                                // Immediate visual feedback
-                                element.style.transform = `translateX(0) scaleX(1)`;
-                                
-                                // Apply classes with delays
-                                setTimeout(() => {
-                                    element.classList.add('active');
-                                    setTimeout(() => {
-                                        element.classList.remove('move-right', 'move-left');
-                                        // Remove inline transform after classes take effect
-                                        setTimeout(() => {
-                                            element.style.transform = '';
-                                        }, 30);
-                                    }, 20);
-                                }, 10);
-                            }
-                        } else {
-                            // Desktop behavior (unchanged)
-                            element.style.transform = '';
-                            element.classList.remove('active', 'move-right', 'move-left');
-                            
-                            if (currentDirection === 'down') {
-                                element.classList.add('move-right');
-                            } else {
-                                element.classList.add('active');
-                            }
-                        }
-                    });
-                    
-                    // Update the last direction
-                    lastDirection = currentDirection;
-                }
-                
-                // Set timer to detect when scrolling stops
-                scrollTimer = setTimeout(() => {
-                    // Get final position based on which section is visible
-                    const aboutRect = aboutTextContent.getBoundingClientRect();
-                    const isAboutVisible = aboutRect.top < window.innerHeight && aboutRect.bottom > 0;
-                    
-                    if (isAboutVisible) {
-                        // If About section is visible, position based on how much is visible
-                        const visibilityRatio = 1 - (Math.max(0, aboutRect.top) / window.innerHeight);
-                        
+                // Only update scroll-based position if direction changed
+                if (newDirection !== lastDirection || lastDirection === null) {
+                    lastDirection = newDirection; // Update direction immediately
+
+                    const targetX = lastDirection === 'down' ? 
+                        (aboutTextContent.offsetWidth - onewheelElements[0].offsetWidth) : 0;
+                    const targetScaleX = 1; // Scroll resets mirroring
+
+                    // Apply scroll position change, respecting current interactions
+                    // We only apply if NOT currently interacting via mouse/touch
+                    if (!aboutTextContent.matches(':hover') && !isTouching) { 
                         onewheelElements.forEach(element => {
-                            if (visibilityRatio > 0.5) {
-                                // More than half visible - position to right
-                                element.classList.remove('active', 'move-left');
-                                element.classList.add('move-right');
-                            } else {
-                                // Less than half visible - position to left
-                                element.classList.remove('move-right', 'move-left');
-                                element.classList.add('active');
+                            // Animate scroll change smoothly
+                            const currentTransform = element.style.transform || '';
+                            let currentX = 0;
+                            const matchX = currentTransform.match(/translateX\(([^)]+)\)/);
+                            if (matchX && matchX[1]) currentX = parseFloat(matchX[1]);
+
+                            let startTime = null;
+                            const duration = 500;
+
+                            function animateScroll(timestamp) {
+                                if (!startTime) startTime = timestamp;
+                                const elapsed = timestamp - startTime;
+                                const progress = Math.min(elapsed / duration, 1);
+                                const easeOutQuad = t => t * (2 - t);
+                                const intermediateX = currentX + (targetX - currentX) * easeOutQuad(progress);
+                                element.style.transform = `translateX(${intermediateX}px) scaleX(${targetScaleX})`;
+                                if (progress < 1) requestAnimationFrame(animateScroll);
                             }
+                            requestAnimationFrame(animateScroll);
                         });
                     }
-                }, 150);
+                }
+                
+                // Set timer to detect when scrolling stops (for final positioning based on visibility)
+                scrollTimer = setTimeout(() => {
+                     if (!aboutTextContent.matches(':hover') && !isTouching) { 
+                        const aboutRect = aboutTextContent.getBoundingClientRect();
+                        const isAboutVisible = aboutRect.top < window.innerHeight && aboutRect.bottom > 0;
+                        
+                        if (isAboutVisible) {
+                            const visibilityRatio = 1 - (Math.max(0, aboutRect.top) / window.innerHeight);
+                            const finalTargetX = visibilityRatio > 0.5 ? 
+                                (aboutTextContent.offsetWidth - onewheelElements[0].offsetWidth) : 0;
+                            const finalScaleX = 1;
+
+                            onewheelElements.forEach(element => {
+                                // Smoothly animate to final position after scroll stops
+                                const currentTransform = element.style.transform || '';
+                                let currentX = 0;
+                                const matchX = currentTransform.match(/translateX\(([^)]+)\)/);
+                                if (matchX && matchX[1]) currentX = parseFloat(matchX[1]);
+                                
+                                if (Math.abs(currentX - finalTargetX) > 1) { // Only animate if position needs change
+                                    let startTime = null;
+                                    const duration = 400;
+                                    function animateFinalScrollPos(timestamp) {
+                                        if (!startTime) startTime = timestamp;
+                                        const elapsed = timestamp - startTime;
+                                        const progress = Math.min(elapsed / duration, 1);
+                                        const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+                                        const intermediateX = currentX + (finalTargetX - currentX) * easeOutCubic(progress);
+                                        element.style.transform = `translateX(${intermediateX}px) scaleX(${finalScaleX})`;
+                                        if (progress < 1) requestAnimationFrame(animateFinalScrollPos);
+                                    }
+                                    requestAnimationFrame(animateFinalScrollPos);
+                                }
+                            });
+                        }
+                    }
+                }, 150); // Timeout duration
                 
                 lastScrollY = currentScrollY;
                 ticking = false;
@@ -1378,35 +1514,41 @@ function initOnewheelAnimation() {
         const aboutRect = aboutTextContent.getBoundingClientRect();
         const isAboutVisible = aboutRect.top < window.innerHeight && aboutRect.bottom > 0;
         
+        let initialTargetX = 0;
+        const initialScaleX = 1;
+
         if (isAboutVisible) {
-            // If About section is visible, position based on how much is visible
             const visibilityRatio = 1 - (Math.max(0, aboutRect.top) / window.innerHeight);
-            
-            onewheelElements.forEach(element => {
-                if (visibilityRatio > 0.5) {
-                    // More than half visible - position to right
-                    element.classList.remove('active', 'move-left');
-                    element.classList.add('move-right');
-                    lastDirection = 'down';
-                } else {
-                    // Less than half visible - position to left
-                    element.classList.remove('move-right', 'move-left');
-                    element.classList.add('active');
-                    lastDirection = 'up';
-                }
-            });
+            if (visibilityRatio > 0.5) {
+                initialTargetX = aboutTextContent.offsetWidth - onewheelElements[0].offsetWidth;
+                lastDirection = 'down';
+            } else {
+                initialTargetX = 0;
+                lastDirection = 'up';
+            }
         } else {
-            // Default position if About section is not visible
-            onewheelElements.forEach(element => {
-                element.classList.remove('move-right', 'move-left');
-                element.classList.add('active');
-            });
-            lastDirection = 'up';
+            // Default to left if About not visible
+             initialTargetX = 0;
+             lastDirection = 'up'; // Assume we scrolled up to hide it
         }
+
+        onewheelElements.forEach(element => {
+            element.style.transform = `translateX(${initialTargetX}px) scaleX(${initialScaleX})`;
+            // Optionally apply initial classes after setting transform
+            /*
+            if(initialTargetX === 0) {
+                 element.classList.add('active');
+                 element.classList.remove('move-right', 'move-left');
+            } else {
+                 element.classList.add('move-right');
+                 element.classList.remove('active', 'move-left');
+            }
+            */
+        });
     }
     
-    // Set initial state after a short delay
-    setTimeout(setInitialState, 500);
+    // Set initial state after a short delay to allow layout calculation
+    setTimeout(setInitialState, 100);
 }
 
 // Initialize Expandable Gallery
