@@ -14,57 +14,53 @@ function initFunFactToggle() {
     }
 }
 
-// Magnetic effect for Fun Fact Cards
+// Magnetic effect for Fun Fact Cards (Skew + Translate + Hover Scale)
 function initCardMagneticEffect() {
     const cards = document.querySelectorAll('.fun-fact-card:not(.center-card)');
     const baseTransform = 'skew(-10deg)'; // Base skew for all cards
-    const hoverRotateScale = 'rotateY(10deg) rotateX(5deg) scale(1.05)'; // Additional transforms on hover
+    const hoverScale = 0.98; // Make slightly smaller on hover
 
     cards.forEach(card => {
         let currentX = 0, currentY = 0;
         let targetX = 0, targetY = 0;
+        let currentScale = 1; // Track current scale
+        let targetScale = 1; // Target scale (1 or hoverScale)
         let isHovering = false;
         let animationFrameId = null;
         const damping = 0.1;
         const sensitivityFactor = 15;
 
         function updatePosition() {
+            // Smoothly update translation and scale
             currentX += (targetX - currentX) * damping;
             currentY += (targetY - currentY) * damping;
+            currentScale += (targetScale - currentScale) * damping;
 
-            // Combine base skew, magnetic translate, and hover transforms (if hovering)
-            let dynamicTransform = `translate(${currentX}px, ${currentY}px)`;
-            if (isHovering) {
-                 card.style.transform = `${baseTransform} ${dynamicTransform} ${hoverRotateScale}`;
-            } else {
-                 card.style.transform = `${baseTransform} ${dynamicTransform}`; // Only skew and translate when leaving
-            }
+            // Apply base skew, magnetic translate, and current scale
+            let dynamicTransform = `translate(${currentX}px, ${currentY}px) scale(${currentScale})`;
+            card.style.transform = `${baseTransform} ${dynamicTransform}`;
 
-
-            // Continue animating if needed
-            if (Math.abs(targetX - currentX) > 0.1 || Math.abs(targetY - currentY) > 0.1) {
+            // Continue animating if translation or scale needs adjustment
+            if (Math.abs(targetX - currentX) > 0.01 || Math.abs(targetY - currentY) > 0.01 || Math.abs(targetScale - currentScale) > 0.01) {
                 animationFrameId = requestAnimationFrame(updatePosition);
             } else {
                 // Snap to final state
-                 if (isHovering) {
-                    card.style.transform = `${baseTransform} translate(${targetX}px, ${targetY}px) ${hoverRotateScale}`;
-                 } else {
-                     card.style.transform = `${baseTransform} translate(${targetX}px, ${targetY}px)`; // Snap back to just skew
-                 }
+                 card.style.transform = `${baseTransform} translate(${targetX}px, ${targetY}px) scale(${targetScale})`;
                  cancelAnimationFrame(animationFrameId);
                  animationFrameId = null;
             }
         }
 
-        card.addEventListener('mouseenter', (e) => { // Changed from mousemove for hover state logic
+        card.addEventListener('mouseenter', (e) => {
              isHovering = true;
-              // Apply non-transform hover styles immediately
+             targetScale = hoverScale; // Set target scale for hover
+
+             // Apply non-transform hover styles immediately
              card.style.filter = 'grayscale(0%)';
              card.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.2)';
-             // Get computed primary color for hover background
              const computedStyle = getComputedStyle(card);
              const primaryColor = computedStyle.getPropertyValue('--primary-color').trim();
-             card.style.backgroundColor = primaryColor || '#343A40'; // Fallback if CSS var fails
+             card.style.backgroundColor = primaryColor || '#343A40';
              card.style.color = 'white';
 
              // Handle number/info visibility
@@ -73,27 +69,26 @@ function initCardMagneticEffect() {
              if(numberEl) numberEl.style.opacity = '0';
              if(infoEl) infoEl.style.opacity = '1';
 
-             // Start animation (mousemove will update targetX/Y)
+             // Start animation
               if (!animationFrameId) {
                  animationFrameId = requestAnimationFrame(updatePosition);
              }
         });
 
-
         card.addEventListener('mousemove', (e) => {
-            if (!isHovering) return; // Only track movement while hovering
+            if (!isHovering) return;
 
+            // Update target translation based on mouse position
             const rect = card.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
             const mouseX = e.clientX - centerX;
             const mouseY = e.clientY - centerY;
-
             const sensitivity = Math.min(rect.width, rect.height) / sensitivityFactor;
             targetX = mouseX / sensitivity;
             targetY = mouseY / sensitivity;
 
-            // Ensure animation loop is running
+            // Ensure animation loop is running to apply translation
             if (!animationFrameId) {
                  animationFrameId = requestAnimationFrame(updatePosition);
              }
@@ -101,25 +96,25 @@ function initCardMagneticEffect() {
 
         card.addEventListener('mouseleave', () => {
             isHovering = false;
-            targetX = 0;
+            targetX = 0; // Reset target translation
             targetY = 0;
+            targetScale = 1; // Reset target scale
 
              // Reset non-transform styles immediately
              card.style.filter = 'grayscale(100%)';
-             card.style.boxShadow = ''; // Reset to default CSS shadow
-             // Reset background and color
+             card.style.boxShadow = '';
              const computedStyle = getComputedStyle(card);
              const cardBg = computedStyle.getPropertyValue('--card-bg').trim();
-             card.style.backgroundColor = cardBg || 'inherit'; // Reset to default
-             card.style.color = ''; // Reset to default
+             card.style.backgroundColor = cardBg || 'inherit';
+             card.style.color = '';
 
-              // Handle number/info visibility reset
+             // Handle number/info visibility reset
              const numberEl = card.querySelector('.fact-number');
              const infoEl = card.querySelector('.fact-info');
              if(numberEl) numberEl.style.opacity = '1';
              if(infoEl) infoEl.style.opacity = '0';
 
-            // Start animation to move back to center
+             // Start animation to return to center and scale back up
              if (!animationFrameId) {
                  animationFrameId = requestAnimationFrame(updatePosition);
              }

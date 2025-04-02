@@ -3144,9 +3144,11 @@ body.slides-complete header {
     /* background-color: rgba(0, 0, 0, 0.7); */ /* REMOVED this line */
     color: white; /* Keep text white (or adjust if primary color is light) */
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */ /* Remove this */
+    justify-content: flex-start; /* Change to this */
     align-items: center;
-    padding: 15px;
+    text-align: left; /* Add this */
+    padding: 15px 20px; /* Adjust padding if needed for left alignment */
     opacity: 0; /* Hidden by default */
     transition: opacity 0.4s ease;
     box-sizing: border-box; /* Include padding in dimensions */
@@ -3235,6 +3237,8 @@ body.slides-complete header {
     }
      .fun-fact-card .fact-info {
         font-size: 0.8rem;
+        padding: 10px 15px; /* Adjust mobile padding if needed */
+        /* Inherits text-align: left */
     }
 
     /* Simpler hover */
