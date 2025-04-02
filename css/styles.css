@@ -285,7 +285,7 @@ nav {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    margin-bottom: 4rem;
+    margin-bottom: 8rem;
     padding-top: 0; /* Reset padding as we have body padding */
 }
 
@@ -2634,43 +2634,63 @@ body.slides-complete header {
 @media (max-width: 768px) {
     .onewheel-container {
         position: relative;
-        overflow: visible;
-        height: 100px;
-        margin: 25px 0 30px 0;
+        overflow: visible; /* Keep visible if SVG needs to slightly overflow */
+        height: 80px; /* Adjusted slightly if needed */
+        margin: 20px 0 25px 0; /* Adjusted spacing */
         user-select: none;
         -webkit-user-drag: none;
     }
-    
+
     .onewheel-svg {
-        display: block !important; /* Ensure SVG is always visible */
-        /* Remove opacity setting to honor original opacity */
+        width: 100px; /* Slightly smaller for mobile */
+        height: auto;
+        position: absolute;
+        left: 0;
         transform: translateX(0) scaleX(1);
-        transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        filter: brightness(0) !important; /* Force the SVG to appear black on mobile */
+        /* Simpler transition for mobile */
+        transition: transform 0.25s ease-out;
+        pointer-events: none;
+        will-change: transform; /* Already inherited, but good to keep in mind */
+        /* Remove filter overrides */
     }
-    
+
+    /* Define mobile-specific movement */
+    .onewheel-svg.move-right {
+        /* Move only part way, e.g., 50% minus half the svg width */
+        transform: translateX(calc(50% - 50px)) scaleX(1);
+    }
+
     .onewheel-svg.move-left {
+        /* Use display: block to override desktop display:none if needed */
         display: block !important;
-        transform: translateX(0) scaleX(-1) !important;
-        filter: brightness(0) !important; /* Force the SVG to appear black when flipped */
+        /* Flip and move to the start or a slight offset if desired */
+        transform: translateX(0) scaleX(-1);
     }
-    
-    .dark-theme .onewheel-svg {
-        filter: brightness(0) invert(1) !important; /* Make SVG white in dark theme */
+
+    /* Correctly handle light/dark mode SVGs on mobile */
+    .light-mode-only {
+        display: block;
     }
-    
-    .dark-theme .onewheel-svg.move-left {
-        filter: brightness(0) invert(1) !important; /* Make SVG white when flipped in dark theme */
+    .dark-mode-only {
+        display: none;
     }
-    
+    .dark-theme .light-mode-only {
+        display: none;
+    }
+    .dark-theme .dark-mode-only {
+        display: block;
+    }
+
+    /* Keep touch-related styles for the container */
     .about-text-content {
         cursor: pointer; /* Show pointer cursor on mobile */
         position: relative;
         overflow: hidden;
         border-radius: 8px;
         padding: 0 8px;
+        -webkit-tap-highlight-color: transparent; /* Keep this */
     }
-    
+
     .about-text-content::before {
         content: '';
         position: absolute;
@@ -2681,6 +2701,10 @@ body.slides-complete header {
         background: linear-gradient(90deg, transparent, rgba(var(--primary-rgb, 52, 58, 64), 0.1), transparent);
         opacity: 0.5;
         z-index: 1;
+    }
+    /* Add dark theme style for the line if needed */
+    .dark-theme .about-text-content::before {
+         background: linear-gradient(90deg, transparent, rgba(var(--primary-rgb, 248, 249, 250), 0.1), transparent);
     }
 }
 
@@ -3095,14 +3119,18 @@ body.slides-complete header {
 .fun-fact-content {
     max-height: 0; /* Initially collapsed */
     overflow: hidden;
-    transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+    opacity: 0; /* Start faded out */
+    transform: translateY(-15px); /* Start shifted up */
+    transition: max-height 0.5s ease-out, padding 0.5s ease-out, opacity 0.4s ease-out 0.1s, transform 0.4s ease-out 0.1s;
     padding: 0 20px; /* Match header padding */
 }
 
 .fun-fact-section.expanded .fun-fact-content {
     max-height: 1000px; /* Adjust if content is taller */
     padding: 20px; /* Add padding when expanded */
-    transition: max-height 0.5s ease-in, padding 0.5s ease-in;
+    opacity: 1; /* Fade in */
+    transform: translateY(0); /* Slide down to final position */
+    transition: max-height 0.5s ease-in, padding 0.5s ease-in, opacity 0.4s ease-in, transform 0.4s ease-in;
 }
 
 .fun-fact-section.expanded .fun-fact-toggle {
@@ -3526,13 +3554,43 @@ body.slides-complete header {
 }
 
 /* Ensure the content area expands correctly */
-.offer-section .fun-fact-content {
-    /* Reset padding if added by fun-fact.js */
+/* .offer-section .fun-fact-content {
+  
     padding: 0 !important; 
 }
 
 .offer-section.expanded .fun-fact-content {
-    /* Override max-height from fun-fact.js if needed, allow accordion to control height */
+  
     max-height: none !important; 
     padding: 0 !important;
+} */
+
+@media (max-width: 768px) {
+    /* ... existing 768px styles ... */
+
+    /* Reduce accordion text size on tablets */
+    .accordion-title {
+        font-size: 1.2rem;
+    }
+    .accordion-details {
+        font-size: 0.8rem;
+    }
+    .accordion-number {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* ... existing 480px styles ... */
+
+    /* Reduce accordion text size further on phones */
+    .accordion-title {
+        font-size: 1.1rem;
+    }
+    .accordion-details {
+        font-size: 0.75rem;
+    }
+    .accordion-number {
+        font-size: 1.1rem;
+    }
 }
