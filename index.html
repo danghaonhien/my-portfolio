@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +10,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
 </head>
+
 <body>
-    
+
     <!-- Intro Slides -->
     <div class="intro-slides">
         <div class="slide" data-index="0">
@@ -36,16 +38,16 @@
                 <i class="fas fa-chevron-down"></i>
             </div>
         </div>
-        
+
         <div class="progress-dots">
             <div class="dot active" data-index="0"></div>
             <div class="dot" data-index="1"></div>
             <div class="dot" data-index="2"></div>
         </div>
     </div>
-    
+
     <div class="cursor"></div>
-    
+
     <!-- Header Section -->
     <header>
         <nav>
@@ -69,72 +71,76 @@
             </div>
         </nav>
     </header>
-    
+
     <main class="container">
         <!-- Hero Section -->
         <div class="coordinated-hero animate-fade-in">
-            <div> <p>10.8231° N, 106.6297° E</p></div>
-            <div> <p>37.7749° N, 122.4194° W</p></div>
-           
-    
+            <div>
+                <p>10.8231° N, 106.6297° E</p>
+            </div>
+            <div>
+                <p>37.7749° N, 122.4194° W</p>
+            </div>
+
+
         </div>
         <div class="hero-slider-wrapper">
-        <section id="home" class="hero-slider">
-            <div class="hero-slider-container">
-                <div class="hero-slide" data-index="0">
-                    <div class="hero-slide-image">
-                        <img src="images/homepage/ggb_masterpiece.jpg" alt="San Francisco">
+            <section id="home" class="hero-slider">
+                <div class="hero-slider-container">
+                    <div class="hero-slide" data-index="0">
+                        <div class="hero-slide-image">
+                            <img src="images/homepage/ggb_masterpiece.jpg" alt="San Francisco">
+                        </div>
+                        <div class="hero-slide-text">
+                            <div class="hero-text-container">
+                                <span class="hero-text-caption">Based in</span>
+                                <h1 class="hero-text-overlay">San Francisco</h1>
+                            </div>
+                        </div>
                     </div>
-                    <div class="hero-slide-text">
-                        <div class="hero-text-container">
-                            <span class="hero-text-caption">Based in</span>
-                            <h1 class="hero-text-overlay">San Francisco</h1>
+                    <div class="hero-slide" data-index="1">
+                        <div class="hero-slide-image">
+                            <img src="images/homepage/SprinklrAI_Cover.png" alt="Product Designer">
+                        </div>
+                        <div class="hero-slide-text">
+                            <div class="hero-text-container">
+                                <span class="hero-text-caption">5 years of experience</span>
+                                <h1 class="hero-text-overlay">Product Designer</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-slide" data-index="2">
+                        <div class="hero-slide-image">
+                            <img src="images/homepage/architect.jpg" alt="Former Architect">
+                        </div>
+                        <div class="hero-slide-text">
+                            <div class="hero-text-container">
+                                <span class="hero-text-caption">4 years of experience</span>
+                                <h1 class="hero-text-overlay">Architect Designer</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-slide" data-index="3">
+                        <div class="hero-slide-image">
+                            <img src="images/homepage/Yosemite2022_77.jpg" alt="Photographer">
+                        </div>
+                        <div class="hero-slide-text">
+                            <div class="hero-text-container">
+                                <span class="hero-text-caption">Casual weekend</span>
+                                <h1 class="hero-text-overlay">Moment Catcher</h1>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="hero-slide" data-index="1">
-                    <div class="hero-slide-image">
-                        <img src="images/homepage/SprinklrAI_Cover.png" alt="Product Designer">
-                    </div>
-                    <div class="hero-slide-text">
-                        <div class="hero-text-container">
-                            <span class="hero-text-caption">5 years of experience</span>
-                            <h1 class="hero-text-overlay">Product Designer</h1>
-                        </div>
-                    </div>
+                <div class="hero-slider-navigation">
+                    <button class="hero-prev-btn">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <button class="hero-next-btn">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
-                <div class="hero-slide" data-index="2">
-                    <div class="hero-slide-image">
-                        <img src="images/homepage/architect.jpg" alt="Former Architect">
-                    </div>
-                    <div class="hero-slide-text">
-                        <div class="hero-text-container">
-                            <span class="hero-text-caption">4 years of experience</span>
-                            <h1 class="hero-text-overlay">Architect Designer</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="hero-slide" data-index="3">
-                    <div class="hero-slide-image">
-                        <img src="images/homepage/Yosemite2022_77.jpg" alt="Photographer">
-                    </div>
-                    <div class="hero-slide-text">
-                        <div class="hero-text-container">
-                            <span class="hero-text-caption">Casual weekend</span>
-                            <h1 class="hero-text-overlay">Moment Recorder</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="hero-slider-navigation">
-                <button class="hero-prev-btn">
-                    <i class="fas fa-arrow-left"></i>
-                </button>
-                <button class="hero-next-btn">
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-            </div>
-        </section>
+            </section>
         </div>
         <!-- About Section -->
         <section id="about" class="about ">
@@ -145,27 +151,49 @@
             <div class="about-content animate-fade-in">
                 <div class="about-text">
                     <div class="about-text-container">
-                    <p>Hey, I'm Nhien Dang, or call me Toto, a product designer with 5 years of experience—and a former architect who realized designing buildings takes way too long, so I switched to designing digital products instead. Turns out, crafting intuitive user experiences is just as satisfying as designing spaces—plus, no permits required!</p>
-                    <div class="hero-image animate-fade-in">
-          
-                        <div class="hero-image-inner">
-                            <img src="images/about/profile.jpg" alt="Profile Image">
+                        <div class="about-text-content">
+                            <p>Hey, I'm Nhien Dang, or call me Toto, a product designer with 5 years of experience—and a
+                                former architect who realized designing buildings takes way too long, so I switched to
+                                designing digital products instead. Turns out, crafting intuitive user experiences is
+                                just
+                                as satisfying as designing spaces—plus, no permits required!</p>
+                            <div class="onewheel-container">
+                                <img src="images/homepage/onewheel.svg" alt="Onewheel"
+                                    class="onewheel-svg light-mode-only">
+                                <img src="images/homepage/onewheel-dark.svg" alt="Onewheel"
+                                    class="onewheel-svg dark-mode-only">
+                            </div>
                         </div>
-                        <div class="tooltip">Hey, I'm Toto!</div>
+                        <div class="hero-image animate-fade-in">
+
+                            <div class="hero-image-inner">
+                                <img src="images/about/profile.jpg" alt="Profile Image">
+                            </div>
+                            <div class="tooltip">Hey, I'm Toto!</div>
+                        </div>
                     </div>
-                 </div>
                     <!-- <p>My approach combines aesthetic sensibility with technical expertise to deliver solutions that are not only visually appealing but also functionally robust.</p> -->
                     <div class="skills">
-                        <div class="skill-tag" style="background-color: rgb(240, 248, 255); font-weight: bold;">UI/UX Design</div>
-                        <div class="skill-tag" style="background-color: rgb(230, 230, 250); font-weight: normal;">Interaction Design</div>
-                        <div class="skill-tag" style="background-color: rgb(240, 248, 255); font-weight: bold;">Design Thinking</div>
-                        <div class="skill-tag" style="background-color: rgb(255, 228, 225); font-weight: norma;">Design System</div>
-                        <div class="skill-tag" style="background-color: rgb(250, 250, 210); font-weight: bold;">Prototyping</div>
-                        <div class="skill-tag" style="background-color: rgb(226, 250, 140); font-weight: normal;">Visual Design</div>
-                        <div class="skill-tag" style="background-color: rgb(211, 255, 206); font-weight: bold;">HTML/CSS/JavaScript</div>
-                        <div class="skill-tag" style="background-color: rgb(255, 235, 205); font-weight: normal;">React.js</div>
-                        <div class="skill-tag" style="background-color: rgb(255, 182, 193); font-weight: bold;">Node.js</div>
-                        <div class="skill-tag" style="background-color: rgb(173, 216, 230); font-weight: normal;">Vibe Coding</div>
+                        <div class="skill-tag" style="background-color: rgb(240, 248, 255); font-weight: bold;">UI/UX
+                            Design</div>
+                        <div class="skill-tag" style="background-color: rgb(230, 230, 250); font-weight: normal;">
+                            Interaction Design</div>
+                        <div class="skill-tag" style="background-color: rgb(240, 248, 255); font-weight: bold;">Design
+                            Thinking</div>
+                        <div class="skill-tag" style="background-color: rgb(255, 228, 225); font-weight: norma;">Design
+                            System</div>
+                        <div class="skill-tag" style="background-color: rgb(250, 250, 210); font-weight: bold;">
+                            Prototyping</div>
+                        <div class="skill-tag" style="background-color: rgb(226, 250, 140); font-weight: normal;">Visual
+                            Design</div>
+                        <div class="skill-tag" style="background-color: rgb(211, 255, 206); font-weight: bold;">
+                            HTML/CSS/JavaScript</div>
+                        <div class="skill-tag" style="background-color: rgb(255, 235, 205); font-weight: normal;">
+                            React.js</div>
+                        <div class="skill-tag" style="background-color: rgb(255, 182, 193); font-weight: bold;">Node.js
+                        </div>
+                        <div class="skill-tag" style="background-color: rgb(173, 216, 230); font-weight: normal;">Vibe
+                            Coding</div>
 
                     </div>
                 </div>
@@ -194,10 +222,11 @@
                             <span>Generative AI</span>
                             <span>Professional Experience</span>
                         </div>
-                        <a href="./case-studies/sprinklr/index.html" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                        <a href="./case-studies/sprinklr/index.html" class="project-link">View Case Study <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
-                
+
                 <!-- Two Column Projects -->
                 <div class="project-card">
                     <div class="project-image">
@@ -211,7 +240,8 @@
                             <span>Web Design</span>
                             <span>E-commerce</span>
                         </div>
-                        <a href="./case-studies/sprinklr-ai/index.html" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                        <a href="./case-studies/sprinklr-ai/index.html" class="project-link">View Case Study <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
                 <div class="project-card">
@@ -226,10 +256,11 @@
                             <span>Dashboard Design</span>
                             <span>Data Visualization</span>
                         </div>
-                        <a href="./case-studies/endue/index.html" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
+                        <a href="./case-studies/endue/index.html" class="project-link">View Case Study <i
+                                class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
-                
+
                 <!-- Secondary Featured Project (Full Width but less prominent) -->
                 <div class="project-card secondary-featured">
                     <div class="project-image">
@@ -248,7 +279,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Hidden Projects (5-8) -->
             <div class="hidden-projects">
                 <div class="project-card">
@@ -294,7 +325,7 @@
                         <div class="project-tags">
                             <span>Billboard</span>
                             <span>Branding</span>
-                            <span>Pet Lover</span>  
+                            <span>Pet Lover</span>
                         </div>
                         <a href="#" class="project-link">View Case Study <i class="fas fa-arrow-right"></i></a>
                     </div>
@@ -316,7 +347,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Show More Button -->
             <div class="show-more-container">
                 <button id="show-more-btn" class="btn secondary-btn">
@@ -334,7 +365,8 @@
             </div>
             <div class="contact-content">
                 <div class="contact-text">
-                    <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
+                    <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of your
+                        vision.</p>
                     <div class="contact-info">
                         <div class="contact-item">
                             <i class="fas fa-envelope"></i>
@@ -384,29 +416,30 @@
         <i class="fas fa-arrow-up"></i>
     </button>
     <script src="js/main.js"></script>
-<script>document.addEventListener('DOMContentLoaded', function() {
-    const heroImage = document.querySelector('.hero-image');
-    const tooltip = heroImage.querySelector('.tooltip');
+    <script>document.addEventListener('DOMContentLoaded', function () {
+            const heroImage = document.querySelector('.hero-image');
+            const tooltip = heroImage.querySelector('.tooltip');
 
-    // Show tooltip on mouse enter
-    heroImage.addEventListener('mouseenter', function() {
-        tooltip.style.display = 'block'; // Show tooltip
-    });
+            // Show tooltip on mouse enter
+            heroImage.addEventListener('mouseenter', function () {
+                tooltip.style.display = 'block'; // Show tooltip
+            });
 
-    // Hide tooltip on mouse leave
-    heroImage.addEventListener('mouseleave', function() {
-        tooltip.style.display = 'none'; // Hide tooltip
-    });
+            // Hide tooltip on mouse leave
+            heroImage.addEventListener('mouseleave', function () {
+                tooltip.style.display = 'none'; // Hide tooltip
+            });
 
-    // Move tooltip with mouse
-    heroImage.addEventListener('mousemove', function(e) {
-        const x = e.clientX - heroImage.getBoundingClientRect().left; // Get mouse position relative to hero image
-        const y = e.clientY - heroImage.getBoundingClientRect().top; // Get mouse position relative to hero image
-        tooltip.style.left = `${x}px`; // Set tooltip position
-        tooltip.style.top = `${y}px`;
-        tooltip.style.transform = 'translate(-90%, -100%)'; // Adjust for tooltip height
-    });
-});</script>
+            // Move tooltip with mouse
+            heroImage.addEventListener('mousemove', function (e) {
+                const x = e.clientX - heroImage.getBoundingClientRect().left; // Get mouse position relative to hero image
+                const y = e.clientY - heroImage.getBoundingClientRect().top; // Get mouse position relative to hero image
+                tooltip.style.left = `${x}px`; // Set tooltip position
+                tooltip.style.top = `${y}px`;
+                tooltip.style.transform = 'translate(-90%, -100%)'; // Adjust for tooltip height
+            });
+        });</script>
 
 </body>
-</html> 
+
+</html>

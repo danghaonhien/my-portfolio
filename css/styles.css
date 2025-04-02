@@ -357,28 +357,42 @@ nav {
 
 .hero-text-overlay {
     font-size: 6rem;
-    font-weight: 800;
-    color: #fff;
+    font-weight: 900;
+    position: relative;
+    color: transparent;
+    -webkit-text-stroke: 0; /* Disable webkit text stroke */
     text-transform: uppercase;
-    transition: all 0.5s ease;
-    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
-    -webkit-text-stroke: 2px #fff;
+    transition: all 0.5s ease-out, transform 0.2s cubic-bezier(0.33, 1, 0.68, 1);
     letter-spacing: 2px;
     line-height: 1.2;
     margin: 0;
-    will-change: transform; /* Optimize for transform changes */
-    transform-origin: center center; /* Set transform origin to center */
+    will-change: transform, color, font-size, text-shadow;
+    transform-origin: center center;
+    /* Create outline using multiple text-shadows */
+    text-shadow: 
+        /* White outline */
+        -2px -2px 0 #fff,
+        2px -2px 0 #fff,
+        -2px 2px 0 #fff,
+        2px 2px 0 #fff,
+        -3px 0 0 #fff,
+        3px 0 0 #fff,
+        0 -3px 0 #fff,
+        0 3px 0 #fff,
+        /* Subtle shadow for depth */
+        4px 4px 8px rgba(0,0,0,0.1);
 }
 
-/* Add magnetic movement for the text */
+/* Add smoother magnetic movement for the text */
 .hero-slide.magnetic-active .hero-text-overlay {
-    transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1); /* Smoother easing for magnetic effect */
+    transition: transform 0.15s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 .hero-slide:hover .hero-text-overlay {
     font-size: 7rem;
-    -webkit-text-stroke: 0;
-    text-shadow: 0 6px 12px rgba(0, 0, 0, 0.8);
+    color: #fff; /* Solid white fill on hover */
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Simple shadow on hover */
+    transition: all 0.5s ease-out, transform 0.15s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 .hero-slide:hover .hero-slide-image img {
@@ -659,6 +673,8 @@ section {
     grid-template-columns: 1fr;
     gap: 50px;
     padding: 2px;
+    width: 100%; /* Ensure full width */
+    overflow: visible; /* Make sure cards don't get cut off */
 }
 
 .project-card {
@@ -669,6 +685,9 @@ section {
     position: relative;
     z-index: 1;
     overflow: visible !important;
+    width: 100%; /* Ensure all cards take full width */
+    display: flex;
+    flex-direction: column;
 }
 
 .project-card::before {
@@ -789,21 +808,26 @@ section {
 @media (min-width: 768px) {
     .projects {
         grid-template-columns: repeat(2, 1fr);
+        gap: 50px;
+        overflow: visible;
     }
     
     .project-card.featured,
     .project-card.secondary-featured {
         grid-column: span 2;
+        display: grid;
+        height: auto;
+        overflow: visible !important;
     }
     
     .project-card.featured {
-        display: grid;
         grid-template-columns: 1.5fr 1fr;
     }
     
     .project-card.featured .project-image {
-        height: 100%;
+        height: 100% !important;
         border-radius: var(--border-radius) 0 0 var(--border-radius);
+        overflow: hidden;
     }
     
     .project-card.featured .project-info {
@@ -811,20 +835,54 @@ section {
     }
     
     .project-card.secondary-featured {
-        display: grid;
         grid-template-columns: 1fr 1.5fr;
     }
     
     .project-card.secondary-featured .project-image {
-        height: 100%;
+        height: 100% !important;
         order: 2;
         border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        overflow: hidden;
     }
     
     .project-card.secondary-featured .project-info {
         order: 1;
         border-radius: var(--border-radius) 0 0 var(--border-radius);
     }
+    
+    /* Fix for hidden projects on desktop */
+    .hidden-projects {
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+        overflow: visible;
+    }
+    
+    .hidden-projects .project-card {
+        overflow: visible !important;
+        height: auto;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .hidden-projects .project-image {
+        height: 300px !important;
+    }
+}
+
+/* Project card base styles - ensuring consistency */
+.project-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-color);
+    border-radius: var(--border-radius);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.15), -4px -4px 12px rgba(255, 255, 255, 0.7);
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s ease;
+    position: relative;
+    z-index: 1;
+    overflow: visible !important;
+    width: 100%;
+    height: auto;
 }
 
 /* Fix for gradient border on featured projects */
@@ -832,6 +890,18 @@ section {
 .project-card.secondary-featured::before {
     z-index: -1;
     border-radius: var(--border-radius);
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #12c2e9, #c471ed, #f64f59, #4e54c8, #8f94fb);
+    background-size: 400% 400%;
+    animation: gradientBorder 20s linear infinite;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
 }
 
 @media (min-width: 1024px) {
@@ -1115,6 +1185,7 @@ footer {
     transition: opacity 0.5s ease, max-height 0.5s ease, visibility 0.5s ease;
     visibility: hidden;
     padding: 2px;
+    width: 100%; /* Ensure full width */
 }
 
 .hidden-projects.visible {
@@ -1122,6 +1193,7 @@ footer {
     max-height: 3000px;
     visibility: visible;
     margin-bottom: 2px;
+    overflow: visible;
 }
 
 .hidden-projects .project-card {
@@ -1132,6 +1204,8 @@ footer {
     position: relative;
     z-index: 1;
     overflow: visible !important;
+    width: 100%;
+    height: auto;
 }
 
 .hidden-projects .project-image {
@@ -1193,12 +1267,15 @@ footer {
     text-align: center;
     margin-top: 60px;
     padding-bottom: 2px; /* Add padding to account for gradient border overflow */
+    width: 100%;
+    display: block; /* Ensure visibility */
 }
 
 #show-more-btn {
     padding: 12px 30px;
     font-size: 16px;
     position: relative;
+    display: inline-block; /* Ensure button is visible */
 }
 
 #show-more-btn .hide-text {
@@ -1461,146 +1538,82 @@ footer {
 
 /* Media query for mobile screens */
 @media (max-width: 768px) {
-    .project-card {
-        display: flex;
-        flex-direction: column; /* Stack image and info vertically */
-        text-align: left; /* Center text for better readability */
-       
-        margin: 10px 0; /* Add margin for spacing */
-        height: auto; /* Allow height to adjust based on content */
-        overflow: visible; /* Ensure content is not cut off */
-        border: 1px solid #ccc; /* Standard border for all cards */
-        background-color: #fff; /* Standard background color */
-        border-radius: 15px; /* Consistent border radius */
+    .case-study-header h1 {
+        font-size: 36px;
     }
 
-    .project-card.featured,
-    .project-card.secondary-featured {
-        height: auto; /* Allow height to adjust based on content */
+    .case-study-subtitle {
+        font-size: 20px;
     }
 
-    .project-card.featured .project-image,
-    .project-card.secondary-featured .project-image {
-        height: auto; /* Allow image height to adjust */
-        width: 100%; /* Full width for image */
-        object-fit: cover; /* Ensure image covers the area */
+    .case-study-meta {
+        gap: 20px;
     }
 
-    .project-info {
-        padding: 20px; /* Ensure padding for content */
-        /* Additional styles if needed */
-    }
-    .project-card.featured  .project-info {
-        padding: 20px; /* Ensure padding for content */
-        /* Additional styles if needed */
+    .section-title {
+        font-size: 28px;
     }
 
-    footer {
-        padding: 10px; /* Reduce padding to minimize white space */
-        margin: 0; /* Remove any margin that may contribute to extra space */
-        /* Adjust other styles as necessary */
+    .section-text {
+        font-size: 16px;
     }
 
-    /* If there are specific elements within the footer that need adjustments */
-    footer .footer-content {
-        margin-bottom: 0; /* Ensure no extra margin at the bottom */
+    .process-steps {
+        grid-template-columns: 1fr;
     }
+
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+    .challenge-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+ 
+   iframe {
+    width: 100%;
+    height: 340px;
+   }
+
+} 
+/* Grid Layout Styles */
+.grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Responsive grid */
+    gap: 15px; /* Space between grid items */
+    margin: 20px 0; /* Margin around the grid */
 }
 
-/* General Styles */
-/* Case Study Styles */
-/* .case-study {
-    padding-top: 80px;
-} */
-
-/* Hero Section */
-.case-study-hero {
-    background-image: url('../images/Sprinklr/moneyshot2.png'); /* Path to your background image */
-    background-size: cover; /* Cover the entire section */
-    background-position: center; /* Center the image */
-    height: 600px; /* Set a height for the hero section */
-    display: flex; /* Use flexbox for centering text */
-    flex-direction: column; /* Stack text vertically */
-    justify-content: center; /* Center text vertically */
-    align-items: center; /* Center text horizontally */
-    color: white; /* Text color for contrast */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Optional: add text shadow for better readability */
-    padding: 20px; /* Optional: padding for spacing */
-}
-.case-study-ai-hero {
-    background-image: url('../images/SprinklrAI/Cover.png'); /* Path to your background image */
-    background-size: cover; /* Cover the entire section */
-    background-position: center; /* Center the image */
-    height: 600px; /* Set a height for the hero section */
-    display: flex; /* Use flexbox for centering text */
-    flex-direction: column; /* Stack text vertically */
-    justify-content: center; /* Center text vertically */
-    align-items: center; /* Center text horizontally */
-    color: white; /* Text color for contrast */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Optional: add text shadow for better readability */
-    padding: 20px; /* Optional: padding for spacing */
-}
-.case-study-endue-hero {
-    background-image: url('../images/endue/background2.png'); /* Path to your background image */
-    background-size: cover; /* Cover the entire section */
-    background-position: center; /* Center the image */
-    height: 600px; /* Set a height for the hero section */
-    display: flex; /* Use flexbox for centering text */
-    flex-direction: column; /* Stack text vertically */
-    justify-content: center; /* Center text vertically */
-    align-items: center; /* Center text horizontally */
-    color: white; /* Text color for contrast */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Optional: add text shadow for better readability */
-    padding: 20px; /* Optional: padding for spacing */
+.grid-item {
+    background-color: var(--bg-color); /* Light background for items */
+    border-radius: 8px; /* Rounded corners */
+    padding: 16px; /* Padding inside items */
+    box-shadow: var(--box-shadow); /* Subtle shadow */
+    text-align: left; /* Center text */
 }
 
-.case-study-header {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
+.grid-item img {
+    max-width: 100%; /* Responsive images */
+    height: auto; /* Maintain aspect ratio */
+}
+/* Add other styles from your previous CSS files here */
+
+/* Example of additional styles */
+.titletext {
+    margin: 20px 0;
 }
 
-.case-study-header h1 {
-    font-size: 48px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: #ffffff;
+.onecolumnphoto {
+    margin: 10px 0;
 }
 
-.case-study-subtitle {
-    font-size: 24px;
-    color: #e9ecef;
-    margin-bottom: 40px;
-}
+/* Add any other styles you need */
 
-.case-study-meta {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
-}
-
-.meta-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.meta-item .label {
-    font-size: 14px;
-    color: #ffffff;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.meta-item .value {
-    font-size: 18px;
-    font-weight: 500;
-    color: #e9ecef;
-}
-
-/* Section Styles */
+/* Research Section */
 .case-study-section {
     padding: 80px 0;
     /* border-bottom: 1px solid var(--border-color); */
@@ -1748,240 +1761,6 @@ footer {
     overflow: hidden;
     /* box-shadow: var(--box-shadow); */
 
-}
-
-.gallery-item img {
-    width: 100%;
-    height: auto;
-    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-/* .gallery-item:hover img {
-    transform: scale(1.05);
-} */
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .case-study-header h1 {
-        font-size: 36px;
-    }
-
-    .case-study-subtitle {
-        font-size: 20px;
-    }
-
-    .case-study-meta {
-        gap: 20px;
-    }
-
-    .section-title {
-        font-size: 28px;
-    }
-
-    .section-text {
-        font-size: 16px;
-    }
-
-    .process-steps {
-        grid-template-columns: 1fr;
-    }
-
-    .results-grid {
-        grid-template-columns: 1fr;
-    }
-    .challenge-grid {
-        grid-template-columns: 1fr;
-    }
-
-
-    .gallery-grid {
-        grid-template-columns: 1fr;
-    }
- 
-   iframe {
-    width: 100%;
-    height: 340px;
-   }
-
-} 
-/* Grid Layout Styles */
-.grid-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Responsive grid */
-    gap: 15px; /* Space between grid items */
-    margin: 20px 0; /* Margin around the grid */
-}
-
-.grid-item {
-    background-color: var(--bg-color); /* Light background for items */
-    border-radius: 8px; /* Rounded corners */
-    padding: 16px; /* Padding inside items */
-    box-shadow: var(--box-shadow); /* Subtle shadow */
-    text-align: left; /* Center text */
-}
-
-.grid-item img {
-    max-width: 100%; /* Responsive images */
-    height: auto; /* Maintain aspect ratio */
-}
-/* Add other styles from your previous CSS files here */
-
-/* Example of additional styles */
-.titletext {
-    margin: 20px 0;
-}
-
-.onecolumnphoto {
-    margin: 10px 0;
-}
-
-/* Add any other styles you need */
-
-/* Research Section */
-.case-study-section {
-    padding: 80px 0;
-    /* border-bottom: 1px solid var(--border-color); */
-}
-
-.section-content {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.section-title {
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 30px;
-    color: var(--text-color);
-}
-
-.section-text {
-    font-size: 18px;
-    line-height: 1.8;
-    color: var(--text-color);
-    margin-bottom: 30px;
-}
-
-/* Process Steps */
-.process-steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
-}
-
-.process-step {
-    padding: 30px;
-    background-color: var(--light-bg-color);
-    border-radius: var(--border-radius);
-    transition: transform 0.3s ease;
-}
-
-.process-step:hover {
-    transform: translateY(-5px);
-}
-
-.process-step h3 {
-    font-size: 20px;
-    margin-bottom: 15px;
-    color: var(--primary-color);
-}
-
-.process-step p {
-    font-size: 16px;
-    color: var(--text-color);
-}
-
-/* Solution List */
-.solution-list {
-    list-style: none;
-    margin-top: 20px;
-}
-
-.solution-list li {
-    position: relative;
-    padding-left: 25px;
-    margin-bottom: 15px;
-    font-size: 18px;
-    color: var(--text-color);
-}
-
-.solution-list li::before {
-    content: "•";
-    color: var(--primary-color);
-    position: absolute;
-    left: 0;
-    font-size: 24px;
-}
-
-/* Results Grid */
-.results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
-}
-
-.result-item {
-    text-align: center;
-    padding: 30px;
-    background-color: var(--light-bg-color);
-    border-radius: var(--border-radius);
-}
-
-.result-number {
-    display: block;
-    font-size: 36px;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 10px;
-}
-
-.result-label {
-    font-size: 16px;
-    color: var(--text-color);
-}
-/* Challenge Grid */
-.challenge-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
-}
-
-.challenge-item {
-    text-align: left;
-    padding: 30px;
-    background-color: var(--light-bg-color);
-    border-radius: var(--border-radius);
-}
-
-.challenge-number {
-    display: block;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 10px;
-}
-
-.challenge-label {
-    font-size: 16px;
-    color: var(--text-color);
-}
-
-/* Gallery Grid */
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
-}
-
-.gallery-item {
-    position: relative;
-    /* border-radius: var(--border-radius); */
-    overflow: hidden;
-    /* box-shadow: var(--box-shadow); */
 }
 
 .gallery-item img {
@@ -2370,10 +2149,25 @@ body.slides-complete header {
 @media (max-width: 992px) {
     .hero-text-overlay {
         font-size: 4.5rem;
+        color: transparent;
+        -webkit-text-stroke: 0;
+        /* Adjusted outline for medium screens */
+        text-shadow: 
+            -1.5px -1.5px 0 #fff,
+            1.5px -1.5px 0 #fff,
+            -1.5px 1.5px 0 #fff,
+            1.5px 1.5px 0 #fff,
+            -2px 0 0 #fff,
+            2px 0 0 #fff,
+            0 -2px 0 #fff,
+            0 2px 0 #fff,
+            3px 3px 6px rgba(0,0,0,0.1);
     }
     
     .hero-slide:hover .hero-text-overlay {
         font-size: 5rem;
+        color: #fff;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     }
     
     .hero-text-caption {
@@ -2394,11 +2188,25 @@ body.slides-complete header {
     
     .hero-text-overlay {
         font-size: 3.5rem; /* Smaller font size for mobile */
-        -webkit-text-stroke: 1px #fff; /* Thinner stroke for better legibility */
+        color: transparent;
+        -webkit-text-stroke: 0;
+        /* Adjusted outline for smaller screens */
+        text-shadow: 
+            -1px -1px 0 #fff,
+            1px -1px 0 #fff,
+            -1px 1px 0 #fff,
+            1px 1px 0 #fff,
+            -1.5px 0 0 #fff,
+            1.5px 0 0 #fff,
+            0 -1.5px 0 #fff,
+            0 1.5px 0 #fff,
+            2px 2px 4px rgba(0,0,0,0.1);
     }
     
     .hero-slide:hover .hero-text-overlay {
         font-size: 4rem; /* Smaller hover font size for mobile */
+        color: #fff;
+        text-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
     }
     
     .hero-text-caption {
@@ -2430,13 +2238,25 @@ body.slides-complete header {
     
     .hero-text-overlay {
         font-size: 2.2rem;
-        -webkit-text-stroke-width: 1px;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+        color: transparent;
+        -webkit-text-stroke: 0;
+        /* Adjusted outline for smallest screens */
+        text-shadow: 
+            -0.5px -0.5px 0 #fff,
+            0.5px -0.5px 0 #fff,
+            -0.5px 0.5px 0 #fff,
+            0.5px 0.5px 0 #fff,
+            -1px 0 0 #fff,
+            1px 0 0 #fff,
+            0 -1px 0 #fff,
+            0 1px 0 #fff,
+            1px 1px 2px rgba(0,0,0,0.1);
     }
     
     .hero-slide:hover .hero-text-overlay {
         font-size: 2.5rem;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+        color: #fff;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     }
     
     .hero-text-caption {
@@ -2514,6 +2334,73 @@ body.slides-complete header {
     align-items: flex-start;
 }
 
+/* Hero Section */
+.case-study-hero {
+    background-image: url('../images/Sprinklr/moneyshot2.png'); /* Path to your background image */
+    background-size: cover; /* Cover the entire section */
+    background-position: center; /* Center the image */
+    height: 600px; /* Set a height for the hero section */
+    display: flex; /* Use flexbox for centering text */
+    flex-direction: column; /* Stack text vertically */
+    justify-content: center; /* Center text vertically */
+    align-items: center; /* Center text horizontally */
+    color: white; /* Text color for contrast */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Optional: add text shadow for better readability */
+    padding: 20px; /* Optional: padding for spacing */
+}
+.case-study-ai-hero {
+    background-image: url('../images/SprinklrAI/Cover.png'); /* Path to your background image */
+    background-size: cover; /* Cover the entire section */
+    background-position: center; /* Center the image */
+    height: 600px; /* Set a height for the hero section */
+    display: flex; /* Use flexbox for centering text */
+    flex-direction: column; /* Stack text vertically */
+    justify-content: center; /* Center text vertically */
+    align-items: center; /* Center text horizontally */
+    color: white; /* Text color for contrast */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Optional: add text shadow for better readability */
+    padding: 20px; /* Optional: padding for spacing */
+}
+.case-study-endue-hero {
+    background-image: url('../images/endue/background2.png'); /* Path to your background image */
+    background-size: cover; /* Cover the entire section */
+    background-position: center; /* Center the image */
+    height: 600px; /* Set a height for the hero section */
+    display: flex; /* Use flexbox for centering text */
+    flex-direction: column; /* Stack text vertically */
+    justify-content: center; /* Center text vertically */
+    align-items: center; /* Center text horizontally */
+    color: white; /* Text color for contrast */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Optional: add text shadow for better readability */
+    padding: 20px; /* Optional: padding for spacing */
+}
+
+.case-study-header {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.case-study-header h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.case-study-subtitle {
+    font-size: 24px;
+    color: #e9ecef;
+    margin-bottom: 40px;
+}
+
+.case-study-meta {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
 /* Hero Section Animation */
 @media (max-width: 768px) {
     .about-text-container {
@@ -2521,8 +2408,24 @@ body.slides-complete header {
     }
     
     .hero-image {
-        margin: 0 auto;
-        justify-self: center;
+        margin-top: 30px;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .about-text-content {
+        margin-bottom: 15px; /* Add space between text content and image */
+    }
+    
+    .onewheel-container {
+        margin-top: 25px;
+        margin-bottom: 30px;
+        height: 100px; /* Increase height for better touch target */
+    }
+
+    .hero-slider {
+        height: 70vh;
     }
 }
 
@@ -2546,4 +2449,252 @@ body.slides-complete header {
         height: 100vh; /* Full viewport height */
         margin-bottom: 2rem;
     }
+}
+
+/* Onewheel SVG Animation */
+.onewheel-container {
+    width: 100%;
+    padding: 15px 0;
+    position: relative;
+    overflow: visible;
+    height: 80px;
+    margin: 15px 0 30px 0;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.onewheel-svg {
+    width: 120px;
+    height: auto;
+    position: absolute;
+    left: 0;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: translateX(0) scaleX(1);
+    pointer-events: none;
+    will-change: transform;
+}
+
+/* When scrolling down - move to right end */
+.onewheel-svg.move-right {
+    transform: translateX(calc(100% - 120px)) scaleX(1);
+}
+
+/* When scrolling up - move to left position (without mirroring) */
+.onewheel-svg.active {
+    transform: translateX(0) scaleX(1);
+}
+
+/* Remove the move-left class styles as we won't use it for scrolling anymore */
+.onewheel-svg.move-left {
+    display: none;
+}
+
+/* Show the appropriate SVG based on theme */
+.light-mode-only {
+    display: block;
+}
+
+.dark-mode-only {
+    display: none;
+}
+
+.dark-theme .light-mode-only {
+    display: none;
+}
+
+.dark-theme .dark-mode-only {
+    display: block;
+}
+
+/* Make the about text content have a hover effect */
+.about-text-content {
+    position: relative;
+    cursor: none;
+    --cursor-x: 0px;
+    --cursor-y: 0px;
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+}
+
+/* Create a hover indicator dot that follows the cursor */
+.about-text-content::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(var(--primary-rgb, 52, 58, 64), 0.3);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    left: var(--cursor-x, 0);
+    top: var(--cursor-y, 0);
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+.dark-theme .about-text-content::after {
+    background-color: rgba(var(--primary-rgb, 248, 249, 250), 0.3);
+}
+
+.about-text-content:hover::after {
+    opacity: 1;
+}
+
+/* Override to add smoother transitions for hover movement */
+.about-text-content:hover .onewheel-svg {
+    transition: transform 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+/* Create visual indicator for mobile touch */
+.about-text-content.touch-active {
+    background-color: rgba(var(--primary-rgb, 52, 58, 64), 0.03);
+}
+
+.dark-theme .about-text-content.touch-active {
+    background-color: rgba(var(--primary-rgb, 248, 249, 250), 0.03);
+}
+
+/* Mobile styles for onewheel animation */
+@media (max-width: 768px) {
+    .onewheel-container {
+        position: relative;
+        overflow: visible;
+        height: 100px;
+        margin: 25px 0 30px 0;
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+    
+    .onewheel-svg {
+        display: block !important; /* Ensure SVG is always visible */
+        /* Remove opacity setting to honor original opacity */
+        transform: translateX(0) scaleX(1);
+        transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        filter: brightness(0) !important; /* Force the SVG to appear black on mobile */
+    }
+    
+    .onewheel-svg.move-left {
+        display: block !important;
+        transform: translateX(0) scaleX(-1) !important;
+        filter: brightness(0) !important; /* Force the SVG to appear black when flipped */
+    }
+    
+    .dark-theme .onewheel-svg {
+        filter: brightness(0) invert(1) !important; /* Make SVG white in dark theme */
+    }
+    
+    .dark-theme .onewheel-svg.move-left {
+        filter: brightness(0) invert(1) !important; /* Make SVG white when flipped in dark theme */
+    }
+    
+    .about-text-content {
+        cursor: pointer; /* Show pointer cursor on mobile */
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+        padding: 0 8px;
+    }
+    
+    .about-text-content::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(var(--primary-rgb, 52, 58, 64), 0.1), transparent);
+        opacity: 0.5;
+        z-index: 1;
+    }
+}
+
+/* Mobile-specific fixes for project cards and show more button */
+@media (max-width: 768px) {
+    .show-more-container {
+        margin-top: 40px;
+        display: block;
+        width: 100%;
+    }
+    
+    #show-more-btn {
+        display: inline-block;
+        width: auto;
+        margin: 0 auto;
+    }
+    
+    /* Fix project card height consistency on mobile */
+    .project-card {
+        height: auto !important;
+        overflow: visible !important;
+        width: 100%;
+    }
+    
+    .project-card.featured,
+    .project-card.secondary-featured {
+        height: auto !important;
+        display: flex;
+        flex-direction: column;
+        grid-column: span 1;
+    }
+    
+    .project-card.featured .project-image,
+    .project-card.secondary-featured .project-image {
+        order: 1;
+        height: 300px !important;
+        border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+    }
+    
+    .project-card.featured .project-info,
+    .project-card.secondary-featured .project-info {
+        order: 2;
+        border-radius: 0 0 var(--border-radius) var(--border-radius) !important;
+    }
+    
+    .project-image {
+        height: 300px !important;
+    }
+    
+    /* Fix for hidden projects on mobile */
+    .hidden-projects {
+        width: 100%;
+        overflow: visible;
+    }
+    
+    .hidden-projects .project-card {
+        width: 100%;
+        height: auto !important;
+    }
+}
+
+/* Fix for featured projects */
+.project-card.featured,
+.project-card.secondary-featured {
+    height: auto;
+    overflow: visible !important;
+}
+
+.project-card.featured .project-image img,
+.project-card.secondary-featured .project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Fix for gradient border on featured projects */
+.project-card.featured::before,
+.project-card.secondary-featured::before {
+    z-index: -1;
+    border-radius: var(--border-radius);
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #12c2e9, #c471ed, #f64f59, #4e54c8, #8f94fb);
+    background-size: 400% 400%;
+    animation: gradientBorder 20s linear infinite;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
 }

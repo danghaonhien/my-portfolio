@@ -14,9 +14,32 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (!textOverlay) return;
             
+            // Track previous positions for smooth damping
+            let currentX = 0, currentY = 0;
+            let targetX = 0, targetY = 0;
+            let animationFrameId = null;
+            
+            function updatePosition() {
+                // Apply damping for smoother movement
+                const damping = 0.12; // Lower value = smoother but slower response
+                
+                // Calculate damped movement
+                currentX = currentX + (targetX - currentX) * damping;
+                currentY = currentY + (targetY - currentY) * damping;
+                
+                // Apply transform with smooth values
+                textOverlay.style.transform = `translate(${currentX}px, ${currentY}px)`;
+                
+                // Continue animation loop
+                animationFrameId = requestAnimationFrame(updatePosition);
+            }
+            
             slide.addEventListener('mousemove', (e) => {
                 if (!slide.classList.contains('magnetic-active')) {
                     slide.classList.add('magnetic-active');
+                    // Start animation loop
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = requestAnimationFrame(updatePosition);
                 }
                 
                 // Get the dimensions of the slide
@@ -30,19 +53,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 const mouseX = e.clientX - centerX;
                 const mouseY = e.clientY - centerY;
                 
-                // Calculate movement intensity (further from center = more movement)
-                // Divide by a larger number to reduce sensitivity
-                const moveX = mouseX / 15;
-                const moveY = mouseY / 15;
-                
-                // Move the text overlay in the direction of the cursor
-                textOverlay.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                // Calculate movement intensity with improved sensitivity
+                // Divide by a larger number for smaller movements or smaller number for larger movements
+                const sensitivity = Math.min(rect.width, rect.height) / 25;
+                targetX = mouseX / sensitivity;
+                targetY = mouseY / sensitivity;
             });
             
             // Reset position when mouse leaves
             slide.addEventListener('mouseleave', () => {
-                textOverlay.style.transform = 'translate(0, 0)';
-                slide.classList.remove('magnetic-active');
+                // Smoothly return to center
+                targetX = 0;
+                targetY = 0;
+                
+                // Stop animation after transition completes
+                setTimeout(() => {
+                    cancelAnimationFrame(animationFrameId);
+                    currentX = 0;
+                    currentY = 0;
+                    textOverlay.style.transform = 'translate(0, 0)';
+                    slide.classList.remove('magnetic-active');
+                }, 300);
             });
         });
     }
@@ -65,8 +96,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 text.style.fontSize = '7rem';
             }
             
-            text.style.webkitTextStroke = '0';
-            text.style.textShadow = '0 6px 12px rgba(0, 0, 0, 0.8)';
+            // On hover, change to solid white with simple shadow
+            text.style.color = '#fff';
+            text.style.textShadow = '0 4px 8px rgba(0, 0, 0, 0.5)';
+            
             img.style.transform = 'scale(1)';
             img.style.filter = 'blur(3px)';
         }
@@ -87,16 +120,20 @@ document.addEventListener('DOMContentLoaded', function() {
             // Responsive font size based on screen width
             if (window.innerWidth <= 480) {
                 text.style.fontSize = '2.2rem';
+                text.style.textShadow = '-0.5px -0.5px 0 #fff, 0.5px -0.5px 0 #fff, -0.5px 0.5px 0 #fff, 0.5px 0.5px 0 #fff, -1px 0 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, 0 1px 0 #fff, 1px 1px 2px rgba(0,0,0,0.1)';
             } else if (window.innerWidth <= 768) {
                 text.style.fontSize = '3rem';
+                text.style.textShadow = '-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, -1.5px 0 0 #fff, 1.5px 0 0 #fff, 0 -1.5px 0 #fff, 0 1.5px 0 #fff, 2px 2px 4px rgba(0,0,0,0.1)';
             } else if (window.innerWidth <= 992) {
                 text.style.fontSize = '4.5rem';
+                text.style.textShadow = '-1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 1.5px 1.5px 0 #fff, -2px 0 0 #fff, 2px 0 0 #fff, 0 -2px 0 #fff, 0 2px 0 #fff, 3px 3px 6px rgba(0,0,0,0.1)';
             } else {
                 text.style.fontSize = '6rem';
+                text.style.textShadow = '-2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 2px 2px 0 #fff, -3px 0 0 #fff, 3px 0 0 #fff, 0 -3px 0 #fff, 0 3px 0 #fff, 4px 4px 8px rgba(0,0,0,0.1)';
             }
             
-            text.style.webkitTextStroke = '2px #fff';
-            text.style.textShadow = '0 4px 8px rgba(0, 0, 0, 0.7)';
+            text.style.color = 'transparent';
+            
             img.style.transform = 'scale(1.05)';
             img.style.filter = 'blur(0)';
         }
@@ -296,6 +333,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize hero slider scroll effect
     initHeroSliderScrollEffect();
+    
+    // Initialize onewheel animation
+    initOnewheelAnimation();
 
     console.log(body.classList);
 });
@@ -1016,3 +1056,355 @@ document.addEventListener('DOMContentLoaded', function() {
         document.removeEventListener('touchend', handleTouchEnd);
     }
 });
+
+// Onewheel Animation
+function initOnewheelAnimation() {
+    const onewheelElements = document.querySelectorAll('.onewheel-svg');
+    const onewheelContainer = document.querySelector('.onewheel-container');
+    const aboutTextContent = document.querySelector('.about-text-content');
+    
+    if (!onewheelElements.length || !onewheelContainer || !aboutTextContent) return;
+    
+    let lastScrollY = window.scrollY;
+    let lastDirection = null;
+    let lastCursorX = 0;
+    let lastTouchX = 0;
+    let isTouching = false;
+    
+    // Set initial position (left side)
+    onewheelElements.forEach(element => {
+        element.classList.add('active');
+        element.classList.remove('move-right', 'move-left');
+    });
+    
+    // Add magnetic effect on hover for desktop - restrict to horizontal movement only
+    aboutTextContent.addEventListener('mousemove', (e) => {
+        if (window.innerWidth <= 768) return; // Skip on mobile
+        
+        const containerRect = aboutTextContent.getBoundingClientRect();
+        
+        // Calculate horizontal position within the container (0 to 1)
+        const relativeX = (e.clientX - containerRect.left) / containerRect.width;
+        
+        // Determine direction based on cursor movement
+        const cursorDirection = e.clientX > lastCursorX ? 'right' : 'left';
+        
+        // Position the cursor indicator
+        const x = e.clientX - containerRect.left;
+        const y = e.clientY - containerRect.top;
+        aboutTextContent.style.setProperty('--cursor-x', `${x}px`);
+        aboutTextContent.style.setProperty('--cursor-y', `${y}px`);
+        
+        // Apply the magnetic effect to both SVGs
+        onewheelElements.forEach(element => {
+            // Remove any previous transform classes
+            element.classList.remove('active', 'move-right', 'move-left');
+            
+            // Calculate the horizontal position (prevent going outside container)
+            const posX = Math.max(0, Math.min(containerRect.width - element.offsetWidth, relativeX * containerRect.width));
+            
+            // Apply transformation based on direction
+            if (cursorDirection === 'right') {
+                // Moving right - normal orientation
+                element.style.transform = `translateX(${posX}px) scaleX(1)`;
+            } else {
+                // Moving left - mirror the SVG
+                element.style.transform = `translateX(${posX}px) scaleX(-1)`;
+            }
+        });
+        
+        // Save last cursor position
+        lastCursorX = e.clientX;
+    });
+    
+    // Add touch events for mobile
+    aboutTextContent.addEventListener('touchstart', (e) => {
+        isTouching = true;
+        lastTouchX = e.touches[0].clientX;
+        
+        // Set active state for touch visuals
+        aboutTextContent.classList.add('touch-active');
+    }, { passive: true });
+    
+    aboutTextContent.addEventListener('touchmove', (e) => {
+        if (!isTouching) return;
+        
+        const containerRect = aboutTextContent.getBoundingClientRect();
+        const currentTouchX = e.touches[0].clientX;
+        
+        // Calculate touch position relative to container
+        const relativeX = (currentTouchX - containerRect.left) / containerRect.width;
+        
+        // Determine direction based on touch movement
+        const touchDirection = currentTouchX > lastTouchX ? 'right' : 'left';
+        
+        // Apply the magnetic effect to both SVGs
+        onewheelElements.forEach(element => {
+            // Force display block to prevent flickering
+            element.style.display = 'block';
+            // Don't set opacity on mobile
+            
+            // Don't remove classes during touch movement - just override with inline styles
+            // This prevents flickering from class changes
+            
+            // Calculate the horizontal position (prevent going outside container)
+            const posX = Math.max(0, Math.min(containerRect.width - element.offsetWidth, relativeX * containerRect.width));
+            
+            // Apply transformation based on direction - use !important to override any class styles
+            if (touchDirection === 'right') {
+                // Moving right - normal orientation
+                element.style.transform = `translateX(${posX}px) scaleX(1)`;
+            } else {
+                // Moving left - mirror the SVG
+                element.style.transform = `translateX(${posX}px) scaleX(-1)`;
+            }
+        });
+        
+        // Save last touch position
+        lastTouchX = currentTouchX;
+    }, { passive: true });
+    
+    aboutTextContent.addEventListener('touchend', () => {
+        isTouching = false;
+        
+        // Remove active state
+        aboutTextContent.classList.remove('touch-active');
+        
+        // Delay class changes on touch end to prevent flickering
+        setTimeout(() => {
+            // Reset SVGs to position based on scroll direction
+            onewheelElements.forEach(element => {
+                // Always keep element visible
+                element.style.display = 'block';
+                // Don't set opacity on mobile
+                
+                if (lastDirection === 'down') {
+                    // Don't remove classes at once - add first, then remove
+                    element.classList.add('move-right');
+                    setTimeout(() => {
+                        element.classList.remove('active', 'move-left');
+                    }, 10);
+                } else {
+                    // Don't remove classes at once - add first, then remove
+                    element.classList.add('active');
+                    setTimeout(() => {
+                        element.classList.remove('move-right', 'move-left');
+                    }, 10);
+                }
+                
+                // Clear inline transform after classes are applied
+                setTimeout(() => {
+                    element.style.transform = '';
+                }, 50);
+            });
+        }, 50);
+    }, { passive: true });
+    
+    // Support single tap to move SVG from side to side
+    aboutTextContent.addEventListener('click', (e) => {
+        // Only handle clicks on mobile
+        if (window.innerWidth > 768 || isTouching) return;
+        
+        const containerRect = aboutTextContent.getBoundingClientRect();
+        
+        // Determine if click is in left or right half of container
+        const relativeX = (e.clientX - containerRect.left) / containerRect.width;
+        
+        onewheelElements.forEach(element => {
+            // Always ensure visibility during transitions
+            element.style.display = 'block';
+            // Don't set opacity on mobile
+            
+            // Get current transform to determine if SVG is at left or right
+            const isAtRight = element.classList.contains('move-right');
+            
+            if (relativeX > 0.5 && !isAtRight) {
+                // Set inline transform first for immediate visual feedback
+                const posX = containerRect.width - element.offsetWidth;
+                element.style.transform = `translateX(${posX}px) scaleX(1)`;
+                
+                // Then apply classes with slight delay to prevent flickering
+                setTimeout(() => {
+                    element.classList.add('move-right');
+                    setTimeout(() => {
+                        element.classList.remove('active', 'move-left');
+                        element.style.transform = '';
+                    }, 50);
+                }, 10);
+                
+            } else if (relativeX <= 0.5 && isAtRight) {
+                // Set inline transform first for immediate visual feedback
+                element.style.transform = `translateX(0) scaleX(1)`;
+                
+                // Then apply classes with slight delay to prevent flickering
+                setTimeout(() => {
+                    element.classList.add('active');
+                    setTimeout(() => {
+                        element.classList.remove('move-right', 'move-left');
+                        element.style.transform = '';
+                    }, 50);
+                }, 10);
+            }
+        });
+    });
+    
+    // Reset position when mouse leaves
+    aboutTextContent.addEventListener('mouseleave', () => {
+        if (window.innerWidth <= 768) return; // Skip on mobile
+        
+        onewheelElements.forEach(element => {
+            // Reset to the position determined by scroll direction
+            if (lastDirection === 'down') {
+                element.style.transform = '';
+                element.classList.add('move-right');
+                element.classList.remove('active', 'move-left');
+            } else {
+                element.style.transform = '';
+                element.classList.add('active');
+                element.classList.remove('move-right', 'move-left');
+            }
+        });
+    });
+    
+    // Create a scroll handler with throttling
+    let ticking = false;
+    let scrollTimer = null;
+    
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const currentScrollY = window.scrollY;
+                const currentDirection = currentScrollY > lastScrollY ? 'down' : 'up';
+                
+                // Clear any previous scroll timer
+                if (scrollTimer) {
+                    clearTimeout(scrollTimer);
+                }
+                
+                // Only apply animation if direction changed or initial scroll
+                if (currentDirection !== lastDirection || lastDirection === null) {
+                    onewheelElements.forEach(element => {
+                        // For mobile devices, handle class changes carefully to prevent flickering
+                        if (window.innerWidth <= 768) {
+                            // Always ensure visibility
+                            element.style.display = 'block';
+                            // Don't set opacity on mobile
+                            
+                            // Apply direct inline transform first for immediate feedback
+                            if (currentDirection === 'down') {
+                                // Immediate visual feedback with inline styles
+                                const containerWidth = aboutTextContent.offsetWidth;
+                                element.style.transform = `translateX(${containerWidth - element.offsetWidth}px) scaleX(1)`;
+                                
+                                // Apply classes with delays to prevent flickering
+                                setTimeout(() => {
+                                    element.classList.add('move-right');
+                                    setTimeout(() => {
+                                        element.classList.remove('active', 'move-left');
+                                        // Remove inline transform after classes take effect
+                                        setTimeout(() => {
+                                            element.style.transform = '';
+                                        }, 30);
+                                    }, 20);
+                                }, 10);
+                            } else {
+                                // Immediate visual feedback
+                                element.style.transform = `translateX(0) scaleX(1)`;
+                                
+                                // Apply classes with delays
+                                setTimeout(() => {
+                                    element.classList.add('active');
+                                    setTimeout(() => {
+                                        element.classList.remove('move-right', 'move-left');
+                                        // Remove inline transform after classes take effect
+                                        setTimeout(() => {
+                                            element.style.transform = '';
+                                        }, 30);
+                                    }, 20);
+                                }, 10);
+                            }
+                        } else {
+                            // Desktop behavior (unchanged)
+                            element.style.transform = '';
+                            element.classList.remove('active', 'move-right', 'move-left');
+                            
+                            if (currentDirection === 'down') {
+                                element.classList.add('move-right');
+                            } else {
+                                element.classList.add('active');
+                            }
+                        }
+                    });
+                    
+                    // Update the last direction
+                    lastDirection = currentDirection;
+                }
+                
+                // Set timer to detect when scrolling stops
+                scrollTimer = setTimeout(() => {
+                    // Get final position based on which section is visible
+                    const aboutRect = aboutTextContent.getBoundingClientRect();
+                    const isAboutVisible = aboutRect.top < window.innerHeight && aboutRect.bottom > 0;
+                    
+                    if (isAboutVisible) {
+                        // If About section is visible, position based on how much is visible
+                        const visibilityRatio = 1 - (Math.max(0, aboutRect.top) / window.innerHeight);
+                        
+                        onewheelElements.forEach(element => {
+                            if (visibilityRatio > 0.5) {
+                                // More than half visible - position to right
+                                element.classList.remove('active', 'move-left');
+                                element.classList.add('move-right');
+                            } else {
+                                // Less than half visible - position to left
+                                element.classList.remove('move-right', 'move-left');
+                                element.classList.add('active');
+                            }
+                        });
+                    }
+                }, 150);
+                
+                lastScrollY = currentScrollY;
+                ticking = false;
+            });
+            
+            ticking = true;
+        }
+    });
+    
+    // Set initial state based on scroll position
+    function setInitialState() {
+        const scrollPosition = window.scrollY;
+        const aboutRect = aboutTextContent.getBoundingClientRect();
+        const isAboutVisible = aboutRect.top < window.innerHeight && aboutRect.bottom > 0;
+        
+        if (isAboutVisible) {
+            // If About section is visible, position based on how much is visible
+            const visibilityRatio = 1 - (Math.max(0, aboutRect.top) / window.innerHeight);
+            
+            onewheelElements.forEach(element => {
+                if (visibilityRatio > 0.5) {
+                    // More than half visible - position to right
+                    element.classList.remove('active', 'move-left');
+                    element.classList.add('move-right');
+                    lastDirection = 'down';
+                } else {
+                    // Less than half visible - position to left
+                    element.classList.remove('move-right', 'move-left');
+                    element.classList.add('active');
+                    lastDirection = 'up';
+                }
+            });
+        } else {
+            // Default position if About section is not visible
+            onewheelElements.forEach(element => {
+                element.classList.remove('move-right', 'move-left');
+                element.classList.add('active');
+            });
+            lastDirection = 'up';
+        }
+    }
+    
+    // Set initial state after a short delay
+    setTimeout(setInitialState, 500);
+}
