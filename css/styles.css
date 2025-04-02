@@ -2495,20 +2495,21 @@ body.slides-complete header {
 
 /* Show the appropriate SVG based on theme */
 .light-mode-only {
-    display: block;
+    display: block; /* Or inline, adjust if needed */
 }
 
 .dark-mode-only {
     display: none;
 }
 
+/*
 .dark-theme .light-mode-only {
     display: none;
 }
-
 .dark-theme .dark-mode-only {
-    display: block;
+    display: block; 
 }
+*/
 
 /* Make the about text content have a hover effect */
 .about-text-content {

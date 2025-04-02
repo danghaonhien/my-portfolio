@@ -793,7 +793,7 @@ function initHeroSliderScrollEffect() {
             heroHeight = heroSliderWrapper.offsetHeight;
         }
         if (heroHeight <= 0) return; // Exit if height is still invalid
-
+        
         // Calculate how much to fade (proportional to scroll)
         const multiplier = window.innerWidth <= 768 ? 0.4 : 0.6;
         const fadeProgress = Math.min(Math.max(0, scrollY) / (heroHeight * multiplier), 1); // Ensure progress is 0-1
@@ -810,7 +810,7 @@ function initHeroSliderScrollEffect() {
             heroSlider.style.opacity = sliderOpacity.toFixed(3);
 
             // Keep the upward movement of about section
-            const upwardMovement = window.innerWidth <= 768 ? 120 : 80;
+                const upwardMovement = window.innerWidth <= 768 ? 120 : 80;
             const currentUpwardMovement = Math.min(upwardMovement, fadeProgress * upwardMovement);
             aboutSection.style.transform = `translateY(-${currentUpwardMovement.toFixed(1)}px)`;
 
@@ -818,13 +818,13 @@ function initHeroSliderScrollEffect() {
             // Once scrolled well past the hero height, ensure slider is hidden and overlay is fully opaque
             heroSliderWrapper.style.setProperty('--hero-fade-opacity', '1');
             heroSlider.style.opacity = '0';
-
+            
             // Keep About section at its maximum translation
-            const upwardMovement = window.innerWidth <= 768 ? 120 : 80;
-            aboutSection.style.transform = `translateY(-${upwardMovement}px)`;
+                const upwardMovement = window.innerWidth <= 768 ? 120 : 80;
+                aboutSection.style.transform = `translateY(-${upwardMovement}px)`;
+            }
         }
-    }
-
+        
     // Listen for scroll events
     window.addEventListener('scroll', () => {
         const scrollY = window.scrollY;
@@ -1199,7 +1199,7 @@ function initOnewheelAnimation() {
         
         lastCursorX = e.clientX;
     });
-
+    
     aboutTextContent.addEventListener('mouseleave', (e) => {
         if (window.innerWidth <= 768) return; // Skip on mobile
 
@@ -1332,7 +1332,7 @@ function initOnewheelAnimation() {
         if (!isTouching || window.innerWidth > 768) return;
         isTouching = false;
         aboutTextContent.classList.remove('touch-active');
-
+        
         const containerRect = aboutTextContent.getBoundingClientRect();
         const elementWidth = onewheelElements[0].offsetWidth;
         const maxRightPosition = containerRect.width - elementWidth;
@@ -1340,7 +1340,7 @@ function initOnewheelAnimation() {
         const endedBeyondLeft = lastTouchX <= containerRect.left;
         const endedBeyondRight = lastTouchX >= containerRect.right;
 
-        onewheelElements.forEach(element => {
+            onewheelElements.forEach(element => {
             const currentTransform = element.style.transform || '';
             let currentX = 0;
             let currentScaleX = 1;
@@ -1362,7 +1362,7 @@ function initOnewheelAnimation() {
                 // If last hit wasn't right, toggle. Otherwise keep current.
                 targetScaleX = (lastHitEdge !== 'right') ? currentScaleX * -1 : currentScaleX;
                 lastHitEdge = 'right';
-            } else {
+                } else {
                 // Reset based on scroll, un-mirrored, reset state
                 targetX = lastDirection === 'down' ? maxRightPosition : 0;
                 targetScaleX = 1;
@@ -1438,14 +1438,14 @@ function initOnewheelAnimation() {
 
                 if (progress < 1) {
                     requestAnimationFrame(animateClick);
-                } else {
+            } else {
                      // Optionally switch to classes
                      /*
                      setTimeout(() => {
-                         element.style.transform = ''; 
+                element.style.transform = '';
                          if (targetX === 0) {
-                             element.classList.add('active'); 
-                             element.classList.remove('move-right', 'move-left');
+                element.classList.add('active');
+                element.classList.remove('move-right', 'move-left');
                          } else {
                              element.classList.add('move-right');
                              element.classList.remove('active', 'move-left');
@@ -1514,16 +1514,16 @@ function initOnewheelAnimation() {
                 // Set timer to detect when scrolling stops (for final positioning based on visibility)
                 scrollTimer = setTimeout(() => {
                      if (!aboutTextContent.matches(':hover') && !isTouching) { 
-                        const aboutRect = aboutTextContent.getBoundingClientRect();
-                        const isAboutVisible = aboutRect.top < window.innerHeight && aboutRect.bottom > 0;
-                        
-                        if (isAboutVisible) {
-                            const visibilityRatio = 1 - (Math.max(0, aboutRect.top) / window.innerHeight);
+                    const aboutRect = aboutTextContent.getBoundingClientRect();
+                    const isAboutVisible = aboutRect.top < window.innerHeight && aboutRect.bottom > 0;
+                    
+                    if (isAboutVisible) {
+                        const visibilityRatio = 1 - (Math.max(0, aboutRect.top) / window.innerHeight);
                             const finalTargetX = visibilityRatio > 0.5 ? 
                                 (aboutTextContent.offsetWidth - onewheelElements[0].offsetWidth) : 0;
                             const finalScaleX = 1;
-
-                            onewheelElements.forEach(element => {
+                        
+                        onewheelElements.forEach(element => {
                                 // Smoothly animate to final position after scroll stops
                                 const currentTransform = element.style.transform || '';
                                 let currentX = 0;
@@ -1543,9 +1543,9 @@ function initOnewheelAnimation() {
                                         if (progress < 1) requestAnimationFrame(animateFinalScrollPos);
                                     }
                                     requestAnimationFrame(animateFinalScrollPos);
-                                }
-                            });
-                        }
+                            }
+                        });
+                    }
                     }
                 }, 150); // Timeout duration
                 
@@ -1565,28 +1565,28 @@ function initOnewheelAnimation() {
         
         let initialTargetX = 0;
         const initialScaleX = 1;
-
+        
         if (isAboutVisible) {
             const visibilityRatio = 1 - (Math.max(0, aboutRect.top) / window.innerHeight);
-            if (visibilityRatio > 0.5) {
+                if (visibilityRatio > 0.5) {
                 initialTargetX = aboutTextContent.offsetWidth - onewheelElements[0].offsetWidth;
-                lastDirection = 'down';
-            } else {
+                    lastDirection = 'down';
+                } else {
                 initialTargetX = 0;
-                lastDirection = 'up';
-            }
+                    lastDirection = 'up';
+                }
         } else {
             // Default to left if About not visible
              initialTargetX = 0;
              lastDirection = 'up'; // Assume we scrolled up to hide it
         }
 
-        onewheelElements.forEach(element => {
+            onewheelElements.forEach(element => {
             element.style.transform = `translateX(${initialTargetX}px) scaleX(${initialScaleX})`;
             // Optionally apply initial classes after setting transform
             /*
             if(initialTargetX === 0) {
-                 element.classList.add('active');
+                element.classList.add('active');
                  element.classList.remove('move-right', 'move-left');
             } else {
                  element.classList.add('move-right');
