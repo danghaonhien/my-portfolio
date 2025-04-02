@@ -1408,3 +1408,94 @@ function initOnewheelAnimation() {
     // Set initial state after a short delay
     setTimeout(setInitialState, 500);
 }
+
+// Initialize Expandable Gallery
+function initExpandableGallery() {
+    const expandableCards = document.querySelectorAll('.expandable-card');
+    const expandableGallery = document.querySelector('.expandable-gallery');
+    const isMobile = window.innerWidth <= 768;
+    
+    if (expandableCards.length > 0 && expandableGallery) {
+        // Set first card as active by default
+        expandableGallery.classList.add('has-active-card');
+        expandableCards[0].classList.add('card-active');
+        
+        // For mobile, we want the cards to be focusable for accessibility
+        if (isMobile) {
+            expandableCards.forEach(card => {
+                // Add tabindex to make cards focusable
+                card.setAttribute('tabindex', '0');
+                
+                // Make cards clickable to navigate to the project page
+                card.addEventListener('click', (e) => {
+                    // Only navigate if we're not clicking a link inside the card
+                    if (!e.target.closest('a')) {
+                        const projectLink = card.querySelector('.project-link');
+                        if (projectLink) {
+                            const href = projectLink.getAttribute('href');
+                            if (href && href !== '#') {
+                                window.location.href = href;
+                            }
+                        }
+                    }
+                });
+            });
+        } else {
+            // Desktop behavior with hover effects
+            expandableCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    // Remove active class from all cards
+                    expandableCards.forEach(c => c.classList.remove('card-active'));
+                    // Add active class to hovered card
+                    card.classList.add('card-active');
+                });
+                
+                // When mouse leaves gallery, make first card active again
+                expandableGallery.addEventListener('mouseleave', () => {
+                    expandableCards.forEach(c => c.classList.remove('card-active'));
+                    expandableCards[0].classList.add('card-active');
+                });
+                
+                // Make cards clickable to navigate to the project page
+                card.addEventListener('click', (e) => {
+                    // Only navigate if we're not clicking a link inside the card
+                    if (!e.target.closest('a')) {
+                        const projectLink = card.querySelector('.project-link');
+                        if (projectLink) {
+                            const href = projectLink.getAttribute('href');
+                            if (href && href !== '#') {
+                                window.location.href = href;
+                            }
+                        }
+                    }
+                });
+            });
+        }
+        
+        // Window resize handler
+        window.addEventListener('resize', () => {
+            const newIsMobile = window.innerWidth <= 768;
+            
+            // If we've switched between mobile/desktop
+            if (newIsMobile !== isMobile) {
+                // Refresh the page to reset behaviors
+                window.location.reload();
+            }
+        });
+    }
+}
+
+// Document Ready
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if device is touch-enabled
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+    
+    // Initialize theme based on saved preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+    }
+    
+    // Initialize expandable gallery
+    initExpandableGallery();
+});

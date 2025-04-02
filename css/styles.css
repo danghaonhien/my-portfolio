@@ -1446,18 +1446,19 @@ footer {
 .reading-time {
     position: absolute;
     top: 15px;
-    left: 15px;
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    color: #fff;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 14px;
+    right: 15px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
     font-weight: 500;
-    z-index: 3;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    width: auto;
+    display: inline-block;
+    white-space: nowrap;
     letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .project-card.featured {
@@ -2017,7 +2018,7 @@ footer {
 
 .slide h1 {
     font-size: 5rem;
-    font-weight: 700;
+    font-weight: 900;
     margin: 0;
     opacity: 0;
     transform: translateY(40px);
@@ -2697,4 +2698,289 @@ body.slides-complete header {
     opacity: 0;
     transition: opacity 0.6s ease;
     pointer-events: none;
+}
+
+/* Expandable Gallery */
+.expandable-gallery {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    height: 500px;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+/* Default state for all cards (collapsed) */
+.expandable-card {
+    flex: 0.5;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    filter: saturate(0.5) brightness(0.8);
+    transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transform: translateY(0);
+    will-change: transform, filter, flex;
+}
+
+/* First card is expanded by default */
+.expandable-gallery .expandable-card:first-child {
+    flex: 2.5;
+    filter: saturate(1.1) brightness(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    transform: translateY(-10px);
+    z-index: 10;
+}
+
+/* Default state hides all card info */
+.card-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 35px 25px 25px;
+    background: linear-gradient(to top, 
+        rgba(0, 0, 0, 0.95) 0%, 
+        rgba(0, 0, 0, 0.8) 40%, 
+        rgba(0, 0, 0, 0.4) 80%, 
+        transparent 100%);
+    color: white;
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 2;
+}
+
+.expandable-gallery.has-active-card .expandable-card:not(.card-active) {
+    flex: 0.5;
+    filter: saturate(0.3) brightness(0.7);
+    transform: translateY(0);
+}
+
+.expandable-card.card-active {
+    flex: 2.5;
+    filter: saturate(1.1) brightness(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    transform: translateY(-10px);
+    z-index: 10;
+}
+
+/* When hovering any card in gallery, ensure first card follows collapsed rules if not active */
+.expandable-gallery:hover .expandable-card:first-child:not(.card-active) {
+    flex: 0.5;
+    filter: saturate(0.3) brightness(0.7);
+    transform: translateY(0);
+}
+
+.expandable-gallery:hover .expandable-card:first-child:not(.card-active) .card-info {
+    transform: translateY(100%);
+}
+
+/* Show card info for active card */
+.expandable-card.card-active .card-info {
+    transform: translateY(0);
+    backdrop-filter: blur(3px);
+}
+
+/* Hover on non-first card */
+.expandable-card:hover:not(:first-child):not(.card-active) {
+    flex: 2.5;
+    filter: saturate(1.1) brightness(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    transform: translateY(-10px);
+    z-index: 10;
+}
+
+/* Card image transitions */
+.card-image {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    transform-origin: center;
+    will-change: transform;
+}
+
+/* Image parallax for hovered/active card */
+.expandable-card:hover .card-image,
+.expandable-card.card-active .card-image {
+    transform: translateY(-5px);
+}
+
+.expandable-card:hover .card-image img,
+.expandable-card.card-active .card-image img {
+    transform: scale(1.08) translateY(-2%);
+}
+
+.expandable-card .reading-time {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 5;
+    width: auto;
+    display: inline-block;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.card-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 35px 25px 25px;
+    background: linear-gradient(to top, 
+        rgba(0, 0, 0, 0.95) 0%, 
+        rgba(0, 0, 0, 0.8) 40%, 
+        rgba(0, 0, 0, 0.4) 80%, 
+        transparent 100%);
+    color: white;
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 2;
+}
+
+.expandable-card:hover .card-info,
+.expandable-card.card-active .card-info {
+    transform: translateY(0);
+    backdrop-filter: blur(3px);
+}
+
+.card-info .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.card-info .project-tags span {
+    background-color: rgba(255, 255, 255, 0.25);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.card-info h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.card-info p {
+    margin-bottom: 15px;
+    opacity: 0.95;
+    font-size: 16px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.card-info .project-link {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+}
+
+.card-info .project-link i {
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+.card-info .project-link:hover i {
+    transform: translateX(5px);
+}
+
+/* Dark Theme Adjustments */
+.dark-theme .expandable-card {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .card-info {
+    background: linear-gradient(to top, 
+        rgba(0, 0, 0, 0.95) 0%, 
+        rgba(0, 0, 0, 0.85) 40%, 
+        rgba(0, 0, 0, 0.5) 80%, 
+        transparent 100%);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .expandable-gallery {
+        flex-direction: column;
+        height: auto;
+        gap: 15px;
+    }
+    
+    .expandable-card {
+        flex: 1;
+        height: 300px;
+        margin-bottom: 15px;
+    }
+    
+    .expandable-gallery:hover .expandable-card:not(:hover):not(.card-active),
+    .expandable-gallery.has-active-card .expandable-card:not(.card-active) {
+        flex: 1;
+        filter: saturate(0.5) brightness(0.8);
+        transform: scale(0.95);
+    }
+    
+    .expandable-gallery .expandable-card:hover:not(.card-active),
+    .expandable-card.card-active {
+        flex: 1;
+        transform: translateY(-5px) scale(1);
+        filter: saturate(1.1) brightness(1.05);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Always show card info on mobile without requiring hover */
+    .card-info {
+        transform: translateY(0) !important; /* Always show */
+        padding: 20px 15px;
+        max-height: 60%;
+        background: linear-gradient(to top, 
+            rgba(0, 0, 0, 0.95) 0%, 
+            rgba(0, 0, 0, 0.8) 40%, 
+            rgba(0, 0, 0, 0.5) 70%, 
+            transparent 100%);
+    }
+    
+    /* No need for hover state since we're always showing the info */
+    .expandable-card:hover .card-info,
+    .expandable-card.card-active .card-info {
+        transform: translateY(0);
+    }
+    
+    .card-info h3 {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+    
+    .card-info p {
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+    
+    .card-info .project-tags {
+        margin-bottom: 8px;
+    }
 }
