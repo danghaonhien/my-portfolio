@@ -734,70 +734,119 @@ style.textContent = `
     .form-success h3 {
         margin-bottom: 10px;
     }
+
+    /* Hero Slider Fade to Black Styles */
+    .hero-slider-wrapper {
+        position: relative; /* Positioning context for ::before */
+    }
+
+    .hero-slider-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000; /* Black background */
+        opacity: var(--hero-fade-opacity, 0); /* Controlled by JS */
+        z-index: 0; /* Behind slider content */
+        pointer-events: none;
+        transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: opacity;
+    }
+
+    .hero-slider {
+        position: relative; /* Stack above ::before */
+        z-index: 1; /* Stack above ::before */
+        transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: opacity;
+    }
+
+    #about {
+        transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1); /* Match hero fade timing */
+        will-change: transform;
+    }
 `;
 document.head.appendChild(style); 
 
 // Hero Slider Scroll Effect
 function initHeroSliderScrollEffect() {
     const heroSliderWrapper = document.querySelector('.hero-slider-wrapper');
-    const heroSlider = document.querySelector('.hero-slider');
+    const heroSlider = document.querySelector('.hero-slider'); // Get the slider itself
     const aboutSection = document.querySelector('#about');
     
-    if (!heroSliderWrapper || !heroSlider) return;
+    // Check if elements exist
+    if (!heroSliderWrapper || !heroSlider || !aboutSection) {
+        console.error('Hero slider scroll effect elements not found:', { heroSliderWrapper, heroSlider, aboutSection });
+        return;
+    }
     
-    // Set initial state with slower transitions for smoother fading
-    heroSliderWrapper.style.transition = 'opacity 1s cubic-bezier(0.4, 0, 0.2, 1)';
-    heroSliderWrapper.style.willChange = 'opacity';
+    // CSS now handles transitions and will-change for slider/wrapper fade
     
     let lastScrollY = window.scrollY;
-    const heroHeight = heroSliderWrapper.offsetHeight;
+    let heroHeight = heroSliderWrapper.offsetHeight; // Initial height
     
+    // Function to update styles based on scroll
+    function updateFadeStyles(scrollY) {
+        // Ensure heroHeight is valid, recalculate if 0 (e.g., initially hidden)
+        if (heroHeight <= 0) {
+            heroHeight = heroSliderWrapper.offsetHeight;
+        }
+        if (heroHeight <= 0) return; // Exit if height is still invalid
+
+        // Calculate how much to fade (proportional to scroll)
+        const multiplier = window.innerWidth <= 768 ? 0.4 : 0.6;
+        const fadeProgress = Math.min(Math.max(0, scrollY) / (heroHeight * multiplier), 1); // Ensure progress is 0-1
+        
+        if (scrollY <= heroHeight * 1.1) { // Extend range slightly to ensure full fade
+            // Calculate opacity for the black overlay (fades IN)
+            const overlayOpacity = Math.min(1, fadeProgress * 1.0); // Fade in fully
+
+            // Calculate opacity for the slider content (fades OUT)
+            const sliderOpacity = Math.max(0, 1 - fadeProgress * 0.85); // Fade out
+
+            // Apply opacities
+            heroSliderWrapper.style.setProperty('--hero-fade-opacity', overlayOpacity.toFixed(3));
+            heroSlider.style.opacity = sliderOpacity.toFixed(3);
+
+            // Keep the upward movement of about section
+            const upwardMovement = window.innerWidth <= 768 ? 120 : 80;
+            const currentUpwardMovement = Math.min(upwardMovement, fadeProgress * upwardMovement);
+            aboutSection.style.transform = `translateY(-${currentUpwardMovement.toFixed(1)}px)`;
+
+        } else {
+            // Once scrolled well past the hero height, ensure slider is hidden and overlay is fully opaque
+            heroSliderWrapper.style.setProperty('--hero-fade-opacity', '1');
+            heroSlider.style.opacity = '0';
+
+            // Keep About section at its maximum translation
+            const upwardMovement = window.innerWidth <= 768 ? 120 : 80;
+            aboutSection.style.transform = `translateY(-${upwardMovement}px)`;
+        }
+    }
+
     // Listen for scroll events
     window.addEventListener('scroll', () => {
         const scrollY = window.scrollY;
-        
-        // Calculate how much to fade (proportional to scroll)
-        const multiplier = window.innerWidth <= 768 ? 0.4 : 0.6;
-        const fadeProgress = Math.min(scrollY / (heroHeight * multiplier), 1);
-        
-        if (scrollY <= heroHeight) {
-            // Remove any transform to prevent sliding - only use opacity
-            heroSliderWrapper.style.transform = 'none';
-            
-            // Apply a smoother, slower fade out
-            const fadeValue = Math.max(0, 1 - fadeProgress * 0.85);
-            heroSliderWrapper.style.opacity = fadeValue;
-            
-            // If About section exists, still move it up for a nice transition
-            if (aboutSection) {
-                // Keep the upward movement of about section for spacing
-                const upwardMovement = window.innerWidth <= 768 ? 120 : 80;
-                aboutSection.style.transform = `translateY(-${Math.min(upwardMovement, fadeProgress * upwardMovement)}px)`;
-            }
-        } else {
-            // Once scrolled past the hero height, hide it completely
-            heroSliderWrapper.style.opacity = '0';
-            
-            // Keep About section at its maximum translation
-            if (aboutSection) {
-                const upwardMovement = window.innerWidth <= 768 ? 120 : 80;
-                aboutSection.style.transform = `translateY(-${upwardMovement}px)`;
-            }
-        }
-        
-        // Store the last scroll position to determine direction
-        lastScrollY = scrollY;
+        updateFadeStyles(scrollY);
+        lastScrollY = scrollY; // Update lastScrollY after processing
     });
-    
-    // Reset position when page is refreshed at the top
-    if (window.scrollY === 0) {
-        heroSliderWrapper.style.transform = 'none';
-        heroSliderWrapper.style.opacity = '1';
-        
-        if (aboutSection) {
-            aboutSection.style.transform = 'translateY(0)';
-        }
-    }
+
+    // Recalculate heroHeight on resize and update styles
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            heroHeight = heroSliderWrapper.offsetHeight; // Re-calculate height
+            updateFadeStyles(window.scrollY); // Re-apply styles based on current scroll and new height
+        }, 100); // Debounce resize handler
+    });
+
+    // Set initial state on load after a brief delay for layout calculation
+    setTimeout(() => {
+         heroHeight = heroSliderWrapper.offsetHeight; // Get height after layout
+         updateFadeStyles(window.scrollY);
+    }, 100);
 }
 
 // Slider
