@@ -1,4 +1,5 @@
-// Hero Slider Functionality
+// Hero Slider Functionality - MOVED TO js/hero-slider.js
+/*
 document.addEventListener('DOMContentLoaded', function() {
     const heroSlides = document.querySelectorAll('.hero-slide');
     const heroPrevBtn = document.querySelector('.hero-prev-btn');
@@ -277,17 +278,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Initialize the slider
-    if (heroSlides.length > 0) {
-        initHeroSlider();
-    }
-
     initOnewheelAnimation();
     initExpandableGallery();
-    initHeroSlider();
+    // initHeroSlider(); // Initialization moved to js/hero-slider.js
 
     console.log(body.classList);
 });
+*/
 
 // DOM Elements
 const themeToggleBtn = document.getElementById('theme-toggle-btn');
@@ -323,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeroSliderScrollEffect();
     initOnewheelAnimation();
     initExpandableGallery();
-    initHeroSlider();
+    // initHeroSlider(); // Initialization moved to js/hero-slider.js
 
     console.log(body.classList);
 });
