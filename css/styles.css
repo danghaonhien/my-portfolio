@@ -1542,6 +1542,48 @@ footer {
 
 /* Media query for mobile screens */
 @media (max-width: 768px) {
+    /* --- START FUN FACT MOBILE STYLES --- */
+    .fun-fact-grid {
+        grid-template-columns: 1fr; /* Force single column */
+        gap: 15px;
+    }
+
+    .fun-fact-card {
+        aspect-ratio: unset; /* Remove square aspect ratio */
+        min-height: 120px; /* Example: ensure cards have some height */
+        padding: 20px 15px; /* Adjust padding if needed */
+        transform: none; /* Remove skew on mobile */
+        border-radius: 8px; /* Add back radius if skew is removed */
+    }
+
+    /* Remove counter-skew on mobile */
+    .fun-fact-card span,
+    .fun-fact-card .fact-info,
+    .fun-fact-card .fact-number {
+        transform: none;
+    }
+
+     /* Adjust font size */
+    .fun-fact-card .fact-number {
+        font-size: 2rem;
+    }
+
+    /* Simpler hover transform on mobile */
+     .fun-fact-card:not(.center-card):hover {
+        transform: scale(1.03);
+        /* Inherits other hover styles like background/color change */
+    }
+
+    /* Adjust header/toggle size */
+     .fun-fact-header h3 {
+        font-size: 1.5rem;
+    }
+    .fun-fact-toggle {
+        font-size: 1.3rem;
+    }
+     /* --- END FUN FACT MOBILE STYLES --- */
+
+    /* --- OTHER 768px STYLES (Ensure these remain) --- */
     .case-study-header h1 {
         font-size: 36px;
     }
@@ -1583,7 +1625,8 @@ footer {
     height: 340px;
    }
 
-} 
+}
+
 /* Grid Layout Styles */
 .grid-layout {
     display: grid;
@@ -2987,4 +3030,290 @@ body.slides-complete header {
     .card-info .project-tags {
         margin-bottom: 8px;
     }
+}
+
+/* Fun Fact Section */
+.fun-fact-section {
+    padding: 40px 0; /* Add some padding */
+    border-top: 1px solid var(--border-color); /* Separator line */
+    overflow: hidden; /* Needed for smooth collapse/expand */
+    margin-top: 30px; /* Space above the section */
+}
+
+.fun-fact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 20px; /* Padding consistent with other sections */
+    margin-bottom: 20px; /* Space below header */
+}
+
+.fun-fact-header h3 {
+    font-size: 1.8rem; /* Adjust size as needed */
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.fun-fact-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.fun-fact-content {
+    max-height: 0; /* Initially collapsed */
+    overflow: hidden;
+    transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+    padding: 0 20px; /* Match header padding */
+}
+
+.fun-fact-section.expanded .fun-fact-content {
+    max-height: 1000px; /* Adjust if content is taller */
+    padding: 20px; /* Add padding when expanded */
+    transition: max-height 0.5s ease-in, padding 0.5s ease-in;
+}
+
+.fun-fact-section.expanded .fun-fact-toggle {
+    transform: rotate(180deg); /* Rotate chevron when expanded */
+}
+
+.fun-fact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Responsive grid */
+    gap: 20px;
+    perspective: 1000px; /* For 3D effect on hover */
+}
+
+.fun-fact-card {
+    background-color: var(--card-bg); /* Use theme variable */
+    border: 1px solid var(--border-color);
+    /* border-radius: 8px;  Removed for skew */
+    padding: 20px;
+    aspect-ratio: 1 / 1; /* Make cards square */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease, box-shadow 0.3s ease, filter 0.3s ease, background-color 0.4s ease; /* Added background-color to transition */
+    filter: grayscale(100%); /* Monotone */
+    cursor: pointer;
+    transform: skew(-10deg); /* Diagonal effect */
+    border-radius: 0; /* Ensure skew works well */
+}
+
+/* Counter-skew content inside cards */
+.fun-fact-card span,
+.fun-fact-card .fact-info,
+.fun-fact-card .fact-number {
+    transform: skew(10deg); /* Counter-skew text */
+    display: block; /* Ensure span takes full width for centering */
+    width: 100%; /* Ensure content respects skew */
+}
+
+
+.fun-fact-card:not(.center-card):hover {
+    filter: grayscale(0%); /* Remove grayscale on hover */
+    transform: skew(-10deg) rotateY(10deg) rotateX(5deg) scale(1.05); /* Subtle 3D tilt combined with skew */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    background-color: var(--primary-color); /* Change background on hover */
+    color: white; /* Ensure text inside (like the info) becomes white */
+}
+
+.fun-fact-card .fact-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--text-color-secondary);
+    transition: opacity 0.3s ease;
+    z-index: 1; /* Keep number above info */
+}
+
+.fun-fact-card .fact-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background-color: rgba(0, 0, 0, 0.7); */ /* REMOVED this line */
+    color: white; /* Keep text white (or adjust if primary color is light) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.4s ease;
+    box-sizing: border-box; /* Include padding in dimensions */
+    z-index: 2; /* Ensure info is above number visually */
+    font-size: 0.9rem;
+    /* Counter-skew is handled by the shared rule now */
+}
+
+/* Reveal info on hover for non-center cards */
+.fun-fact-card:not(.center-card):hover .fact-number {
+    opacity: 0; /* Hide number on hover */
+}
+
+.fun-fact-card:not(.center-card):hover .fact-info {
+    opacity: 1; /* Show info on hover */
+}
+
+/* Style the center card specifically */
+.fun-fact-card.center-card {
+    background-color: var(--primary-color); /* Highlight color */
+    color: white;
+    font-weight: bold;
+    filter: grayscale(0%); /* Not monotone */
+    cursor: default; /* Not interactive */
+    /* Skew is already applied to all cards */
+}
+
+.dark-theme .fun-fact-card {
+    background-color: var(--dark-card-bg); /* Adjust for dark theme if needed */
+    border-color: var(--dark-border-color);
+}
+
+.dark-theme .fun-fact-card .fact-number {
+     color: var(--dark-text-color-secondary);
+}
+
+.dark-theme .fun-fact-card.center-card {
+    background-color: var(--dark-primary-color); /* Or keep the same highlight */
+    color: var(--dark-text-on-primary, #fff);
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .fun-fact-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+    }
+    .fun-fact-card .fact-number {
+        font-size: 2.5rem;
+    }
+     .fun-fact-header h3 {
+        font-size: 1.5rem;
+    }
+    .fun-fact-toggle {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+     /* --- START FUN FACT MOBILE STYLES (480px) --- */
+     .fun-fact-grid {
+        /* grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); */ /* Remove this */
+        grid-template-columns: 1fr; /* Force single column */
+        gap: 10px; /* Keep smaller gap */
+    }
+
+     /* Ensure card styles are consistent with 768px view */
+     .fun-fact-card {
+        aspect-ratio: unset;
+        min-height: 100px; /* Can adjust height if needed */
+        transform: none;
+        border-radius: 8px;
+     }
+
+    /* Remove counter-skew */
+    .fun-fact-card span,
+    .fun-fact-card .fact-info,
+    .fun-fact-card .fact-number {
+        transform: none;
+    }
+
+    /* Adjust font sizes for very small screens */
+    .fun-fact-card .fact-number {
+        font-size: 1.8rem; /* Make slightly smaller */
+    }
+     .fun-fact-card .fact-info {
+        font-size: 0.8rem;
+    }
+
+    /* Simpler hover */
+     .fun-fact-card:not(.center-card):hover {
+        transform: scale(1.02); /* Even simpler scale */
+    }
+     /* --- END FUN FACT MOBILE STYLES (480px) --- */
+
+     /* --- OTHER 480px STYLES (Keep these) --- */
+    .hero-slider {
+        height: 70vh;
+    }
+    
+    .hero-text-overlay {
+        font-size: 2.2rem;
+        color: transparent;
+        -webkit-text-stroke: 0;
+        /* Adjusted outline for smallest screens */
+        text-shadow: 
+            -0.5px -0.5px 0 #fff,
+            0.5px -0.5px 0 #fff,
+            -0.5px 0.5px 0 #fff,
+            0.5px 0.5px 0 #fff,
+            -1px 0 0 #fff,
+            1px 0 0 #fff,
+            0 -1px 0 #fff,
+            0 1px 0 #fff,
+            1px 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    .hero-slide:hover .hero-text-overlay {
+        font-size: 2.5rem;
+        color: #fff;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    .hero-text-caption {
+        font-size: 1rem;
+        margin-bottom: 0.3rem;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    }
+    
+    .hero-text-container {
+        padding: 1rem;
+        text-align: center;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .hero-slider-navigation {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+    }
+    
+    .hero-slider-navigation button {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* Add dark theme hover style */
+.dark-theme .fun-fact-card:not(.center-card):hover {
+     background-color: var(--dark-primary-color); /* Change background on hover for dark theme */
+     color: var(--dark-text-on-primary, #fff); /* Ensure text color contrasts */
+}
+
+/* Dark theme adjustments */
+.dark-theme .fun-fact-card {
+    background-color: var(--dark-card-bg); /* Adjust for dark theme if needed */
+    border-color: var(--dark-border-color);
+}
+
+.dark-theme .fun-fact-card .fact-number {
+    color: var(--dark-text-color-secondary);
+}
+
+.dark-theme .fun-fact-card.center-card {
+    background-color: var(--dark-primary-color); /* Or keep the same highlight */
+    color: var(--dark-text-on-primary, #fff);
 }

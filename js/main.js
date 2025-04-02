@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             function updatePosition() {
                 // Apply damping for smoother movement
-                const damping = 0.12; // Lower value = smoother but slower response
+                const damping = 0.12; // Increased from 0.12 for more responsiveness
                 
                 // Calculate damped movement
                 currentX = currentX + (targetX - currentX) * damping;
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Calculate movement intensity with improved sensitivity
                 // Divide by a larger number for smaller movements or smaller number for larger movements
-                const sensitivity = Math.min(rect.width, rect.height) / 25;
+                const sensitivity = Math.min(rect.width, rect.height) / 75; // Decreased divisor from 25 to increase range
                 targetX = mouseX / sensitivity;
                 targetY = mouseY / sensitivity;
             });
@@ -281,6 +281,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (heroSlides.length > 0) {
         initHeroSlider();
     }
+
+    initOnewheelAnimation();
+    initExpandableGallery();
+    initHeroSlider();
+
+    console.log(body.classList);
 });
 
 // DOM Elements
@@ -304,38 +310,20 @@ document.addEventListener('DOMContentLoaded', () => {
         themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
     }
 
-    // Initialize mobile menu
+    // Initialize ALL features here
     initMobileMenu();
-
-    // Initialize custom cursor
     initCustomCursor();
-
-    // Initialize smooth scrolling
     initSmoothScrolling();
-
-    // Initialize form validation
     initFormValidation();
-
-    // Initialize animations
     initAnimations();
-    
-    // Initialize header shadow on scroll
     initHeaderShadow();
-    
-    // Initialize scroll to top button
     initScrollToTop();
-    
-    // Initialize show more button
     initShowMoreButton();
-    
-    // Initialize typing animation
     initTypingAnimation();
-    
-    // Initialize hero slider scroll effect
     initHeroSliderScrollEffect();
-    
-    // Initialize onewheel animation
     initOnewheelAnimation();
+    initExpandableGallery();
+    initHeroSlider();
 
     console.log(body.classList);
 });
@@ -1675,18 +1663,3 @@ function initExpandableGallery() {
         });
     }
 }
-
-// Document Ready
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if device is touch-enabled
-    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
-    
-    // Initialize theme based on saved preference
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-theme');
-    }
-    
-    // Initialize expandable gallery
-    initExpandableGallery();
-});
