@@ -12,15 +12,113 @@
     --border-radius: 16px;
 }
 
+/* Dark Theme Variables */
 .dark-theme {
+    /* Core colors */
     --primary-color: #f8f9fa;
     --secondary-color: #f8f9fa;
     --text-color: #e9ecef;
+    --text-color-secondary: #adb5bd;
     --bg-color: #121212;
     --light-bg-color: #1e1e1e;
+    
+    /* UI elements */
     --border-color: #2d2d2d;
     --hover-color: #495057;
     --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    
+    /* Card styles */
+    --card-bg: #1e1e1e;
+    --dark-card-bg: #292929;
+    --dark-border-color: #3a3a3a;
+    --dark-primary-color: #4a4a4a;
+    --dark-text-color-secondary: #adb5bd;
+    --dark-text-on-primary: #ffffff;
+}
+
+/* Dark Theme Element Styles */
+.dark-theme .primary-btn {
+    color: #343A40;
+}
+
+.dark-theme .primary-btn:hover {
+    background-color: var(--hover-color);
+    color: #f8f9fa;
+}
+
+.dark-theme .secondary-btn:hover {
+    color: #343A40;
+}
+
+.dark-theme .logo a {
+    color: var(--primary-color);
+}
+
+.dark-theme #scroll-to-top {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dark-theme .resume-btn {
+    /* border: 1px solid var(--text-color); */
+    color: var(--text-color);
+}
+
+/* Dark Theme Project Cards */
+.dark-theme .project-card {
+    background-color: var(--light-bg-color);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3), -4px -4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.dark-theme .project-card::before {
+    background: linear-gradient(45deg, #00f5a0, #00d9f5, #a100f2, #f20089, #00f5a0);
+}
+
+.dark-theme .project-card .project-image,
+.dark-theme .project-card .project-info {
+    background-color: var(--light-bg-color);
+}
+
+.dark-theme .hidden-projects .project-card {
+    background-color: var(--light-bg-color);
+}
+
+.dark-theme .hidden-projects .project-card::before {
+    background: linear-gradient(45deg, #00f5a0, #00d9f5, #a100f2, #f20089, #00f5a0);
+}
+
+/* Dark Theme Hero Image */
+.dark-theme .hero-image {
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3), -4px -4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.dark-theme .hero-image::before {
+    background: linear-gradient(45deg, #00f5a0, #00d9f5, #a100f2, #f20089, #00f5a0);
+}
+
+.dark-theme .hero-image-inner {
+    background-color: var(--light-bg-color);
+}
+
+/* Dark Theme Typing Animation */
+.dark-theme .typing-animation {
+    color: var(--text-color);
+}
+
+.dark-theme .typing-animation::after {
+    color: var(--text-color);
+}
+
+/* Dark Theme Expandable Cards */
+.dark-theme .expandable-card {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .card-info {
+    background: linear-gradient(to top, 
+        rgba(0, 0, 0, 0.95) 0%, 
+        rgba(0, 0, 0, 0.85) 40%, 
+        rgba(0, 0, 0, 0.5) 80%, 
+        transparent 100%);
 }
 
 * {
@@ -345,6 +443,19 @@ nav {
     object-fit: cover;
     transition: transform 0.5s ease;
     transform: scale(1.05);
+}
+
+.hero-slide-image video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    transform: scale(1.05);
+}
+
+.hero-slide:hover .hero-slide-image video {
+    transform: scale(1);
+    filter: blur(3px);
 }
 
 .hero-slide-text {
@@ -1960,18 +2071,29 @@ footer {
        }
 }
 
+.research-slider-button:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+/* Base styles extracted from inline styles */
 .research-slider-button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 2; /* Reduced z-index slightly from previous attempts */
+    background: rgba(255, 255, 255, 0.8);
     border: none;
-    width: 40px; /* Set width */
-    height: 40px; /* Set height to the same value as width */
-    border-radius: 50%; /* Ensure it is round */
+    padding: 10px; /* Adjusted padding for consistency */
+    width: 40px; /* Base width */
+    height: 40px; /* Base height */
+    border-radius: 50%;
     cursor: pointer;
-    padding: 0; /* Remove padding to maintain round shape */
-    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex; /* Added for centering content */
+    align-items: center; /* Added for centering content */
+    justify-content: center; /* Added for centering content */
+    font-size: 1.2rem; /* Added for icon size */
+    color: #333; /* Added for icon color */
 }
 
 .research-slider-button.prev {
@@ -1982,9 +2104,6 @@ footer {
     right: 10px;
 }
 
-.research-slider-button:hover {
-    background-color: rgba(255, 255, 255, 1);
-}
 /* Slider Styles */
 
 
@@ -2809,7 +2928,7 @@ body.slides-complete header {
     position: relative;
 }
 
-/* Default state for all cards (collapsed) */
+/* Card Base Styles */
 .expandable-card {
     flex: 0.5;
     height: 100%;
@@ -2824,7 +2943,7 @@ body.slides-complete header {
     will-change: transform, filter, flex;
 }
 
-/* First card is expanded by default */
+/* First Card (Default Expanded) */
 .expandable-gallery .expandable-card:first-child {
     flex: 2.5;
     filter: saturate(1.1) brightness(1.05);
@@ -2833,7 +2952,7 @@ body.slides-complete header {
     z-index: 10;
 }
 
-/* Default state hides all card info */
+/* Card Information Panel */
 .card-info {
     position: absolute;
     bottom: 0;
@@ -2851,12 +2970,7 @@ body.slides-complete header {
     z-index: 2;
 }
 
-.expandable-gallery.has-active-card .expandable-card:not(.card-active) {
-    flex: 0.5;
-    filter: saturate(0.3) brightness(0.7);
-    transform: translateY(0);
-}
-
+/* Active Card States */
 .expandable-card.card-active {
     flex: 2.5;
     filter: saturate(1.1) brightness(1.05);
@@ -2865,7 +2979,19 @@ body.slides-complete header {
     z-index: 10;
 }
 
-/* When hovering any card in gallery, ensure first card follows collapsed rules if not active */
+.expandable-card.card-active .card-info {
+    transform: translateY(0);
+    backdrop-filter: blur(3px);
+}
+
+/* Gallery with Active Card */
+.expandable-gallery.has-active-card .expandable-card:not(.card-active) {
+    flex: 0.5;
+    filter: saturate(0.3) brightness(0.7);
+    transform: translateY(0);
+}
+
+/* Hover States */
 .expandable-gallery:hover .expandable-card:first-child:not(.card-active) {
     flex: 0.5;
     filter: saturate(0.3) brightness(0.7);
@@ -2876,13 +3002,6 @@ body.slides-complete header {
     transform: translateY(100%);
 }
 
-/* Show card info for active card */
-.expandable-card.card-active .card-info {
-    transform: translateY(0);
-    backdrop-filter: blur(3px);
-}
-
-/* Hover on non-first card */
 .expandable-card:hover:not(:first-child):not(.card-active) {
     flex: 2.5;
     filter: saturate(1.1) brightness(1.05);
@@ -2891,7 +3010,12 @@ body.slides-complete header {
     z-index: 10;
 }
 
-/* Card image transitions */
+.expandable-card:hover .card-info {
+    transform: translateY(0);
+    backdrop-filter: blur(3px);
+}
+
+/* Card Image */
 .card-image {
     width: 100%;
     height: 100%;
@@ -2909,7 +3033,7 @@ body.slides-complete header {
     will-change: transform;
 }
 
-/* Image parallax for hovered/active card */
+/* Image Effects */
 .expandable-card:hover .card-image,
 .expandable-card.card-active .card-image {
     transform: translateY(-5px);
@@ -2920,6 +3044,7 @@ body.slides-complete header {
     transform: scale(1.08) translateY(-2%);
 }
 
+/* Reading Time Badge */
 .expandable-card .reading-time {
     position: absolute;
     top: 15px;
@@ -2931,36 +3056,13 @@ body.slides-complete header {
     font-size: 12px;
     font-weight: 500;
     z-index: 5;
-    width: auto;
     display: inline-block;
     white-space: nowrap;
     letter-spacing: 0.5px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-.card-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 35px 25px 25px;
-    background: linear-gradient(to top, 
-        rgba(0, 0, 0, 0.95) 0%, 
-        rgba(0, 0, 0, 0.8) 40%, 
-        rgba(0, 0, 0, 0.4) 80%, 
-        transparent 100%);
-    color: white;
-    transform: translateY(100%);
-    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-    z-index: 2;
-}
-
-.expandable-card:hover .card-info,
-.expandable-card.card-active .card-info {
-    transform: translateY(0);
-    backdrop-filter: blur(3px);
-}
-
+/* Card Info Elements */
 .card-info .project-tags {
     display: flex;
     flex-wrap: wrap;
@@ -3009,7 +3111,7 @@ body.slides-complete header {
     transform: translateX(5px);
 }
 
-/* Dark Theme Adjustments */
+/* Dark Theme */
 .dark-theme .expandable-card {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
@@ -3032,14 +3134,14 @@ body.slides-complete header {
     
     .expandable-card {
         flex: 1;
-        height: 300px;
+        filter: none;
         margin-bottom: 15px;
+        transform: scale(1);
     }
     
     .expandable-gallery:hover .expandable-card:not(:hover):not(.card-active),
     .expandable-gallery.has-active-card .expandable-card:not(.card-active) {
         flex: 1;
-        filter: saturate(0.5) brightness(0.8);
         transform: scale(0.95);
     }
     
@@ -3047,13 +3149,11 @@ body.slides-complete header {
     .expandable-card.card-active {
         flex: 1;
         transform: translateY(-5px) scale(1);
-        filter: saturate(1.1) brightness(1.05);
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
     }
     
-    /* Always show card info on mobile without requiring hover */
     .card-info {
-        transform: translateY(0) !important; /* Always show */
+        transform: translateY(0);
         padding: 20px 15px;
         max-height: 60%;
         background: linear-gradient(to top, 
@@ -3063,24 +3163,20 @@ body.slides-complete header {
             transparent 100%);
     }
     
-    /* No need for hover state since we're always showing the info */
-    .expandable-card:hover .card-info,
-    .expandable-card.card-active .card-info {
-        transform: translateY(0);
-    }
-    
     .card-info h3 {
-        font-size: 20px;
-        margin-bottom: 5px;
+        font-size: 1.1rem;
+        margin-bottom: 12px;
     }
     
     .card-info p {
-        margin-bottom: 8px;
-        font-size: 14px;
+        font-size: 0.9rem;
+        margin-bottom: 18px;
     }
     
     .card-info .project-tags {
-        margin-bottom: 8px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 5px;
     }
 }
 
@@ -3155,7 +3251,7 @@ body.slides-complete header {
     justify-content: center;
     align-items: center;
     text-align: center;
-    position: relative;
+        position: relative; 
     overflow: hidden;
     transform-style: preserve-3d;
     transition: transform 0.5s ease, box-shadow 0.3s ease, filter 0.3s ease, background-color 0.4s ease; /* Added background-color to transition */
@@ -3593,4 +3689,176 @@ body.slides-complete header {
     .accordion-number {
         font-size: 1.1rem;
     }
+}
+
+/* Mobile styles for research slider buttons */
+.research-slider .research-slider-button {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem; /* Adjust icon size for smaller button */
+}
+
+.research-slider .research-slider-button.prev {
+    left: 8px; /* Fine-tune position */
+}
+
+.research-slider .research-slider-button.next {
+    right: 8px; /* Fine-tune position */
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    /* ... other styles ... */
+
+    /* Ensure text is readable */
+    .card-info h3,
+    .card-info p,
+    .card-info .project-link {
+        color: white !important; /* Override theme color */
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); /* Add subtle shadow for readability */
+    }
+    
+    /* Spacing adjustments (keep from previous edit) */
+    .card-info h3 {
+        font-size: 1.1rem;
+        margin-bottom: 12px; /* Adjusted spacing */
+    }
+
+    .card-info p {
+        font-size: 0.9rem;
+        margin-bottom: 18px; /* Adjusted spacing */
+    }
+
+    .card-info .project-tags {
+        margin-bottom: 24px; /* Adjusted spacing */
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    
+    /* ... other .card-info styles ... */
+
+    /* ... rest of the media query ... */
+}
+
+/* Mobile Responsive - Clean Card Info Styles */
+@media (max-width: 768px) {
+    /* Card text readability */
+    .card-info h3,
+    .card-info p,
+    .card-info .project-link {
+        color: white;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Card spacing */
+    .card-info h3 {
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+    }
+
+    .card-info p {
+        font-size: 0.9rem;
+        margin-bottom: 18px;
+    }
+
+    .card-info .project-tags {
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+}
+
+/* Dark Theme Fun Fact Cards */
+.dark-theme .fun-fact-card {
+    background-color: var(--dark-card-bg);
+    border-color: var(--dark-border-color);
+}
+
+.dark-theme .fun-fact-card .fact-number {
+    color: var(--dark-text-color-secondary);
+}
+
+.dark-theme .fun-fact-card.center-card {
+    background-color: var(--dark-primary-color);
+    color: var(--dark-text-on-primary, #fff);
+}
+
+.dark-theme .fun-fact-card:not(.center-card):hover {
+    background-color: var(--dark-primary-color);
+    color: var(--dark-text-on-primary, #fff);
+}
+
+.dark-theme .fun-fact-card:not(.center-card):hover .fact-info {
+    color: var(--bg-color);
+}
+
+/* Large Text Intro Section */
+.large-text-intro {
+    padding: 150px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.large-text-intro h2 {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--primary-color);
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.2s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+    max-width: 90%;
+    margin: 0 auto;
+    letter-spacing: -0.02em;
+    will-change: transform, opacity;
+}
+
+.large-text-intro.active h2 {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Dark theme styling for large text intro */
+.dark-theme .large-text-intro h2 {
+    color: var(--text-color);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+/* Add a subtle background effect for visual interest */
+.large-text-intro::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+    opacity: 0.2;
+}
+
+.large-text-intro::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+    opacity: 0.2;
+}
+
+@media (max-width: 768px) {
+    .large-text-intro {
+        padding: 80px 0;
+        min-height: 30vh;
+    }
+}
+
+.dark-theme .fun-fact-card .fact-number {
 }

@@ -1660,3 +1660,34 @@ function initExpandableGallery() {
         });
     }
 }
+
+// Scroll animation for large text intro
+document.addEventListener('DOMContentLoaded', function() {
+    const largeTextIntro = document.querySelector('.large-text-intro');
+    
+    if (largeTextIntro) {
+        // Initial check on page load
+        handleScrollAnimation();
+        
+        // Check on scroll
+        window.addEventListener('scroll', handleScrollAnimation);
+        
+        function handleScrollAnimation() {
+            const rect = largeTextIntro.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            // Element is in viewport
+            if (rect.top < windowHeight * 0.75 && rect.bottom > windowHeight * 0.25) {
+                largeTextIntro.classList.add('active');
+            } else {
+                largeTextIntro.classList.remove('active');
+            }
+            
+            // Adjust opacity based on scroll position for fade out effect
+            const scrollProgress = 1 - Math.abs(rect.top) / (windowHeight * 0.5);
+            const opacity = Math.max(0, Math.min(1, scrollProgress));
+            
+            largeTextIntro.style.opacity = opacity;
+        }
+    }
+});

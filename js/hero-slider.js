@@ -83,8 +83,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const text = slide.querySelector('.hero-text-overlay');
         const caption = slide.querySelector('.hero-text-caption');
         const img = slide.querySelector('.hero-slide-image img');
+        const video = slide.querySelector('.hero-slide-image video');
         
-        if (text && img) {
+        if (text) {
             // Responsive font size based on screen width
             if (window.innerWidth <= 480) {
                 text.style.fontSize = '2.5rem';
@@ -99,9 +100,16 @@ document.addEventListener('DOMContentLoaded', function() {
             // On hover, change to solid white with simple shadow
             text.style.color = '#fff';
             text.style.textShadow = '0 4px 8px rgba(0, 0, 0, 0.5)';
-            
+        }
+        
+        if (img) {
             img.style.transform = 'scale(1)';
             img.style.filter = 'blur(3px)';
+        }
+        
+        if (video) {
+            video.style.transform = 'scale(1)';
+            video.style.filter = 'blur(3px)';
         }
         
         if (caption) {
@@ -115,8 +123,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const text = slide.querySelector('.hero-text-overlay');
         const caption = slide.querySelector('.hero-text-caption');
         const img = slide.querySelector('.hero-slide-image img');
+        const video = slide.querySelector('.hero-slide-image video');
         
-        if (text && img) {
+        if (text) {
             // Responsive font size based on screen width
             if (window.innerWidth <= 480) {
                 text.style.fontSize = '2.2rem';
@@ -133,9 +142,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             text.style.color = 'transparent';
-            
+        }
+        
+        if (img) {
             img.style.transform = 'scale(1.05)';
             img.style.filter = 'blur(0)';
+        }
+        
+        if (video) {
+            video.style.transform = 'scale(1.05)';
+            video.style.filter = 'blur(0)';
         }
         
         if (caption) {
