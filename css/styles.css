@@ -4013,3 +4013,69 @@ section#about .about-text-content span.material-icons-outlined {
     display: inline-block; /* Ensures transform applies correctly */
 }
 
+/* Existing CSS ... */
+
+/* Marquee Text Section Styles */
+.marquee-section {
+    width: 100vw; /* Full viewport width */
+    margin-left: calc(-50vw + 50%); /* Center the full-width section */
+    margin-right: calc(-50vw + 50%);
+    overflow: hidden;
+    background-color: var(--background-color);
+    padding: 4rem 0; /* Adjust padding as needed */
+    margin-top: 4rem; /* Add space above the marquee */
+    margin-bottom: 4rem; /* Add space below the marquee */
+}
+
+.marquee {
+    display: flex;
+    width: max-content; /* Ensure the container is wide enough */
+    animation: marquee-scroll 30s linear infinite; /* Adjust duration as needed */
+}
+
+.marquee-text {
+    font-size: clamp(4rem, 10vw, 8rem); /* Responsive font size */
+    font-weight: 900; /* Very bold */
+    color: var(--text-color);
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 0 2rem; /* Space between repetitions */
+    display: inline-block;
+}
+
+@keyframes marquee-scroll {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-50%); /* Scroll by half the width (since text is duplicated) */
+    }
+}
+
+.marquee:hover {
+    animation-play-state: paused; /* Optional: pause on hover */
+}
+
+/* Adjustments for smaller screens if needed */
+@media (max-width: 768px) {
+    .marquee-text {
+        font-size: clamp(3rem, 8vw, 6rem);
+    }
+    .marquee-section {
+        padding: 3rem 0;
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+    }
+    @keyframes marquee-scroll {
+        0% {
+            transform: translateX(0%);
+        }
+        100% {
+            transform: translateX(-50%); 
+        }
+    }
+}
+
+/* Contact Section Styles */
+/* ... Rest of the CSS ... */
+
