@@ -315,7 +315,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initAnimations();
     initHeaderShadow();
     initScrollToTop();
-    initShowMoreButton();
     initTypingAnimation();
     initHeroSliderScrollEffect();
     initOnewheelAnimation();
@@ -570,70 +569,27 @@ function initHeaderShadow() {
 
 // Scroll to Top Button
 function initScrollToTop() {
-    // Fix position issues with scroll-to-top button
-    if (scrollToTopBtn) {
-        scrollToTopBtn.style.position = 'fixed';
-        scrollToTopBtn.style.bottom = '30px';
-        scrollToTopBtn.style.right = '30px';
-        scrollToTopBtn.style.zIndex = '1000';
+    const scrollToTopBtn = document.getElementById('scroll-to-top');
+
+    if (!scrollToTopBtn) {
+        console.warn('Scroll to Top button not found.');
+        return;
     }
 
-    // Show/hide button based on scroll position
     window.addEventListener('scroll', () => {
-        // Show when scrolled down 300px from the top
         if (window.scrollY > 300) {
             scrollToTopBtn.classList.add('visible');
         } else {
             scrollToTopBtn.classList.remove('visible');
         }
     });
-    
-    // Scroll to top when button is clicked
+
     scrollToTopBtn.addEventListener('click', () => {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
     });
-}
-
-// Show More Button
-function initShowMoreButton() {
-    if (showMoreBtn && hiddenProjects) {
-        // Check if elements exist
-        console.log('Show More Button:', showMoreBtn);
-        console.log('Hidden Projects:', hiddenProjects);
-        
-        showMoreBtn.addEventListener('click', () => {
-            console.log('Show More Button clicked');
-            hiddenProjects.classList.toggle('visible');
-            showMoreBtn.classList.toggle('active');
-            
-            console.log('Hidden Projects visible:', hiddenProjects.classList.contains('visible'));
-            
-            // Scroll to the newly visible projects if they're now visible
-            if (hiddenProjects.classList.contains('visible')) {
-                // Wait for the transition to complete
-                setTimeout(() => {
-                    // Scroll to the show more button instead of the first hidden project
-                    // This ensures users can see the projects emerge from the bottom
-                    const scrollTarget = showMoreBtn;
-                    if (scrollTarget) {
-                        const offsetTop = scrollTarget.getBoundingClientRect().top + window.pageYOffset - 120;
-                        
-                        window.scrollTo({
-                            top: offsetTop,
-                            behavior: 'smooth'
-                        });
-                    }
-                }, 50); // Reduced time to start scrolling sooner
-            }
-        });
-    } else {
-        console.error('Show More Button or Hidden Projects not found');
-        if (!showMoreBtn) console.error('Show More Button not found');
-        if (!hiddenProjects) console.error('Hidden Projects not found');
-    }
 }
 
 // Typing Animation

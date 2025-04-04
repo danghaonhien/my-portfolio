@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | Designer & Developer</title>
+    <title>Toto's Portfolio</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/about-image-trail.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -229,15 +230,24 @@
 
             </div>
             
-            <!-- Show More Button -->
-            <!-- <div class="show-more-container">
-                <button id="show-more-btn" class="btn secondary-btn">
-                    <span class="show-text">Show More</span>
-                    <span class="hide-text">Show Less</span>
-                </button>
-            </div> -->
         </section>
         
+        <!-- Launch Product Link Section -->
+        <section class="launch-product-section">
+            <div class="launch-product-container">
+                <a href="https://www.theboringdev.com/reword-this" target="_blank" class="launch-product-link">
+                    <span class="link-text-default">LAUNCH PRODUCT</span>
+                    <span class="link-text-hover">
+                        <img src="images/reword-this/icon128.png" alt="Reword This logo" class="link-logo">
+                        Reword This
+                    </span>
+                </a>
+                <span class="animated-arrow"><i class="fas fa-arrow-up"></i></span>
+                <div class="tooltip-video-container">
+                    <video src="videos/reword-this-demo.mp4" autoplay loop muted playsinline preload="auto"></video>
+                </div>
+            </div>
+        </section>
         <!-- Marquee Text Section -->
         <section class="marquee-section animate-fade-in">
             <div class="marquee">
@@ -248,13 +258,18 @@
 
         <!-- About Section -->
         <section id="about" class="about ">
-            <div class="section-header animate-fade-in">
+            <!-- <div class="section-header animate-fade-in">
                 <h2>About Me</h2>
                 <div class="section-line"></div>
-            </div>
+            </div> -->
             <div class="about-content animate-fade-in">
                 <div class="about-text">
-                    <!-- <div class="about-text-container"> -->
+                    <!-- Start: Added Profile Image and Trail Container -->
+                    <div class="profile-image-container">
+                        <div class="profile-image-wrapper">
+                             <img src="images/about/profile.jpg" alt="Profile Image" class="profile-central-image">
+                        </div>
+                        <div class="image-trail-area"></div> <!-- Container for trail images -->
                         <div class="about-text-content">
                             <p>
                                 <span class="material-icons-outlined icon-wave">waving_hand</span> Hey, I'm Nhien Dang, or call me Toto <span class="material-icons-outlined">emoji_people</span>, a product designer with 5 years of experience—and a
@@ -270,13 +285,11 @@
                                     class="onewheel-svg dark-mode-only">
                             </div>
                         </div>
-                        <!-- <div class="hero-image animate-fade-in">
-
-                            <div class="hero-image-inner">
-                                <img src="images/about/profile.jpg" alt="Profile Image">
-                            </div>
-                            <div class="tooltip">Hey, I'm Toto!</div>
-                        </div> -->
+                    </div>
+                    <!-- End: Added Profile Image and Trail Container -->
+                    <!-- <div class="about-text-container"> -->
+                        <!-- Original location of about-text-content (now empty or remove this structure if desired) -->
+                        
                     <!-- </div> -->
                     <!-- <p>My approach combines aesthetic sensibility with technical expertise to deliver solutions that are not only visually appealing but also functionally robust.</p> -->
                     
@@ -438,36 +451,46 @@
     <script src="js/large-text-intro.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function () {
             const heroImage = document.querySelector('.hero-image');
-            const tooltip = heroImage.querySelector('.tooltip');
+            
+            // Add check to ensure heroImage exists
+            if (heroImage) { 
+                const tooltip = heroImage.querySelector('.tooltip');
 
-            // Show tooltip on mouse enter
-            heroImage.addEventListener('mouseenter', function () {
-                tooltip.style.display = 'block'; // Show tooltip
-            });
+                // Ensure tooltip also exists
+                if (tooltip) {
+                    // Show tooltip on mouse enter
+                    heroImage.addEventListener('mouseenter', function () {
+                        tooltip.style.display = 'block'; // Show tooltip
+                    });
 
-            // Hide tooltip on mouse leave
-            heroImage.addEventListener('mouseleave', function () {
-                tooltip.style.display = 'none'; // Hide tooltip
-            });
+                    // Hide tooltip on mouse leave
+                    heroImage.addEventListener('mouseleave', function () {
+                        tooltip.style.display = 'none'; // Hide tooltip
+                    });
 
-            // Move tooltip with mouse
-            heroImage.addEventListener('mousemove', function (e) {
-                const x = e.clientX - heroImage.getBoundingClientRect().left; // Get mouse position relative to hero image
-                const y = e.clientY - heroImage.getBoundingClientRect().top; // Get mouse position relative to hero image
-                tooltip.style.left = `${x}px`; // Set tooltip position
-                tooltip.style.top = `${y}px`;
-                tooltip.style.transform = 'translate(-90%, -100%)'; // Adjust for tooltip height
-            });
+                    // Move tooltip with mouse
+                    heroImage.addEventListener('mousemove', function (e) {
+                        const x = e.clientX - heroImage.getBoundingClientRect().left; // Get mouse position relative to hero image
+                        const y = e.clientY - heroImage.getBoundingClientRect().top; // Get mouse position relative to hero image
+                        tooltip.style.left = `${x}px`; // Set tooltip position
+                        tooltip.style.top = `${y}px`;
+                        tooltip.style.transform = 'translate(-90%, -100%)'; // Adjust for tooltip height
+                    });
+                }
+            } // End of heroImage check
         });</script>
 
     <!-- Custom Cursor Script -->
-    <script src="js/cursor.js"></script>
+    <!-- REMOVE: <script src="js/cursor.js"></script> -->
     <!-- GSAP for animations (optional, if you use it) -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/ScrollTrigger.min.js"></script> -->
     <!-- Custom Scripts -->
-    <script src="js/scripts.js"></script>
+    <!-- REMOVE: <script src="js/scripts.js"></script> -->
     <script src="js/expandable-gallery.js"></script>
+    <script src="js/tooltip-video.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/image-trail.js"></script>
 
     <script>
         // Tap to reveal email on mobile/touch

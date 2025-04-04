@@ -1,0 +1,84 @@
+/* About Me Image Trail Styles */
+.profile-image-container {
+    position: relative; /* Needed for absolute positioning of trail area */
+    display: flex;
+    flex-direction: column; /* Stack image and text vertically */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Align items to the center */
+    padding: 40px 0 60px; /* Adjusted padding, added bottom padding */
+    min-height: 50vh; /* Keep minimum height */
+    margin-bottom: 30px; /* Space below the container */
+    /* overflow: hidden; Optional: if you want to strictly contain trails */
+}
+
+.profile-image-wrapper {
+    position: relative;
+    display: inline-block;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    width: 400px; /* User's width */
+    height: auto; /* User's height */
+    overflow: hidden;
+}
+
+.profile-central-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* Optional: slight zoom on hover */
+/* .profile-image-wrapper:hover .profile-central-image {
+    transform: scale(1.05);
+} */
+
+.image-trail-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
+    z-index: 0;
+}
+
+.trail-image {
+    position: absolute;
+    width: 200px; /* User's width */
+    height: 240px; /* User's height */
+    object-fit: cover;
+    border-radius: 5px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) rotate(10deg);
+    transition: opacity 0.5s ease-out;
+    will-change: opacity;
+    z-index: -1;
+    border: 2px solid var(--background-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.trail-image.active {
+    opacity: 1;
+    transition: opacity 0.1s ease-in;
+}
+
+/* Styling for the moved text content */
+.profile-image-container .about-text-content {
+    width: 400px; /* Match profile-image-wrapper width */
+    max-width: 90%; /* Prevent overflow on very small screens */
+    margin: 30px auto 0; /* Top margin, centered horizontally */
+    position: relative; /* Keep in flow */
+    z-index: 1; /* Ensure it's above trail area if needed */
+    text-align: left; /* Align text to left, or center if preferred */
+}
+
+.profile-image-container .about-text-content p {
+    margin-bottom: 20px; /* Space below paragraph */
+}
+
+.profile-image-container .onewheel-container {
+    margin-top: 15px; /* Adjust space above onewheel */
+    text-align: center; /* Center the onewheel image */
+} 

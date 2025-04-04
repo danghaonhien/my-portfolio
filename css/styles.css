@@ -1334,125 +1334,9 @@ footer {
     background-color: var(--hover-color);
 }
 
-/* Hidden Projects */
-.hidden-projects {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 40px;
-    margin-top: 40px;
-    opacity: 0;
-    max-height: 0;
-    overflow: visible;
-    transition: opacity 0.5s ease, max-height 0.5s ease, visibility 0.5s ease, transform 0.5s ease;
-    visibility: hidden;
-    padding: 2px;
-    width: 100%; /* Ensure full width */
-    transform: translateY(50px); /* Start from below */
-    position: relative;
-}
+/* Hidden Projects - REMOVED */
 
-.hidden-projects.visible {
-    opacity: 1;
-    max-height: 3000px;
-    visibility: visible;
-    margin-bottom: 2px;
-    overflow: visible;
-    transform: translateY(0); /* Move to normal position */
-}
-
-.hidden-projects .project-card {
-    background-color: var(--bg-color);
-    border-radius: var(--border-radius);
-    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.15), -4px -4px 12px rgba(255, 255, 255, 0.7);
-    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s ease;
-    position: relative;
-    z-index: 1;
-    overflow: visible !important;
-    width: 100%;
-    height: auto;
-}
-
-.hidden-projects .project-image {
-    position: relative;
-    overflow: hidden;
-    border-radius: var(--border-radius) var(--border-radius) 0 0;
-    z-index: 2;
-    background-color: var(--bg-color);
-    height: 300px;
-}
-
-.hidden-projects .project-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-.hidden-projects .project-card:hover img {
-    transform: scale(1.05);
-}
-
-.hidden-projects .project-card::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    border-radius: var(--border-radius);
-    background: linear-gradient(45deg, #12c2e9, #c471ed, #f64f59, #4e54c8, #8f94fb);
-    background-size: 400% 400%;
-    animation: gradientBorder 20s linear infinite;
-    opacity: 0;
-    transition: opacity 0.6s ease;
-    z-index: -1;
-    pointer-events: none;
-}
-
-.hidden-projects .project-card:hover::before {
-    opacity: 1;
-}
-
-@media (min-width: 768px) {
-    .hidden-projects {
-        grid-template-columns: repeat(2, 1fr);
-        width: 100%; /* Ensure full width */
-    }
-    
-    /* Ensure consistent spacing */
-    .hidden-projects .project-card {
-        margin: 0; /* Reset any margins */
-        width: 100%; /* Ensure full width */
-    }
-}
-
-/* Show More Container */
-.show-more-container {
-    text-align: center;
-    margin-top: 60px;
-    padding-bottom: 2px; /* Add padding to account for gradient border overflow */
-    width: 100%;
-    display: block; /* Ensure visibility */
-}
-
-#show-more-btn {
-    padding: 12px 30px;
-    font-size: 16px;
-    position: relative;
-    display: inline-block; /* Ensure button is visible */
-}
-
-#show-more-btn .hide-text {
-    display: none;
-}
-
-#show-more-btn.active .show-text {
-    display: none;
-}
-
-#show-more-btn.active .hide-text {
-    display: inline;
-}
+/* Show More Container - REMOVED */
 
 /* Resume Button */
 .resume-btn {
@@ -1506,6 +1390,8 @@ footer {
 .dark-theme .project-card::before {
     background: linear-gradient(45deg, #00f5a0, #00d9f5, #a100f2, #f20089, #00f5a0);
 }
+
+/* Dark Theme Hidden Projects - REMOVED */
 
 .project-card.featured,
 .project-card.secondary-featured {
@@ -4117,4 +4003,223 @@ section#about .about-text-content span.material-icons-outlined {
         text-align: center; /* Center text inside ::after on mobile */
     }
 }
+
+/* Launch Product Link Section */
+.launch-product-section {
+    padding: 4rem 0; /* Adjust padding as needed */
+    /* background-color: var(--background-color); Remove if you want it to blend with the main background */
+}
+
+.launch-product-container {
+    position: relative; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    background-color: #333; 
+    /* Remove width and margin transitions */
+    transition: background-color 0.3s ease; /* Restore original background transition if needed, or remove if only using wipe */
+    padding: 4rem 4rem 4rem 2rem; 
+    margin: 0 auto; 
+    max-width: var(--container-width); 
+    width: var(--container-width); 
+    overflow: hidden; 
+    cursor: pointer; 
+    height: auto; 
+    min-height: 90px; 
+    z-index: 0; 
+}
+
+/* Add pseudo-element for hover background effect */
+.launch-product-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0; /* Start hidden */
+    background-color: #D97904; /* Hover color */
+    transition: width 0.5s ease-in-out; /* Wipe transition */
+    z-index: -1; /* Position behind the content */
+}
+
+.launch-product-container:hover {
+    /* Remove width/margin expansion properties */
+    /* Keep other hover effects implicitly handled by pseudo-element and text rules */
+}
+
+/* Make pseudo-element expand on hover */
+.launch-product-container:hover::before {
+    width: 100%;
+}
+
+.launch-product-link {
+    /* Ensure link content is above pseudo-element */
+    position: relative; 
+    z-index: 1;
+    font-size: 3rem; 
+    font-weight: bold;
+    color: #fff; 
+    text-decoration: none;
+    display: inline-flex; /* Use inline-flex to align items inside */
+    align-items: center;
+    transition: color 0.3s ease; 
+    position: relative; /* Needed for absolute positioning of text spans if required */
+    cursor: default; /* Remove pointer cursor from the link itself */
+    pointer-events: none; /* Prevent link from capturing clicks */
+    width: 100%; /* Ensure full width containment */
+    height: 100%; /* Ensure full height containment */
+}
+
+/* Style both text states consistently */
+.launch-product-link .link-text-default,
+.launch-product-link .link-text-hover {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    /* Initial center position for default, will be overridden for hover */
+    transform: translateY(-50%); 
+    /* Add transform to the transition */
+    transition: opacity 0.3s ease, transform 0.3s ease; 
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+}
+
+/* Hide hover text by default and set its initial lower position */
+.launch-product-link .link-text-hover {
+    opacity: 0;
+    visibility: hidden;
+    /* Initial position lower for slide-up effect */
+    transform: translateY(-25%); 
+}
+
+/* Show hover text and hide/slide default on container hover */
+.launch-product-container:hover .launch-product-link .link-text-default {
+    opacity: 0;
+    visibility: hidden;
+    /* Transform to slide down */
+    transform: translateY(50%); 
+}
+
+.launch-product-container:hover .launch-product-link .link-text-hover {
+    opacity: 1;
+    visibility: visible;
+    /* Keep absolute positioning if needed, but ensure transform is reset */
+    position: absolute; 
+    padding-bottom: 5px; 
+    /* Transform back to the centered position */
+    transform: translateY(-50%); 
+}
+
+/* Add the underline pseudo-element for hover text */
+.launch-product-link .link-text-hover::after {
+    /* Remove underline pseudo-element */
+    content: none;
+}
+
+/* Animate underline on container hover */
+.launch-product-container:hover .launch-product-link .link-text-hover::after {
+    transform: scaleX(1);
+}
+
+.link-logo {
+    height: 1.2em; /* Adjust size relative to font size */
+    width: auto;
+    margin-right: 0.5em; /* Space between logo and text */
+    vertical-align: middle; /* Align logo nicely with text */
+}
+
+/* Arrow Styling and Animation */
+.animated-arrow {
+    /* Ensure arrow is above pseudo-element */
+    position: absolute;
+    z-index: 1;
+    font-size: 2rem; /* Adjust arrow size */
+    color: #fff; /* Arrow color */
+    transition: transform 0.3s ease; /* Only transition transform */
+    opacity: 1; /* Visible by default */
+    /* transform: translateX(-10px); Remove initial transform */
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(0deg); /* Default state (up arrow doesn't need rotation) */
+}
+
+.launch-product-container:hover .animated-arrow {
+    opacity: 1; /* Keep visible */
+    transform: translateY(-50%) rotate(90deg); /* Rotate to point right on hover */
+}
+
+/* Style for the video tooltip - Increased Size */
+.tooltip-video-container {
+    display: none; 
+    position: fixed; 
+    left: 0; 
+    top: 0; 
+    width: 450px; /* << Increased width */
+    height: auto; 
+    background-color: rgba(0, 0, 0, 0.85); /* Slightly darker background */
+    border-radius: 8px; /* Match container radius */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1000; 
+    pointer-events: none; 
+    overflow: hidden; 
+    /* Center tooltip on cursor horizontally and vertically */
+    transform: translate(-50%, -50%); 
+}
+
+.tooltip-video-container video {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Show tooltip when hovering the container */
+.launch-product-container:hover .tooltip-video-container {
+    /* display: block; Will be controlled by JS */
+}
+
+/* Mobile Responsive adjustments for Launch Product Section */
+@media (max-width: 768px) {
+    .launch-product-container {
+        padding: 2.5rem 2rem 2.5rem 1.5rem; /* Adjust padding for smaller screens */
+        min-height: auto; /* Allow height to adjust */
+    }
+
+    .launch-product-link {
+        font-size: 1.8rem; /* Reduce font size */
+    }
+
+    /* Hide default text on mobile */
+    .launch-product-link .link-text-default {
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    /* Show hover text by default on mobile and center it */
+    .launch-product-link .link-text-hover {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%); /* Ensure centered */
+        position: absolute; /* Keep positioning relative to link */
+        display: flex; /* Ensure flex properties apply */
+    }
+
+    /* Hide the arrow on mobile */
+    .animated-arrow {
+        display: none;
+    }
+
+    /* Hide the tooltip on mobile (optional, as hover is less common) */
+    .tooltip-video-container {
+        display: none !important;
+    }
+}
+
+    /* Show the arrow on mobile */
+    .animated-arrow {
+        display: block; /* Ensure the arrow is displayed */
+    }
+
+    /* Hide the tooltip on mobile (optional, as hover is less common) */
 
