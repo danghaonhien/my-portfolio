@@ -1584,7 +1584,6 @@ function initOnewheelAnimation() {
     // Set initial state after a short delay to allow layout calculation
     setTimeout(setInitialState, 100);
 }
-
 // Initialize Expandable Gallery
 function initExpandableGallery() {
     const expandableCards = document.querySelectorAll('.expandable-card');
