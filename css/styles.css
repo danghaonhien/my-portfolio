@@ -3987,3 +3987,29 @@ body.slides-complete header {
     }
 }
 
+/* Waving hand animation */
+@keyframes wave-hand {
+    0%, 60%, 100% { transform: rotate( 0.0deg); }
+    10%, 30%       { transform: rotate(14.0deg); }
+    20%, 40%       { transform: rotate(-8.0deg); }
+    50%            { transform: rotate(-4.0deg); }
+}
+
+/* Apply waving animation constantly to the hand icon */
+section#about .about-text-content span.icon-wave {
+    animation: wave-hand 2.5s infinite;
+    transform-origin: 70% 70%; /* Adjust pivot point for wave */
+}
+
+/* Apply spinning animation constantly to the hourglass icon */
+section#about .about-text-content span.icon-spin {
+    animation: spin 3s linear infinite; /* Adjust duration and timing as needed */
+}
+
+/* Base styles for About Me icons (size, alignment, display) */
+section#about .about-text-content span.material-icons-outlined {
+    font-size: 1.8rem; /* Adjust size as needed */
+    vertical-align: middle; /* Align icons vertically */
+    display: inline-block; /* Ensures transform applies correctly */
+}
+
