@@ -25,10 +25,10 @@ function initFunFactToggle() {
     });
 }
 
-// Magnetic effect for Fun Fact Cards (Skew + Translate + Hover Scale)
+// Magnetic effect for Fun Fact Cards (Translate + Hover Scale) - Re-enabled without Skew
 function initCardMagneticEffect() {
     const cards = document.querySelectorAll('.fun-fact-card:not(.center-card)');
-    const baseTransform = 'skew(-10deg)'; // Base skew for ALL cards
+    // const baseTransform = 'skew(-10deg)'; // REMOVED Skew
     const hoverScale = 0.98; // Make slightly smaller on hover
 
     cards.forEach(card => {
@@ -47,16 +47,15 @@ function initCardMagneticEffect() {
             currentY += (targetY - currentY) * damping;
             currentScale += (targetScale - currentScale) * damping;
 
-            // Apply base skew, magnetic translate, and current scale
-            let dynamicTransform = `translate(${currentX}px, ${currentY}px) scale(${currentScale})`;
-            card.style.transform = `${baseTransform} ${dynamicTransform}`;
+            // Apply magnetic translate and current scale (NO SKEW)
+            card.style.transform = `translate(${currentX}px, ${currentY}px) scale(${currentScale})`;
 
             // Continue animating if translation or scale needs adjustment
             if (Math.abs(targetX - currentX) > 0.01 || Math.abs(targetY - currentY) > 0.01 || Math.abs(targetScale - currentScale) > 0.01) {
                 animationFrameId = requestAnimationFrame(updatePosition);
             } else {
-                // Snap to final state
-                 card.style.transform = `${baseTransform} translate(${targetX}px, ${targetY}px) scale(${targetScale})`;
+                // Snap to final state (NO SKEW)
+                 card.style.transform = `translate(${targetX}px, ${targetY}px) scale(${targetScale})`;
                  cancelAnimationFrame(animationFrameId);
                  animationFrameId = null;
             }
@@ -74,11 +73,14 @@ function initCardMagneticEffect() {
              card.style.backgroundColor = primaryColor || '#343A40';
              card.style.color = 'white';
 
-             // Handle number/info visibility
+             // Handle number/info visibility AND slide-up
              const numberEl = card.querySelector('.fact-number');
              const infoEl = card.querySelector('.fact-info');
              if(numberEl) numberEl.style.opacity = '0';
-             if(infoEl) infoEl.style.opacity = '1';
+             if(infoEl) {
+                infoEl.style.opacity = '1';
+                infoEl.style.transform = 'translateY(0)'; // Slide up
+             }
 
              // Start animation
               if (!animationFrameId) {
@@ -119,11 +121,14 @@ function initCardMagneticEffect() {
              card.style.backgroundColor = cardBg || 'inherit';
              card.style.color = '';
 
-             // Handle number/info visibility reset
+             // Handle number/info visibility reset AND slide-down
              const numberEl = card.querySelector('.fact-number');
              const infoEl = card.querySelector('.fact-info');
              if(numberEl) numberEl.style.opacity = '1';
-             if(infoEl) infoEl.style.opacity = '0';
+             if(infoEl) {
+                infoEl.style.opacity = '0';
+                infoEl.style.transform = 'translateY(20px)'; // Reset slide-down position
+             }
 
              // Start animation to return to center and scale back up
              if (!animationFrameId) {
@@ -133,8 +138,8 @@ function initCardMagneticEffect() {
     });
 }
 
-// Initialize the Fun Fact toggle and magnetic effect when the DOM is ready
+// Initialize the Fun Fact toggle AND the modified magnetic effect
 document.addEventListener('DOMContentLoaded', () => {
     initFunFactToggle();
-    initCardMagneticEffect();
+    initCardMagneticEffect(); // Re-enabled
 }); 

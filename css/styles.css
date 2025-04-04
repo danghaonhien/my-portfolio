@@ -1718,11 +1718,11 @@ footer {
     }
 
     /* Remove counter-skew on mobile */
-    .fun-fact-card span,
+    /* .fun-fact-card span,
     .fun-fact-card .fact-info,
     .fun-fact-card .fact-number {
         transform: none;
-    }
+    } */
 
      /* Adjust font size */
     .fun-fact-card .fact-number {
@@ -1731,7 +1731,7 @@ footer {
 
     /* Simpler hover transform on mobile */
      .fun-fact-card:not(.center-card):hover {
-        transform: scale(1.03);
+        transform: none !important;
         /* Inherits other hover styles like background/color change */
     }
 
@@ -3334,13 +3334,13 @@ body.slides-complete header {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Responsive grid */
     gap: 20px;
-    perspective: 1000px; /* For 3D effect on hover */
+    /* perspective: 1000px; Removed */
 }
 
 .fun-fact-card {
     background-color: var(--card-bg); /* Use theme variable */
     border: 1px solid var(--border-color);
-    /* border-radius: 8px;  Removed for skew */
+    border-radius: 8px; /* Restored */
     padding: 20px;
     aspect-ratio: 1 / 1; /* Make cards square */
     display: flex;
@@ -3348,24 +3348,12 @@ body.slides-complete header {
     justify-content: center;
     align-items: center;
     text-align: center;
-        position: relative; 
+    position: relative; 
     overflow: hidden;
-    transform-style: preserve-3d;
-    transition: transform 0.5s ease, box-shadow 0.3s ease, filter 0.3s ease, background-color 0.4s ease; /* Added background-color to transition */
+    /* transform-style: preserve-3d; Removed */
+    transition: box-shadow 0.3s ease, filter 0.3s ease, background-color 0.4s ease; /* Removed transform from transition */
     filter: grayscale(100%); /* Monotone */
     cursor: pointer;
-    transform: skew(-10deg); /* Diagonal effect */
-    border-radius: 0; /* Ensure skew works well */
-}
-
-/* Counter-skew content inside cards */
-.fun-fact-card span,
-.fun-fact-card .fact-info,
-.fun-fact-card .fact-number {
-    transform: skew(10deg); /* Base counter-skew */
-    display: block; 
-    width: 100%; 
-    transition: opacity 0.4s ease, transform 0.4s ease; /* Add/ensure transform transition */
 }
 
 .fun-fact-card .fact-number {
@@ -3392,89 +3380,54 @@ body.slides-complete header {
     box-sizing: border-box; 
     z-index: 2; 
     font-size: 0.9rem;
-    /* Initial slide-down position. Skew handled by separate rule */
-    transform: translateY(20px);
-    /* Base transition handled above */
+    transform: translateY(20px); /* Initial slide-down position. */
+    transition: opacity 0.4s ease, transform 0.4s ease; /* ADDED transition */
 }
 
-/* Update hover states to include slide transforms */
+/* Update hover states to include slide transforms - REMOVING CSS HOVER */
+/*
 .fun-fact-card:not(.center-card):hover .fact-number {
     opacity: 0;
-    transform: translateY(20px); /* Slide down. Skew handled by separate rule */
+    transform: translateY(20px); 
 }
 
 .fun-fact-card:not(.center-card):hover .fact-info {
     opacity: 1;
-    transform: translateY(0); /* Slide up. Skew handled by separate rule */
+    transform: translateY(0); 
 }
+*/
+
+/* Remove base hover transform removal */
+/*
+.fun-fact-card:not(.center-card):hover {
+    transform: none !important;
+}
+*/
 
 @media (max-width: 768px) {
 
-    /* Remove counter-skew on mobile and set initial positions/transitions */
-    .fun-fact-card span,
-    .fun-fact-card .fact-number {
-        transform: none; /* Remove skew */
-         transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-    .fun-fact-card .fact-info {
-        transform: translateY(20px); /* Initial slide-down, no skew */
-        transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-
-     /* Update hover transforms for mobile (no skew) */
+    /* REMOVING CSS HOVER RULES BELOW */
+    /*
      .fun-fact-card:not(.center-card):hover .fact-number {
-        transform: translateY(20px); /* Slide down */
+        transform: translateY(20px); 
         opacity: 0;
     }
      .fun-fact-card:not(.center-card):hover .fact-info {
-         transform: translateY(0); /* Slide up */
+         transform: translateY(0); 
          opacity: 1;
     }
-    /* Keep the simpler scale hover for the card itself */
      .fun-fact-card:not(.center-card):hover {
-        transform: scale(1.03);
+        transform: none !important;
     }
-     /* --- OTHER 768px STYLES --- */
-     .case-study-header h1 {
-         font-size: 36px;
-     }
-     /* ... keep other 768px styles ... */
+    */
+    /* --- OTHER 768px STYLES --- */
+    .case-study-header h1 {
+        font-size: 36px;
+    }
+    /* ... keep other 768px styles ... */
 }
 
 
-@media (max-width: 480px) {
-
-    /* Apply same transform logic as 768px */
-    .fun-fact-card span,
-    .fun-fact-card .fact-number {
-        transform: none;
-        transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-    .fun-fact-card .fact-info {
-        transform: translateY(20px); /* Initial slide-down, no skew */
-        transition: opacity 0.4s ease, transform 0.4s ease;
-        padding: 10px 15px; /* Keep adjusted padding */
-    }
-
-    /* Update hover transforms for mobile (no skew) */
-    .fun-fact-card:not(.center-card):hover .fact-number {
-        transform: translateY(20px); /* Slide down */
-        opacity: 0;
-    }
-     .fun-fact-card:not(.center-card):hover .fact-info {
-         transform: translateY(0); /* Slide up */
-         opacity: 1;
-    }
-    /* Keep the simpler scale hover for the card itself */
-    .fun-fact-card:not(.center-card):hover {
-        transform: scale(1.02);
-    }
-     /* --- OTHER 480px STYLES --- */
-     .hero-slider {
-         height: 70vh;
-     }
-     /* ... keep other 480px styles ... */
-}
 
 /* Style the center card specifically */
 .fun-fact-card.center-card {
@@ -3483,7 +3436,7 @@ body.slides-complete header {
     font-weight: bold;
     filter: grayscale(0%); /* Not monotone */
     cursor: default; /* Not interactive */
-    /* Skew is already applied to all cards */
+    /* Skew was removed from base card */
 }
 
 .dark-theme .fun-fact-card {
@@ -3537,12 +3490,7 @@ body.slides-complete header {
         border-radius: 8px;
      }
 
-    /* Remove counter-skew */
-    .fun-fact-card span,
-    .fun-fact-card .fact-info,
-    .fun-fact-card .fact-number {
-        transform: none;
-    }
+  
 
     /* Adjust font sizes for very small screens */
     .fun-fact-card .fact-number {
@@ -3637,18 +3585,9 @@ body.slides-complete header {
 
 /* Add styles at the end of the file */
 
-/* Counter-skew text within fun-fact cards */
-.fun-fact-card .fact-number,
-.fun-fact-card .fact-info {
-    display: inline-block; /* Ensure transform applies correctly */
-    transform: skew(10deg); /* Counteract the default -10deg skew (applied to ALL cards now) */
-}
 
-/* Counter-skew text within offer cards */
-.fun-fact-card.offer-card .fact-number,
-.fun-fact-card.offer-card .fact-info {
-    transform: skew(-10deg); /* Counteract the offer card's +10deg skew */
-}
+
+
 
 /* Accordion Styles (for What can I offer section) */
 .accordion {
