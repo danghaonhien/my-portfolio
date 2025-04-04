@@ -4018,3 +4018,103 @@ section#about .about-text-content span.material-icons-outlined {
 /* Contact Section Styles */
 /* ... Rest of the CSS ... */
 
+/* Say Hi Section */
+.say-hi-section {
+    padding: 100px 0; /* Adjust padding as needed */
+    text-align: right; /* Align text to the right within the container */
+    position: relative;
+    overflow: hidden;
+    /* Remove full-width properties */
+    /* width: 100vw; */
+    /* margin-left: calc(-50vw + 50%); */
+    /* margin-right: calc(-50vw + 50%); */
+}
+
+.say-hi-section .container {
+    position: relative; /* Needed for pseudo-element positioning */
+    /* Restore default container behavior if needed, assuming .container has max-width/padding */
+    /* max-width: 100%; */
+    /* padding: 0; */
+}
+
+.say-hi-text {
+    font-size: clamp(4rem, 12vw, 10rem); /* Large, responsive font size */
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-color);
+    cursor: pointer; /* Indicate interactivity */
+    display: inline-block; /* Keep inline-block for right alignment */
+    position: relative;
+    transition: color 0.3s ease;
+    margin: 0;
+    /* Padding might be needed again depending on container */
+    /* padding: 0 20px; */
+}
+
+.say-hi-text::after {
+    content: attr(data-email); /* Get email from data attribute */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--primary-color); /* Email color */
+    background-color: var(--bg-color); /* Match background */
+    opacity: 0;
+    transform: translateY(20%); /* Start slightly down */
+    transition: opacity 0.3s ease, transform 0.3s ease, font-size 0.3s ease; /* Add font-size transition */
+    pointer-events: none; /* Prevent pseudo-element blocking hover */
+    display: flex;
+    align-items: center; /* Vertically center email */
+    justify-content: flex-end; /* Align revealed email to the right */
+    text-align: right; /* Ensure text inside ::after is right-aligned */
+    font-size: clamp(4rem, 8vw, 6rem); /* Increased responsive font size */
+}
+
+/* Desktop Hover Styles */
+@media (hover: hover) {
+    .say-hi-text:hover {
+        color: transparent; /* Hide original text */
+    }
+    .say-hi-text:hover::after {
+        opacity: 1;
+        transform: translateY(0); /* Slide email into place */
+    }
+}
+
+/* Touch/Mobile Tap Styles */
+.say-hi-text.email-revealed {
+    color: transparent; /* Hide original text */
+}
+.say-hi-text.email-revealed::after {
+    opacity: 1;
+    transform: translateY(0); /* Slide email into place */
+}
+
+/* Remove the text-align you added previously, it's handled by flex */
+/* .say-hi-text:hover::after {
+    text-align: center;
+} */
+
+/* Dark Theme Adjustments */
+.dark-theme .say-hi-text::after {
+    color: var(--primary-color); /* Email color in dark mode */
+    background-color: var(--bg-color);
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+    .say-hi-section {
+        padding: 60px 0;
+        text-align: center; /* Center on mobile */
+    }
+    .say-hi-text {
+        /* padding: 0 10px; Remove padding */
+    }
+    .say-hi-text::after {
+        font-size: clamp(2rem, 6vw, 4rem); /* Increased mobile responsive font size */
+        justify-content: center; /* Center revealed email on mobile */
+        text-align: center; /* Center text inside ::after on mobile */
+    }
+}
+
