@@ -60,6 +60,41 @@ document.addEventListener('DOMContentLoaded', () => {
         // });
     }
 
+    // Looping Text Animation
+    const loopingTextContainer = document.querySelector('.looping-text-container');
+    if (loopingTextContainer) {
+        const textItems = loopingTextContainer.querySelectorAll('.looping-text-item');
+        let currentIndex = 0;
+        const intervalTime = 2500; // Time in milliseconds between text changes (adjust as needed)
+        const animationDuration = 600; // Match CSS transition duration
+
+        if (textItems.length > 0) {
+            // Initialize first item
+            textItems[currentIndex].classList.add('active');
+
+            setInterval(() => {
+                const currentItem = textItems[currentIndex];
+                const previousIndex = currentIndex;
+
+                currentIndex = (currentIndex + 1) % textItems.length;
+                const nextItem = textItems[currentIndex];
+
+                // Animate out the current item
+                currentItem.classList.remove('active');
+                currentItem.classList.add('previous');
+
+                // Animate in the next item
+                nextItem.classList.add('active');
+
+                // Reset the previous item after animation completes
+                setTimeout(() => {
+                    textItems[previousIndex].classList.remove('previous');
+                }, animationDuration);
+
+            }, intervalTime);
+        }
+    }
+
     // ... potentially other DOMContentLoaded code ...
 });
 

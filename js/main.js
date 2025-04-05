@@ -368,39 +368,28 @@ function initMobileMenu() {
     if (!document.querySelector('.mobile-menu')) {
         const mobileMenu = document.createElement('div');
         mobileMenu.className = 'mobile-menu';
-        
-        const closeBtn = document.createElement('div');
-        closeBtn.className = 'close-menu';
-        closeBtn.innerHTML = '<i class="fas fa-times"></i>';
-        
-        mobileMenu.appendChild(closeBtn);
-        
+
         // Clone navigation links
         const navLinksContainer = document.querySelector('.nav-links');
         const navLinksClone = navLinksContainer.cloneNode(true);
         navLinksClone.style.display = 'flex';
         navLinksClone.style.flexDirection = 'column';
         navLinksClone.style.alignItems = 'center';
-        
+
         // Ensure the resume button is styled properly in mobile menu
         const resumeBtn = navLinksClone.querySelector('.resume-btn');
         if (resumeBtn) {
             resumeBtn.style.margin = '15px 0 0 0';
         }
-        
+
         mobileMenu.appendChild(navLinksClone);
         document.body.appendChild(mobileMenu);
-        
-        // Toggle mobile menu
+
+        // Toggle mobile menu - UPDATED
         mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.add('active');
+            mobileMenu.classList.toggle('active'); // Changed from add to toggle
         });
-        
-        // Close mobile menu
-        closeBtn.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-        });
-        
+
         // Close mobile menu when clicking on a link
         const mobileMenuLinks = mobileMenu.querySelectorAll('a');
         mobileMenuLinks.forEach(link => {

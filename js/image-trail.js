@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentImageIndex = 0;
     let lastSpawnTime = 0;
-    const spawnDelay = 50; // Milliseconds delay between spawning images
+    const spawnDelay = 125; // Milliseconds delay between spawning images
 
     trailArea.addEventListener('mousemove', (e) => {
         const currentTime = Date.now();

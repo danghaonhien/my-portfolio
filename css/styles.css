@@ -680,21 +680,23 @@ section {
 }
 
 .section-header {
-    margin-bottom: 60px;
-    text-align: left;
+    /* text-align: center; // Remove centering */
+    width: 100%; /* Make header full width */
+    margin-bottom: 40px;
 }
 
 .section-header h2 {
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 15px;
+    font-size: 3.5rem; /* Increase font size */
+    margin-bottom: 15px; /* Adjust spacing slightly */
+    font-weight: 600;
 }
 
 .section-line {
-    width: 60px;
-    height: 4px;
+    width: 100%; /* Make line full width */
+    height: 3px; /* Slightly thinner line */
     background-color: var(--primary-color);
-    margin: 0;
+    /* margin: 0 auto; // Remove centering */
+    border-radius: 2px;
 }
 
 /* About Section */
@@ -708,11 +710,13 @@ section {
    grid-template-columns: 1fr 1fr;
    gap: 10px;
    align-items: center;
+   
 }
 
-.about-text {
+/* .about-text {
     margin-bottom: 40px;
-}
+  
+} */
 
 .about-text p {
     margin-bottom: 20px;
@@ -1278,6 +1282,7 @@ footer {
     right: 30px;
     font-size: 30px;
     cursor: pointer;
+    z-index: 201; /* Ensure it's above other menu content */
 }
 
 /* Utility Classes */
@@ -2616,6 +2621,7 @@ body.slides-complete header {
     --cursor-x: 0px;
     --cursor-y: 0px;
     -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+    
 }
 
 /* Create a hover indicator dot that follows the cursor */
@@ -2716,6 +2722,7 @@ body.slides-complete header {
         border-radius: 8px;
         padding: 0 8px;
         -webkit-tap-highlight-color: transparent; /* Keep this */
+        
     }
 
     .about-text-content::before {
@@ -3178,12 +3185,44 @@ body.slides-complete header {
     cursor: pointer;
     padding: 0 20px; /* Padding consistent with other sections */
     margin-bottom: 20px; /* Space below header */
+    position: relative; /* Needed for pseudo-element positioning */
+    overflow: hidden; /* Clip the pseudo-element */
+    z-index: 0; /* Establish stacking context */
+    height: 100px;
 }
 
+.fun-fact-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0; /* Start hidden */
+    background-color: #e9ecef; /* Background color for hover state (light theme) */
+    transition: width 0.4s ease-out; /* Animation for the wipe */
+    z-index: -1; /* Position behind the header content */
+}
+
+.fun-fact-header h3,
+.fun-fact-header .fun-fact-toggle {
+    position: relative; /* Ensure stacking context */
+    z-index: 1; /* Keep content above the pseudo-element */
+    transition: color 0.3s ease; /* Optional: Smooth color transition */
+}
+
+/* Apply wipe effect when header is hovered */
+.fun-fact-header:hover::before {
+    width: 100%;
+}
 .fun-fact-header h3 {
     font-size: 1.8rem; /* Adjust size as needed */
     font-weight: 600;
     color: var(--text-color);
+}
+/* Optional: Change text color for contrast when hovered */
+.fun-fact-header:hover h3,
+.fun-fact-header:hover .fun-fact-toggle {
+    color: var(--primary-color); /* Example: Use primary color */
 }
 
 .fun-fact-toggle {
@@ -3906,7 +3945,7 @@ section#about .about-text-content span.material-icons-outlined {
 
 /* Say Hi Section */
 .say-hi-section {
-    padding: 100px 0; /* Adjust padding as needed */
+    padding: 0 0; /* Adjust padding as needed */
     text-align: right; /* Align text to the right within the container */
     position: relative;
     overflow: hidden;
@@ -3954,7 +3993,7 @@ section#about .about-text-content span.material-icons-outlined {
     align-items: center; /* Vertically center email */
     justify-content: flex-end; /* Align revealed email to the right */
     text-align: right; /* Ensure text inside ::after is right-aligned */
-    font-size: clamp(4rem, 8vw, 6rem); /* Increased responsive font size */
+    font-size: clamp(4rem, 8vw, 5.75rem); /* Increased responsive font size */
 }
 
 /* Desktop Hover Styles */
@@ -4158,7 +4197,7 @@ section#about .about-text-content span.material-icons-outlined {
     width: 450px; /* << Increased width */
     height: auto; 
     background-color: rgba(0, 0, 0, 0.85); /* Slightly darker background */
-    border-radius: 8px; /* Match container radius */
+   
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     z-index: 1000; 
     pointer-events: none; 
@@ -4222,4 +4261,69 @@ section#about .about-text-content span.material-icons-outlined {
     }
 
     /* Hide the tooltip on mobile (optional, as hover is less common) */
+
+/* Dark Theme Adjustments for Fun Fact Header Wipe on Hover */
+.dark-theme .fun-fact-header::before {
+    background-color: #282828; /* Darker theme hover background for better contrast */
+}
+
+/* Optional: Dark theme text color change on hover */
+/* ... existing styles ... */
+
+/* Looping Text Section */
+.looping-text-section {
+    padding: 0 0 40px; /* Adjust padding as needed */
+    text-align: left;
+    overflow: hidden; /* Prevent text overflow issues */
+}
+
+.looping-text-container {
+    height: 5em; /* Adjust height based on desired font size and line height */
+    overflow: hidden;
+    position: relative;
+    /* width: fit-content; /* Optionally restrict width if needed */
+}
+
+.looping-text-item {
+    display: block;
+    font-size: clamp(2rem, 4vw, 4rem); /* Smaller, responsive font size */
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text-color);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(100%); /* Start below the container */
+    transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.6s ease;
+    will-change: transform, opacity;
+}
+
+.looping-text-item.active {
+    opacity: 1;
+    transform: translateY(0); /* Animate into view */
+}
+
+.looping-text-item.previous {
+    opacity: 0;
+    transform: translateY(-100%); /* Animate out upwards */
+}
+
+/* Dark theme adjustments */
+.dark-theme .looping-text-item {
+    color: var(--text-color);
+}
+
+/* Add this at the end of the file or in a relevant section */
+
+.large-text-intro .blur-target {
+  display: inline-block; /* Ensure filter applies correctly */
+  filter: blur(0px);
+  transition: filter 0.6s ease-in-out 0.8s; /* Blur transition with 0.8s delay */
+}
+
+.large-text-intro.active .blur-target {
+  filter: blur(4px); /* Apply blur when parent is visible */
+}
 
