@@ -2481,6 +2481,19 @@ body.slides-complete header {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Optional: add text shadow for better readability */
     padding: 20px; /* Optional: padding for spacing */
 }
+.case-study-my-codi-hero {
+    background-image: url('../images/Codi/screenMockup4.png'); /* Path to your background image */
+    background-size: cover; /* Cover the entire section */
+    background-position: center; /* Center the image */
+    height: 600px; /* Set a height for the hero section */
+    display: flex; /* Use flexbox for centering text */
+    flex-direction: column; /* Stack text vertically */
+    justify-content: center; /* Center text vertically */
+    align-items: center; /* Center text horizontally */
+    color: white; /* Text color for contrast */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Optional: add text shadow for better readability */
+    padding: 20px; /* Optional: padding for spacing */
+}
 
 .case-study-header {
     max-width: 800px;
@@ -4326,4 +4339,171 @@ section#about .about-text-content span.material-icons-outlined {
 .large-text-intro.active .blur-target {
   filter: blur(4px); /* Apply blur when parent is visible */
 }
+
+/* --- My-Codi Case Study Custom Styles --- */
+body.my-codi-page {
+    background: url('../images/Codi/casestudy/background.png') no-repeat center center fixed !important;
+    background-size: cover !important;
+    background-color: #10131a !important; /* fallback */
+    color: #f3f6fa !important;
+}
+
+body.my-codi-page .case-study-header h1,
+body.my-codi-page .case-study-header,
+body.my-codi-page .case-study-subtitle,
+body.my-codi-page .case-study-meta,
+body.my-codi-page .section-title,
+body.my-codi-page .section-text,
+body.my-codi-page .process-step,
+body.my-codi-page .challenge-number,
+body.my-codi-page .challenge-label,
+body.my-codi-page .result-number,
+body.my-codi-page .result-label,
+body.my-codi-page .project-card,
+body.my-codi-page .project-info,
+body.my-codi-page .gallery-item-inner,
+body.my-codi-page .grid-item,
+body.my-codi-page .solution-list li,
+body.my-codi-page .process-step h3,
+body.my-codi-page .process-step p {
+    color: #f3f6fa !important;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+}
+
+body.my-codi-page .case-study-section,
+body.my-codi-page .container {
+    background: transparent !important;
+}
+
+body.my-codi-page .project-card,
+
+body.my-codi-page .grid-item {
+    background: rgba(16,19,26,0.85) !important;
+    border: 1px solid rgba(255,255,255,0.07);
+    box-shadow: 0 4px 24px 0 rgba(0,0,0,0.45);
+}
+
+body.my-codi-page .section-title {
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+body.my-codi-page .case-study-my-codi-hero {
+    background-image: url('../images/Codi/screenMockup4.png');
+    background-size: cover;
+    background-position: center;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    padding: 20px;
+}
+
+@media (max-width: 768px) {
+  body.my-codi-page .case-study-header h1,
+  body.my-codi-page .section-title {
+    font-size: 2rem;
+  }
+}
+
+body.my-codi-page .process-step {
+    background-color: rgba(16,19,26,0.92) !important;
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #f3f6fa !important;
+    box-shadow: 0 4px 24px 0 rgba(0,0,0,0.45);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+}
+
+body.my-codi-page .challenge-item {
+    background-color: rgba(16,19,26,0.92) !important;
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #f3f6fa !important;
+    box-shadow: 0 4px 24px 0 rgba(0,0,0,0.45);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+}
+
+body.my-codi-page .result-item {
+    background-color: rgba(16,19,26,0.92) !important;
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #f3f6fa !important;
+    box-shadow: 0 4px 24px 0 rgba(0,0,0,0.45);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+}
+
+body.my-codi-page .card-info {
+    background: linear-gradient(to top, rgba(16,19,26,0.96) 0%, rgba(16,19,26,0.85) 60%, rgba(16,19,26,0.5) 100%) !important;
+    color: #f3f6fa !important;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+}
+/* --- End My-Codi Case Study Custom Styles --- */
+
+body.my-codi-page .large-text-intro {
+    padding: 80px 0 40px 0;
+    text-align: left;
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+body.my-codi-page .large-text-intro h2 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.2;
+    color: #f3f6fa;
+    margin: 0;
+    letter-spacing: 0.08em;
+    max-width: 100%;
+    text-align: left;
+}
+body.my-codi-page .large-text-intro .codi-green {
+    color: #39ff14;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+body.my-codi-page .large-text-intro .container {
+  max-width: 100%;
+}
+.codi-green {
+    color: #39ff14;
+  
+}
+@media (max-width: 768px) {
+  body.my-codi-page .large-text-intro h2 {
+    font-size: 1.5rem;
+    padding: 0 10px;
+  }
+  body.my-codi-page .large-text-intro {
+    padding: 40px 0 20px 0;
+  }
+}
+
+body.my-codi-page .projects .project-card {
+    background: rgba(16,19,26,0.96) !important;
+    border: 1px solid rgba(255,255,255,0.10);
+    color: #f3f6fa !important;
+    box-shadow: 0 4px 24px 0 rgba(0,0,0,0.45);
+}
+body.my-codi-page .projects .project-card .project-info {
+    background: transparent !important;
+    color: #f3f6fa !important;
+}
+body.my-codi-page .projects .project-card .project-tags span {
+    background: rgba(57,255,20,0.12) !important;
+    color: #39ff14 !important;
+}
+body.my-codi-page .projects .project-card h3,
+body.my-codi-page .projects .project-card p,
+body.my-codi-page .projects .project-card .project-link {
+    color: #f3f6fa !important;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+}
+
+
+
+
 
